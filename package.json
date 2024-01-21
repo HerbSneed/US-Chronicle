@@ -1,0 +1,56 @@
+{
+  "name": "vite-apollo-mongo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/server.js --ignore client",
+    "develop": "concurrently \"cd server && npm run watch\" \"cd client && npm run dev\"",
+    "install": "cd server && npm i && cd ../client && npm i",
+    "seed": "cd server && npm run seed",
+    "build": "cd client && npm run build",
+    "lint": "eslint . --ext .js,.jsx"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jbohde/vite-apollo-mongo.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jbohde/vite-apollo-mongo/issues"
+  },
+  "homepage": "https://github.com/jbohde/vite-apollo-mongo#readme",
+  "dependencies": {
+    "@apollo/server": "^4.10.0",
+    "express": "^4.18.2",
+    "flowbite": "^2.2.1",
+    "mapbox-gl": "^2.15.0",
+    "nice-react-ticker": "^2.1.0",
+    "node-html-parser": "^6.1.12",
+    "nodemailer": "^6.9.4",
+    "react": "^18.2.0",
+    "react-bootstrap": "^2.8.0",
+    "react-dom": "^18.2.0",
+    "react-map-gl": "^7.1.5",
+    "react-marquee": "^1.0.0",
+    "react-marquee-text": "^1.0.3",
+    "react-slick": "^0.29.0",
+    "slick-carousel": "^1.8.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
+    "@vitejs/plugin-react": "^4.0.0-beta.0",
+    "concurrently": "^8.2.0",
+    "eslint": "^8.47.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-react": "^7.33.2",
+    "prettier": "^3.0.2",
+    "vite": "^4.3.2"
+  }
+}
