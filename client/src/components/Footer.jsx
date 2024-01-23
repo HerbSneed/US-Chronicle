@@ -8,15 +8,13 @@ import whiteLogo from "../assets/US-Chronical-White.png";
 
 function Footer() {
   return (
-    <div className="">
-      {/* Footer */}
       <footer
         id="footer-section"
-        className="w-full bg-black h-36 flex flex-col items-center justify-center"
+        className="w-full bg-black h-44 flex flex-col items-center bottom-0 z-50"
       >
         <img
           src={whiteLogo}
-          className="w-28 overflow-hidden -mt-10 sm:w-10"
+          className="w-32 overflow-hidden mt-0 sm:w-10"
           alt="US Chronical Icon"
         />
         <p className="text-white text-xs -mt-8">
@@ -55,7 +53,6 @@ function Footer() {
           </p>
         </div>
       </footer>
-    </div>
   );
 }
 

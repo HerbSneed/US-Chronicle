@@ -14,20 +14,20 @@ import Error from "./pages/Error";
 import Landing from "./pages/Landing";
 import Homepage from "./pages/Homepage";
 import Dashboard from "./pages/Dashboard";
-import SearchNews from "./pages/SearchNews";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ForgotPassword from "./pages/forgotPassword";
+import Search from "./pages/search";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />} errorElement={<Error />}>
       <Route index element={<Landing />} />
-      <Route path="/search-news" element={<SearchNews />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/forgotPassword" element={<ForgotPassword />} />
+      <Route path="/search" element={<Search />} />
       <Route
         path="/homepage/:category"
         element={
@@ -36,7 +36,6 @@ const router = createBrowserRouter(
           </ProtectedRoute>
         }
       />
-
       <Route
         path="/dashboard"
         element={

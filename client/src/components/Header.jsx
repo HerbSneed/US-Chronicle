@@ -54,11 +54,13 @@ const handleHomepageClick = (event) => {
           alt="WorldWire Icon"
         />
 
-        <img
-          src={search}
-          className="w-6 sm:w-10 overflow-hidden"
-          alt="WorldWire Icon"
-        />
+        <Link to="/search">
+          <img
+            src={search}
+            className="w-6 sm:w-10 overflow-hidden"
+            alt="WorldWire Icon"
+          />
+        </Link>
         {/* </div> */}
 
         {/* 
