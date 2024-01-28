@@ -13,7 +13,7 @@ import App from "./App";
 import Error from "./pages/Error";
 import Landing from "./pages/Landing";
 import Homepage from "./pages/Homepage";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./components/Dashboard";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -23,16 +23,32 @@ import Search from "./pages/search";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />} errorElement={<Error />}>
-      <Route index element={<Landing />} />
+      <Route index element={<Homepage />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/forgotPassword" element={<ForgotPassword />} />
       <Route path="/search" element={<Search />} />
       <Route
-        path="/homepage/:category"
+        path="/:category"
         element={
           <ProtectedRoute>
             <Homepage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/:sidebarQuery"
+        element={
+          <ProtectedRoute>
+            <Homepage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="search/:searchQuery"
+        element={
+          <ProtectedRoute>
+            <Search />
           </ProtectedRoute>
         }
       />

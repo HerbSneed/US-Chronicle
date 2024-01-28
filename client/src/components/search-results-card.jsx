@@ -1,7 +1,3 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { useParams } from "react-router-dom";
-
 const truncateTitle = (title, maxLength) => {
   if (title.length <= maxLength) {
     return title;
@@ -9,8 +5,7 @@ const truncateTitle = (title, maxLength) => {
   return title.substring(0, maxLength) + "...";
 };
 
-const SearchResultsCard = ({ newsId, title, image, latest_publish_date }) => {
-  const {query} = useParams();
+const SearchResultsCard = ({ title, image, latest_publish_date }) => {
   return (
     <>
       <div className="grid grid-cols-2 mx-3 space-y-2 items-center">
@@ -21,7 +16,7 @@ const SearchResultsCard = ({ newsId, title, image, latest_publish_date }) => {
 
         {image && (
           <img
-            className="w-9/12 rounded-t-sm w-9/12 ml-12"
+            className="w-9/12 rounded-t-sm w-9/12 ml-12 shadow-lg"
             src={image}
             alt={`Image for ${title}`}
           />

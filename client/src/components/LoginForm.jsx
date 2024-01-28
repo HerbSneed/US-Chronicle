@@ -33,7 +33,7 @@ export default function Login() {
       const { token, currentUser } = mutationResponse.data.login;
       loginUser(currentUser, token);
       Auth.login(token);
-      navigate('/dashboard');
+      navigate('/');
     } catch (e) {
       console.log(e);
     }
@@ -68,17 +68,17 @@ export default function Login() {
         </div>
       ) : null}
 
-      <h1 className="text-2xl text-center mb-0 font-bold mt-4">World Wire</h1>
       <form
         id="login-form"
         onSubmit={handleFormSubmit}
-        className="bg-newsGray p-6 rounded mx-4 h-5/6 my-5"
+        className="p-6 rounded mx-4 h-5/6 my-5"
       >
-        <div className="text-center mt-10">
-          <h2 className="text-xl mb-0 font-bold">Welcome Back</h2>
-          <h3 className="text-lg mb-3 font-bold">Log in to continue</h3>
+        <div className="text-left">
+          <h2 className="text-4xl -mb-2 font-bold font-[Newsreader]">Log In</h2>
+          <h3 className="text-2xl mb-0 font-[Newsreader]">to your account</h3>
         </div>
-        <label htmlFor="email" className="block mb-2">
+
+        <label htmlFor="email" className="block font-semibold mb-2 mt-4">
           Email:
           <input
             placeholder="youremail@test.com"
@@ -86,10 +86,10 @@ export default function Login() {
             type="email"
             value={formState.email}
             onChange={handleChange}
-            className="mt-1 p-2 mb-3 w-full border rounded"
+            className="mt-1 p-2 mb-3 w-full font-normal border rounded"
           />
         </label>
-        <label htmlFor="password" className="block mb-8">
+        <label htmlFor="password" className="block mb-8 font-semibold">
           Password:
           <input
             placeholder="******"
@@ -97,12 +97,13 @@ export default function Login() {
             type="password"
             value={formState.password}
             onChange={handleChange}
-            className="mt-1 p-2 w-full border rounded"
+            className="mt-1 px-2 w-full border rounded font-normal"
           />
           <p>
             <Link
               to="/forgotPassword"
-              className="float-right mt-1 text-xs text-blue-600">
+              className="float-right mt-1 text-xs text-blue-600"
+            >
               Forgot Password?
             </Link>
           </p>
@@ -110,13 +111,13 @@ export default function Login() {
 
         <button
           type="submit"
-          className="bg-newsBlue text-white p-2 rounded hover:bg-blue-600 mt-4 w-full mb-5"
+          className="bg-newsBlue text-white p-2 rounded hover:bg-blue-600 mt-1 w-full mb-2"
         >
           Login
         </button>
 
-        <p className="font-bold text-center">
-          Need an account?{' '}
+        <p className="font-bold text-right">
+          Need an account?{" "}
           <Link to="/register" className="text-blue-600">
             Sign up
           </Link>

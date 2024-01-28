@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { Link, useNavigate } from "react-router-dom";
 import { categories } from "../utils/categories";
@@ -17,9 +17,8 @@ const RegistrationForm = () => {
     userDefaultNews: "General",
   });
 
-  const [selectedCategory, setSelectedCategory] = useState("");
   const [errors, setErrors] = useState({});
-  const [register, { error }] = useMutation(REGISTER_USER);
+  const { register } = useMutation(REGISTER_USER);
 
   const handleRegistrationResponse = (
     alreadyRegistered,
@@ -60,7 +59,6 @@ const RegistrationForm = () => {
         fieldErrors[field] = `${field} is required`;
       }});
 
-    // Set errors if any required field is missing
     setErrors(fieldErrors);
 
     if (Object.keys(fieldErrors).length > 0) {
@@ -102,11 +100,16 @@ const RegistrationForm = () => {
       <form
         id="registration-form"
         onSubmit={handleFormSubmit}
-        className="bg-newsGray p-6 rounded mx-4 h-5/6 my-5"
+        className="p-6 mx-4 h-5/6 my-5"
       >
-        <h2 className="text-2xl text-center mb-5 font-bold mt-4">Register</h2>
+        <div className="text-left">
+          <h2 className="text-2xl text-4xl -mb-2 font-bold font-[Newsreader]">
+            Register
+          </h2>
+          <h3 className="text-2xl mb-0 font-[Newsreader]">for a new account</h3>
+        </div>
 
-        <label htmlFor="firstName" className="block mb-2">
+        <label htmlFor="firstName" className="block mb-2 mt-4 font-semibold">
           First name:
           <input
             type="text"
@@ -114,7 +117,7 @@ const RegistrationForm = () => {
             name="firstName"
             value={formState.firstName}
             onChange={handleChange}
-            className={`mt-1 p-2 w-full border rounded ${
+            className={`mt-1 p-2 mb-2 w-full border rounded ${
               errors.firstName ? "border-red-500" : ""
             }`}
           />
@@ -122,7 +125,7 @@ const RegistrationForm = () => {
             <p className="text-red-500">{errors.firstName}</p>
           )}
         </label>
-        <label htmlFor="lastName" className="block mb-2">
+        <label htmlFor="lastName" className="block mb-2 font-semibold">
           Last name:
           <input
             type="text"
@@ -136,7 +139,7 @@ const RegistrationForm = () => {
           />
           {errors.lastName && <p className="text-red-500">{errors.lastName}</p>}
         </label>
-        <label htmlFor="email" className="block mb-2">
+        <label htmlFor="email" className="font-semibold block mb-2">
           Email:
           <input
             placeholder="youremail@test.com"
@@ -150,7 +153,7 @@ const RegistrationForm = () => {
           />
           {errors.email && <p className="text-red-500">{errors.email}</p>}
         </label>
-        <label htmlFor="password" className="block mb-2">
+        <label htmlFor="password" className="block mb-2 font-semibold">
           Password:
           <input
             placeholder="******"
@@ -165,7 +168,10 @@ const RegistrationForm = () => {
           {errors.password && <p className="text-red-500">{errors.password}</p>}
         </label>
 
-        <label htmlFor="userDefaultNews" className="block relative mb-2">
+        <label
+          htmlFor="userDefaultNews"
+          className="block relative mb-2 font-semibold"
+        >
           Default Category:
           <select
             name="userDefaultNews"
@@ -173,21 +179,21 @@ const RegistrationForm = () => {
             onChange={handleChange}
             className="mt-1 p-2 w-full border rounded appearance-none"
           >
-          {categories.map((categoryName) => (
-            <option key={categoryName} value={categoryName}>
-              {categoryName}
-            </option>
-          ))}
+            {categories.map((categoryName) => (
+              <option key={categoryName} value={categoryName}>
+                {categoryName}
+              </option>
+            ))}
           </select>
         </label>
 
         <button
           type="submit"
-          className="bg-newsBlue text-white p-2 rounded hover:bg-blue-600 mt-4 w-full mb-5"
+          className="bg-newsBlue text-white p-2 rounded hover:bg-blue-600 mt-4 w-full mb-2"
         >
           Sign Up
         </button>
-        <p className="mt-4">
+        <p className="font-bold text-right">
           Already have an account? Login{" "}
           <Link to="/login" className="text-blue-600">
             here

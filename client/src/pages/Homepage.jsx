@@ -1,55 +1,109 @@
 import { useEffect, useRef, useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
-import { getUsHeadlines, getBusinessHeadlines, getEntertainmentHeadlines, getHealthHeadlines, getScienceHeadlines, getSportsHeadlines, getTechnologyHeadlines, getUserHeadlines } from "../utils/news-api";
+import { getUsHeadlines, getBusinessHeadlines, getEntertainmentHeadlines, getHealthHeadlines, getScienceHeadlines, getSportsHeadlines, getTechnologyHeadlines, getUserHeadlines, getSearchedHeadlines } from "../utils/news-api";
 import CategoryHeader from "../components/Category-Header";
 import { useCurrentUserContext } from "../context/CurrentUser";
 import { QUERY_CURRENT_USER } from "../utils/queries";
 import { SAVE_NEWS } from "../utils/mutations";
-import { useParams } from "react-router-dom";
-
+import { useNavigate, useLocation } from "react-router-dom";
+import Footer from "../components/Footer";
 
 const Homepage = () => {
   const [newsItems, setNewsItems] = useState([]);
   const fetchNewsCalled = useRef(false);
-  const { currentUser } = useCurrentUserContext();
+  const { currentUser, isLoggedIn } = useCurrentUserContext();
   const [saveNewsMutation] = useMutation(SAVE_NEWS);
   const [selectedCategory, setSelectedCategory] = useState("Top Headlines");
+  const [sidebarCatagory, setSidebarCategory] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
 
-const categories = [
-  "Top News",
-  "Business",
-  "Entertainment",
-  "Health",
-  "Science",
-  "Sports",
-  "Technology",
-];
+  const categories = [
+    "Top News",
+    "Business",
+    "Entertainment",
+    "Health",
+    "Science",
+    "Sports",
+    "Technology",
+  ];
 
-
-  // QUERY_CURRENT_USER
   const { data } = useQuery(QUERY_CURRENT_USER, {
     variables: { email: currentUser.email },
   });
   const userData = data?.currentUser || null;
 
   useEffect(() => {
-    const fetchNews = async () => {
+    const queryParams = new URLSearchParams(location.search);
+    const query = queryParams.get("query");
+    setSidebarCategory(query);
+    console.log("sidebarCatagory:", sidebarCatagory);
+  }, [location.search, sidebarCatagory]);
+
+  useEffect(() => {
+    const fetchSearchedNews = async () => {
       try {
-        if (!userData || !userData.userDefaultNews) {
-          console.log("No user data or default news. Returning...");
+        const response = await getSearchedHeadlines(sidebarCatagory);
+
+        if (!response.ok) {
+          console.error("Error in response:", response);
           return;
         }
 
-        const userCategory = userData.userDefaultNews.trim();
-        const response = userCategory
-          ? await getUserHeadlines(userCategory)
-          : await getUsHeadlines();
+        const headlines = await response.json();
 
-        console.log("Response from API:", response);
+        const newsData = headlines.articles
+          .filter((news) => {
+            return (
+              news.urlToImage !== null &&
+              news.title !== "[Removed]" &&
+              news.status !== "410" &&
+              news.status !== "404"
+            );
+          })
+          .map((news) => ({
+            newsId: news.publishedAt + news.title,
+            title: news.title,
+            image: news.urlToImage,
+            url: news.url,
+            summary: news.description || "Summary not available.",
+            source_country: news.source.name,
+            latest_publish_date: formatDateTime(news.publishedAt),
+          }));
+
+        setNewsItems(newsData);
+      } catch (err) {
+        console.error("Error in fetchNews:", err);
+      }
+    };
+
+    if (sidebarCatagory !== "") {
+      fetchSearchedNews();
+    }
+  }, [sidebarCatagory]);
+
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        let response;
+
+        if (!userData) {
+          response = await getUsHeadlines();
+        } else {
+          const userCategory = userData.userDefaultNews.trim();
+          response = await getUserHeadlines(userCategory);
+          console.log("Response from API:", response);
+        }
 
         if (!response || !response.ok) {
           console.error("Error in response:", response);
           return;
+        }
+
+        if (typeof isLoggedIn === "function" && !isLoggedIn()) {
+          console.log("User not logged in. Navigating to default homepage");
+          navigate("/");
         }
 
         const headlines = await response.json();
@@ -100,87 +154,86 @@ const categories = [
         },
       },
     })
-      .then((response) => {
-        // Handle the response, update UI, etc.
-      })
+      .then(() => {})
       .catch((error) => {
-        // Handle errors
         console.error(error);
       });
   };
 
-  const handleCategoryChange = (category) => {
+  const handleCategoryChange = async (category) => {
+    console.log("Category changed:", category);
     setSelectedCategory(category);
-  };
 
-const handleCategoryClick = async (category) => {
-  let apiFunction;
-  let headlines;
+    let apiFunction;
+    let headlines;
 
-  switch (category) {
-    case "Top Headlines":
-      apiFunction = getUsHeadlines;
-      break;
-    case "Business":
-      apiFunction = getBusinessHeadlines;
-      break;
-    case "Entertainment":
-      apiFunction = getEntertainmentHeadlines;
-      break;
-    case "Health":
-      apiFunction = getHealthHeadlines;
-      break;
-    case "Science":
-      apiFunction = getScienceHeadlines;
-      break;
-    case "Sports":
-      apiFunction = getSportsHeadlines;
-      break;
-    case "Technology":
-      apiFunction = getTechnologyHeadlines;
-      break;
-    default:
-      apiFunction = getUsHeadlines;
-  }
-
-  try {
-    const response = await apiFunction();
-    headlines = await response.json();
-    // Process the API response and update state
-    console.log("API Response:", response);
-    // Update state based on the response
-    // ...
-
-  } catch (error) {
-    console.error("Error in API call:", error);
-  }
-
-    if (!headlines || headlines.loading) {
-      console.log("Loading headlines...");
-      return;
+    switch (category) {
+      case "Top Headlines":
+        apiFunction = getUsHeadlines;
+        break;
+      case "Business":
+        apiFunction = getBusinessHeadlines;
+        break;
+      case "Entertainment":
+        apiFunction = getEntertainmentHeadlines;
+        break;
+      case "Health":
+        apiFunction = getHealthHeadlines;
+        break;
+      case "Science":
+        apiFunction = getScienceHeadlines;
+        break;
+      case "Sports":
+        apiFunction = getSportsHeadlines;
+        break;
+      case "Technology":
+        apiFunction = getTechnologyHeadlines;
+        break;
+      default:
+        apiFunction = getUsHeadlines;
     }
 
-    const newsData = headlines.articles
-      .filter((news) => {
-        return (
-          news.urlToImage !== null &&
-          news.title !== "[Removed]" &&
-          news.status !== "410" &&
-          news.status !== "404"
-        );
-      })
-      .map((news) => ({
-        newsId: news.publishedAt + news.title,
-        title: news.title,
-        image: news.urlToImage,
-        url: news.url,
-        summary: news.description || "Summary not available.",
-        source_country: news.source.name,
-        latest_publish_date: formatDateTime(news.publishedAt),
-      }));
+    try {
+      const response = await apiFunction();
+      console.log("API Response:", response);
 
-    setNewsItems(newsData);
-  }
+      if (!response.ok) {
+        console.error("Error in API response:", response.statusText);
+        return;
+      }
+
+      headlines = await response.json();
+      console.log("Parsed API Response:", headlines);
+
+      if (!headlines || headlines.loading) {
+        console.log("Loading headlines...");
+        return;
+      }
+
+      const newsData = headlines.articles
+        .filter((news) => {
+          return (
+            news.urlToImage !== null &&
+            news.title !== "[Removed]" &&
+            news.status !== "410" &&
+            news.status !== "404"
+          );
+        })
+        .map((news) => ({
+          newsId: news.publishedAt + news.title,
+          title: news.title,
+          image: news.urlToImage,
+          url: news.url,
+          summary: news.description || "Summary not available.",
+          source_country: news.source.name,
+          latest_publish_date: formatDateTime(news.publishedAt),
+        }));
+
+      setNewsItems(newsData);
+    } catch (error) {
+      console.error("Error in handleCategoryClick:", error);
+    }
+  };
 
   const formatDateTime = (isoString) => {
     const date = new Date(isoString);
@@ -198,10 +251,10 @@ const handleCategoryClick = async (category) => {
     };
 
     const formattedDate = new Intl.DateTimeFormat("en-US", options).format(
-    date);
+      date
+    );
     return formattedDate;
-  }
-
+  };
 
   return (
     <>
@@ -211,13 +264,14 @@ const handleCategoryClick = async (category) => {
       >
         <CategoryHeader
           onCategoryChange={handleCategoryChange}
-          categories={categories} // Make sure to pass the categories prop
-          onCategoryClick={handleCategoryClick}
+          categories={categories}
         />
       </section>
 
-      <div className="mx-3 flex pt-2">
-        <h2 className="text-3xl font-semibold">{selectedCategory}</h2>
+      <div className="mx-3 flex pt-4">
+        <h2 className="text-4xl font-[Newsreader] font-semibold drop-shadow-lg">
+          {selectedCategory}
+        </h2>
       </div>
 
       <section
@@ -229,26 +283,24 @@ const handleCategoryClick = async (category) => {
             <div className={`${index === 5 ? "" : ""}`}>
               {news.image && (
                 <img
-                  className="w-full rounded-t-md"
+                  className="w-full rounded-t-md shadow-md"
                   src={news.image}
                   alt={`Image for ${news.title}`}
                 />
               )}
 
-              <div className="mt-0">
+              <div className="mt-1">
                 <h4 className="text-xs text-gray-900">
                   Updated {news.latest_publish_date}
                 </h4>
 
                 {/* Wrap the title in an anchor tag */}
-                <h3 className="font-bold my-1 text-gray-900 text-sm">
-                  <a href={news.url} target="_blank" rel="noopener noreferrer">
-                    {news.title}
-                  </a>
+                <h3 className="font-bold text-gray-900 text-[30px]">
+                  {news.title}
                 </h3>
 
-                <h4>
-                  <div className="flex justify-between mb-2">
+                {isLoggedIn() && (
+                  <div className="flex justify-between">
                     <a
                       href={news.url}
                       target="_blank"
@@ -266,7 +318,7 @@ const handleCategoryClick = async (category) => {
                       Save Article
                     </a>
                   </div>
-                </h4>
+                )}
               </div>
             </div>
           </div>
@@ -303,28 +355,28 @@ const handleCategoryClick = async (category) => {
                   {news.title}
                 </a>
               </h3>
-              <h4 className="text-sm -mt-1">
-                Updated {news.latest_publish_date}
-              </h4>
+              <h4 className="text-sm">Updated {news.latest_publish_date}</h4>
               <h4>
-                <div className="flex justify-between mb-2">
-                  <a
-                    href={news.url}
-                    target="_blank"
-                    className="text-blue-600"
-                    rel="noopener noreferrer"
-                  >
-                    Source
-                  </a>
-                  <a
-                    target="_blank"
-                    className="text-red-600"
-                    onClick={() => handleSaveArticle(news)}
-                    rel="noopener noreferrer"
-                  >
-                    Save Article
-                  </a>
-                </div>
+                {isLoggedIn() && (
+                  <div className="flex justify-between mb-2">
+                    <a
+                      href={news.url}
+                      target="_blank"
+                      className="text-blue-600"
+                      rel="noopener noreferrer"
+                    >
+                      Source
+                    </a>
+                    <a
+                      target="_blank"
+                      className="text-red-600"
+                      onClick={() => handleSaveArticle(news)}
+                      rel="noopener noreferrer"
+                    >
+                      Save Article
+                    </a>
+                  </div>
+                )}
               </h4>
             </div>
           </div>
@@ -336,6 +388,7 @@ const handleCategoryClick = async (category) => {
           </p>
         )}
       </section>
+      <Footer />
     </>
   );
 };

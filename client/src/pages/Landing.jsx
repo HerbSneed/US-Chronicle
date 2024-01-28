@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { useQuery, useMutation } from "@apollo/client";
 import {
   getUsHeadlines,
   getBusinessHeadlines,
@@ -8,21 +7,14 @@ import {
   getScienceHeadlines,
   getSportsHeadlines,
   getTechnologyHeadlines,
-  getUserHeadlines,
 } from "../utils/news-api";
 import CategoryHeader from "../components/Category-Header";
-import { useCurrentUserContext } from "../context/CurrentUser";
-import { QUERY_CURRENT_USER } from "../utils/queries";
-import { SAVE_NEWS } from "../utils/mutations";
-import { useParams } from "react-router-dom";
 import Footer from "../components/Footer";
 
 const Landing = () => {
   const [newsItems, setNewsItems] = useState([]);
   const fetchNewsCalled = useRef(false);
-  const { currentUser } = useCurrentUserContext();
-  const [saveNewsMutation] = useMutation(SAVE_NEWS);
-  const [selectedCategory, setSelectedCategory] = useState("Top Headlines");
+  const [selectedCategory, setSelectedCategory] = useState("Top News");
 
   const categories = [
     "Top News",
@@ -34,25 +26,10 @@ const Landing = () => {
     "Technology",
   ];
 
-  // QUERY_CURRENT_USER
-  const { data } = useQuery(QUERY_CURRENT_USER, {
-    variables: { email: currentUser.email },
-  });
-  const userData = data?.currentUser || null;
-
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        if (!userData || !userData.userDefaultNews) {
-          console.log("No user data or default news. Returning...");
-          return;
-        }
-
-        const userCategory = userData.userDefaultNews.trim();
-        const response = userCategory
-          ? await getUserHeadlines(userCategory)
-          : await getUsHeadlines();
-
+        const response = await getUsHeadlines();
         console.log("Response from API:", response);
 
         if (!response || !response.ok) {
@@ -61,6 +38,8 @@ const Landing = () => {
         }
 
         const headlines = await response.json();
+
+        console.log("Headlines:", headlines);
 
         const newsData = headlines.articles
           .filter((news) => {
@@ -81,6 +60,7 @@ const Landing = () => {
             latest_publish_date: formatDateTime(news.publishedAt),
           }));
 
+        console.log("News Data:", newsData);  
         setNewsItems(newsData);
       } catch (err) {
         console.error("Error in fetchNews:", err);
@@ -90,7 +70,7 @@ const Landing = () => {
     };
 
     fetchNews();
-  }, [userData]);
+  }, []);
 
   const handleSaveArticle = (news) => {
     // Call the mutation to save the news
@@ -218,18 +198,20 @@ const Landing = () => {
       >
         <CategoryHeader
           onCategoryChange={handleCategoryChange}
-          categories={categories} // Make sure to pass the categories prop
+          categories={categories}
           onCategoryClick={handleCategoryClick}
         />
       </section>
 
-      <div className="mx-3 flex pt-2">
-        <h2 className="text-3xl font-semibold">{selectedCategory}</h2>
+      <div className="mx-3 flex pt-4">
+        <h2 className="text-4xl font-[Newsreader] font-semibold">
+          {selectedCategory}
+        </h2>
       </div>
 
       <section
         id="top-news"
-        className="grid grid-cols-1 sm:grid-cols-3 gap-x-2 gap-y-2 py-2 mx-3 bg-white border-b-[1px] border-newsBlue "
+        className="grid grid-cols-1 sm:grid-cols-3 gap-x-2 gap-y-2 pt-2 mx-3 bg-white border-b-[1px] border-newsBlue "
       >
         {newsItems.slice(0, 1).map((news, index) => (
           <div key={news.newsId} className="bg-white rounded-xl">
@@ -248,12 +230,11 @@ const Landing = () => {
                 </h4>
 
                 {/* Wrap the title in an anchor tag */}
-                <h3 className="font-bold my-1 text-gray-900 text-sm">
-                  <a href={news.url} target="_blank" rel="noopener noreferrer">
+                <h3 className="font-bold my-1 text-gray-900 text-sm ">
+                  <a href="/login" target="_blank" rel="noopener noreferrer">
                     {news.title}
                   </a>
                 </h3>
-
               </div>
             </div>
           </div>
@@ -283,18 +264,17 @@ const Landing = () => {
               <h3 className="flex justify-right font-bold p-0">
                 <a
                   className=""
-                  href={news.url}
+                  href="/login "
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   {news.title}
                 </a>
               </h3>
-              <h4 className="text-sm -mt-1">
+              <h4 className="text-sm mt-1">
                 Updated {news.latest_publish_date}
               </h4>
-              <h4>
-              </h4>
+              <h4></h4>
             </div>
           </div>
         ))}

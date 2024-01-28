@@ -5,27 +5,6 @@ import SearchBar from "../components/search-bar.jsx";
 import SearchResultsCard from "../components/search-results-card.jsx";
 import { getSearchedHeadlines } from "../utils/news-api.js";
 
-const formatDateTime = (isoString) => {
-  const date = new Date(isoString);
-  date.setDate(date.getDate() + 1);
-
-  const options = {
-    weekday: "short",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    hour12: true,
-    timeZoneName: "short",
-  };
-
-  const formattedDate = new Intl.DateTimeFormat("en-US", options).format(
-    date
-  );
-  return formattedDate;
-};
-
 const Search = () => {
   const location = useLocation();
   const [searchQuery, setSearchQuery] = useState("latest");
@@ -106,17 +85,15 @@ const Search = () => {
     return formattedDate;
   };
 
-
-
   return (
     <>
       <div className="mt-3">
         <SearchBar/>
       </div>
 
-      <section className="min-h-screen relative flex flex-col py-5 w-full bg-bgGray bg-cover">
+      <section className="min-h-screen relative flex flex-col py-2 w-full bg-bgGray bg-cover">
         <div className="z-20 bg-compBlue pb-10 w-full drop-shadow-lg rounded-md max-h-[80vh]">
-          <h1 className="z-20 text-4xl font-semibold text-center text-blue-500">
+          <h1 className="z-20 mt-1 text-5xl drop-shadow-md font-semibold font-[Newsreader] text-center text-blue-500">
             Search Results
           </h1>
         <div>

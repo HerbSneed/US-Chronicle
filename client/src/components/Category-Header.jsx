@@ -1,25 +1,27 @@
-// CategoryHeader.jsx
-
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { useCurrentUserContext } from "../context/CurrentUser";
 
 const CategoryHeader = ({
   onCategoryChange,
   categories = [],
-  onCategoryClick,
 }) => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const navigate = useNavigate();
+  const { isLoggedIn } = useCurrentUserContext();
 
   const handleCategoryClick = (category) => {
-    setSelectedCategory(category);
-    console.log("Category clicked:", category);
-    onCategoryChange(category); // Call the callback function
-    onCategoryClick(category); // Call the function to update the homepage
-    navigate(`/homepage/${category}`);
+
+    if (isLoggedIn()) {
+    onCategoryChange(category); 
+    navigate(`/${category}`);
+    } else {
+      console.log("Navigating to default homepage");
+      navigate("/login");
+    }
   };
 
   const sliderSettings = {
@@ -38,7 +40,7 @@ const CategoryHeader = ({
       <Slider {...sliderSettings}>
         {categories.map((category, index) => (
           <button
-            className={`text-blue-600 ${category === selectedCategory ? "bg-blue-300" : ""} rounded-lg text-sm sm:text-base ${index === 0 ? "" : ""}`}
+            className={`text-blue-600 font-bold py-1 ${category === selectedCategory ? "bg-blue-300" : ""} rounded-lg text-md sm:text-base ${index === 0 ? "" : ""}`}
             key={index}
             onClick={() => handleCategoryClick(category)}
           >

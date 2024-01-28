@@ -1,20 +1,17 @@
-import React from "react";
-import facebook from "../assets/facebook_icon.webp";
-import email from "../assets/email-icon.webp";
-import logo from '../assets/US-Chronical.png';
-import insta from '../assets/instagram_icon.webp';
-import whiteLogo from "../assets/US-Chronical-White.png";
-
+import facebook from "../assets/images/facebook_icon.webp";
+import email from "../assets/images/email-icon.webp";
+import insta from "../assets/images/instagram_icon.webp";
+import whiteLogo from "../assets/images/US-Chronical-White.png";
 
 function Footer() {
   return (
       <footer
         id="footer-section"
-        className="w-full bg-black h-44 flex flex-col items-center bottom-0 z-50"
+        className="w-full bg-black h-48 flex flex-col items-center z-50"
       >
         <img
           src={whiteLogo}
-          className="w-32 overflow-hidden mt-0 sm:w-10"
+          className="w-32 overflow-hidden -mt-10 sm:w-10"
           alt="US Chronical Icon"
         />
         <p className="text-white text-xs -mt-8">
