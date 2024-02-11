@@ -7,20 +7,20 @@ function Footer() {
   return (
       <footer
         id="footer-section"
-        className="w-full bg-black h-48 flex flex-col items-center z-50"
+        className="w-full bg-black h-32 sm:h-34 py-3 flex flex-col items-center z-50"
       >
         <img
           src={whiteLogo}
-          className="w-32 overflow-hidden -mt-10 sm:w-10"
+          className="w-32 overflow-hidden sm:w-34"
           alt="US Chronical Icon"
         />
-        <p className="text-white text-xs -mt-8">
+        <p className="text-white text-xs sm:text-sm mt-2">
           Copyright ©2030 US Chronical Inc. All rights reserved.
         </p>
 
-        <div className="flex flex-row w-2/12 sm:w-2/12 md:w-[110px] lg:w-[110px] xl:w-[110px] 2xl:w-[110px] justify-center mt-6 space-x-3 ">
+        <div className="flex flex-row w-2/12 mt-2 sm:mt-3 sm:w-2/12 md:w-[110px] lg:w-[110px] xl:w-[110px] 2xl:w-[110px] justify-center space-x-3 ">
           <a
-            href="https://www.facebook.com/profile.php?id=61550263295423"
+            href="https://www.facebook.com/"
             target="_blank"
             rel="noreferrer"
           >
@@ -28,7 +28,7 @@ function Footer() {
           </a>
 
           <a
-            href="mailto:pierreneltv@gmail.com"
+            href="https://www.instagram.com/"
             target="_blank"
             rel="noreferrer"
           >
@@ -44,11 +44,6 @@ function Footer() {
           </a>
         </div>
 
-        <div className="w-full flex flex-row items-center -ml-4 -mt-5 sm:-mt-4 lg:-mt-6 xl:-mt-7 2xl:-mt-9 justify-center">
-          <p className="ml-1 mt-6 lg:mt-7 2xl:mt-9  text-base-content font-semibold 2xl:text-xl">
-            ©™ A Peggy Joyce&apos;s Boy Production
-          </p>
-        </div>
       </footer>
   );
 }

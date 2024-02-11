@@ -4,20 +4,18 @@ import { useLocation } from "react-router-dom";
 import SearchBar from "../components/search-bar.jsx";
 import SearchResultsCard from "../components/search-results-card.jsx";
 import { getSearchedHeadlines } from "../utils/news-api.js";
+import { useMutation } from "@apollo/client";
+import { SAVE_NEWS } from "../utils/mutations";
 
 const Search = () => {
   const location = useLocation();
   const [searchQuery, setSearchQuery] = useState("latest");
   const [newsItems, setNewsItems] = useState([]);
+  const [saveNewsMutation] = useMutation(SAVE_NEWS);
 
   useEffect(() => {
-    // Read query parameters when the location changes
     const queryParams = new URLSearchParams(location.search);
     const query = queryParams.get("query");
-
-    console.log("Query:", query)
-
-    // Set the search query
     setSearchQuery(query);
   }, [location.search]);
 
@@ -64,6 +62,28 @@ const Search = () => {
 
   }, [searchQuery]);
 
+    const handleSaveArticle = (news) => {
+      // Call the mutation to save the news
+      saveNewsMutation({
+        variables: {
+          saveNews: {
+            newsId: news.newsId,
+            title: news.title,
+            summary: news.summary,
+            source_country: news.source_country,
+            url: news.url,
+            image: news.image,
+            language: news.language,
+            latest_publish_date: news.latest_publish_date,
+          },
+        },
+      })
+        .then(() => {})
+        .catch((error) => {
+          console.error(error);
+        });
+    };
+
   const formatDateTime = (isoString) => {
     const date = new Date(isoString);
     date.setDate(date.getDate() + 1);
@@ -100,11 +120,8 @@ const Search = () => {
           {newsItems.map((news) => (
           <SearchResultsCard
             key={news.newsId}
-            newsId={news.newsId}
-            title={news.title}
-            summary={news.summary}
-            image={news.image}
-            latest_publish_date={news.latest_publish_date}
+            news={news}
+            handleSaveArticle={handleSaveArticle}
             />
           ))}
         </div>

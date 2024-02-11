@@ -30,7 +30,6 @@ const Landing = () => {
     const fetchNews = async () => {
       try {
         const response = await getUsHeadlines();
-        console.log("Response from API:", response);
 
         if (!response || !response.ok) {
           console.error("Error in response:", response);
@@ -38,8 +37,6 @@ const Landing = () => {
         }
 
         const headlines = await response.json();
-
-        console.log("Headlines:", headlines);
 
         const newsData = headlines.articles
           .filter((news) => {
@@ -60,7 +57,6 @@ const Landing = () => {
             latest_publish_date: formatDateTime(news.publishedAt),
           }));
 
-        console.log("News Data:", newsData);  
         setNewsItems(newsData);
       } catch (err) {
         console.error("Error in fetchNews:", err);
@@ -71,31 +67,6 @@ const Landing = () => {
 
     fetchNews();
   }, []);
-
-  const handleSaveArticle = (news) => {
-    // Call the mutation to save the news
-    saveNewsMutation({
-      variables: {
-        saveNews: {
-          newsId: news.newsId,
-          title: news.title,
-          summary: news.summary,
-          source_country: news.source_country,
-          url: news.url,
-          image: news.image,
-          language: news.language,
-          latest_publish_date: news.latest_publish_date,
-        },
-      },
-    })
-      .then((response) => {
-        // Handle the response, update UI, etc.
-      })
-      .catch((error) => {
-        // Handle errors
-        console.error(error);
-      });
-  };
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
@@ -134,16 +105,12 @@ const Landing = () => {
     try {
       const response = await apiFunction();
       headlines = await response.json();
-      // Process the API response and update state
-      console.log("API Response:", response);
-      // Update state based on the response
-      // ...
     } catch (error) {
       console.error("Error in API call:", error);
     }
 
     if (!headlines || headlines.loading) {
-      console.log("Loading headlines...");
+      alert("Loading headlines...");
       return;
     }
 

@@ -1,4 +1,3 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import {
   createBrowserRouter,
@@ -11,9 +10,8 @@ import { CurrentUserProvider } from "./context";
 
 import App from "./App";
 import Error from "./pages/Error";
-import Landing from "./pages/Landing";
 import Homepage from "./pages/Homepage";
-import Dashboard from "./components/Dashboard";
+import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -37,7 +35,7 @@ const router = createBrowserRouter(
         }
       />
       <Route
-        path="/:sidebarQuery"
+        path="sidebar/:searchQuery"
         element={
           <ProtectedRoute>
             <Homepage />

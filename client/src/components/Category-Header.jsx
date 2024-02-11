@@ -19,13 +19,12 @@ const CategoryHeader = ({
     onCategoryChange(category); 
     navigate(`/${category}`);
     } else {
-      console.log("Navigating to default homepage");
       navigate("/login");
     }
   };
 
   const sliderSettings = {
-    className: "slider px-5",
+    className: "slider",
     centerPadding: "5px",
     dots: false,
     infinite: true,
@@ -33,6 +32,26 @@ const CategoryHeader = ({
     slidesToShow: 3,
     slidesToScroll: 3,
     arrows: false,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: true,
+        },
+      },
+      {
+        breakpoint: 640,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: true,
+        },
+      },
+    ],
   };
 
   return (
@@ -40,7 +59,7 @@ const CategoryHeader = ({
       <Slider {...sliderSettings}>
         {categories.map((category, index) => (
           <button
-            className={`text-blue-600 font-bold py-1 ${category === selectedCategory ? "bg-blue-300" : ""} rounded-lg text-md sm:text-base ${index === 0 ? "" : ""}`}
+            className={`text-blue-600 font-bold ${category === selectedCategory ? "bg-blue-300" : ""} rounded-lg text-md sm:text-lg lg:text-xl ${index === 0 ? "" : ""}`}
             key={index}
             onClick={() => handleCategoryClick(category)}
           >

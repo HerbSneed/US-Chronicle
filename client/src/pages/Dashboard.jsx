@@ -1,7 +1,7 @@
 import { Card, Button } from 'react-bootstrap';
 import { useCurrentUserContext } from '../context/CurrentUser';
 import Auth from '../utils/auth';
-import { deleteNewsId } from '../utils/localStorage';
+// import { deleteNewsId } from '../utils/localStorage';
 import { useMutation, useQuery } from '@apollo/client';
 import { QUERY_CURRENT_USER } from '../utils/queries';
 import { DELETE_NEWS } from '../utils/mutations';
@@ -14,13 +14,12 @@ const Dashboard = () => {
   });
 
   const userData = data?.currentUser || null;
-  const { deleteNews } = useMutation(DELETE_NEWS);
+  const [ deleteNews ] = useMutation(DELETE_NEWS);
 
   const handleDeleteNews = async (newsId) => {
-    console.log("Button clicked"); 
 
     if(!Auth.loggedIn()) {
-      console.log("Not logged in");
+      alert("Not logged in");
       return false;
     }
 
@@ -32,14 +31,10 @@ const Dashboard = () => {
     }
 
     try {
-      const { data } = await deleteNews({
+     await deleteNews({
         variables: { newsId },
       });
 
-      console.log("Mutation response:", data); 
-
-      // Upon success, remove newsId from localStorage
-      deleteNewsId(newsId);
     } catch (err) {
       console.error("Error deleting news:", err.message);
     }

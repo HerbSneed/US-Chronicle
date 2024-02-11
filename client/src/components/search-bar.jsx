@@ -19,7 +19,6 @@ const SearchBar = () => {
         onChange={(e) => setSearchQuery(e.target.value)}
         onKeyPress={(e) => {
           if (e.key === "Enter") {
-            console.log("Enter key pressed");
             handleSearch();
         }}
       }
@@ -27,7 +26,6 @@ const SearchBar = () => {
       />
       <button
         onClick={() => {
-          console.log("Search button clicked");
           handleSearch();
         }}
         className="inset-y-0 right-0 px-4 ml-3 mr-2 bg-blue-500 text-white rounded-md"

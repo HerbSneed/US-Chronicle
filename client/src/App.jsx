@@ -1,5 +1,5 @@
 import "./App.css";
-import "mapbox-gl/dist/mapbox-gl.css";
+// import "mapbox-gl/dist/mapbox-gl.css";
 import {
   ApolloClient,
   InMemoryCache,
