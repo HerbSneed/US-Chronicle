@@ -1,4 +1,6 @@
-![US Chronicle](https://github.com/katgucilatar/world-wire-news/assets/112834937/be2588b6-7f2c-417d-9674-57b5edce07d4)
+![US Chronicle](
+ https://github.com/HerbSneed/US-Chronicle/client/src/assets/images/US-Chronical.png
+)
 
 ## Description
 Introducing "US Chronicle" - the ultimate platform for people interested in connecting with news channels and articles from the United States! It gathers news from multiple trusted source and presents them in a user-friendly applicaton. 
