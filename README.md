@@ -55,8 +55,6 @@ Screenshot of the deployed application
 ## User Experience
 
 ## Contributors
-Herb: [GitHub](https://github.com/HerbSneed) -- [LinkedIn](https://www.linkedin.com/in/herbsneed/) -- [Email](hmsneed@gmail.com)
-
 Katrina: [GitHub](https://github.com/katgucilatar) -- [LinkedIn](https://www.linkedin.com/in/katrina-gucilatar-59983217b/) -- [Email](katgucilatar@outlook.com)
 
 Illir: [GitHub](https://github.com/IlirHajdari) -- [Email](ilir.hajdari111@gmail.com)
