@@ -42,7 +42,7 @@ const Header = () => {
 };
 
   return (
-    <nav className="h-12 bg-white flex justify-between px-3 border-b border-gray-400 items-center text-neutral-500 hover:text-neutral-700 focus:text-neutral-700 dark:bg-neutral-600">
+    <nav className="h-12 sm:h-14 bg-white flex justify-between px-3 border-b border-gray-400 items-center text-neutral-500 hover:text-neutral-700 focus:text-neutral-700 dark:bg-neutral-600">
       <button className="" onClick={toggleSidebar}>
         <img src={sidebar} className="w-6 sm:w-8" alt="WorldWire Icon" />
       </button>

@@ -1,0 +1,28 @@
+import { useState, useEffect } from "react";
+
+// Hook to get window size
+export const useWindowSize = () => {
+ const [windowSize, setWindowSize] = useState({
+  width: window.innerWidth,
+  height: window.innerHeight,
+ });
+
+ useEffect(() => {
+  const handleResize = () => {
+   setWindowSize({
+    width: window.innerWidth,
+    height: window.innerHeight,
+   });
+  };
+
+  window.addEventListener("resize", handleResize);
+
+  return () => {
+   window.removeEventListener("resize", handleResize);
+  };
+ }, []);
+
+ return windowSize;
+};
+
+

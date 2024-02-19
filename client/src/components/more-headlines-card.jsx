@@ -6,7 +6,7 @@ const MoreHeadlinesCard = ({ news, handleSaveArticle, isLastItem }) => {
   return (
     <div
       key={news.newsId}
-      className={`bg-white mt-0.5 py-1 ${isLastItem ? "border-none" : "border-b border-gray-600"}`}
+      className={`bg-gray-200 mt-1 px-2 py-1 ${isLastItem ? "border-none" : "bg-gray-200"}`}
     >
       <div className={`${news.index === 5 ? "" : ""}`}>
         <div className="mt-0">

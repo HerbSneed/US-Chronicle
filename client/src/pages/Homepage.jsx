@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useWindowSize } from "../utils/windowSize";
 import { useQuery, useMutation } from "@apollo/client";
 import {
   getUsHeadlines,
@@ -17,7 +18,7 @@ import { QUERY_CURRENT_USER } from "../utils/queries";
 import { SAVE_NEWS } from "../utils/mutations";
 import { useNavigate, useParams } from "react-router-dom";
 import Footer from "../components/Footer";
-import HomepageCard from "../components/homepage-card";
+import HomepageCard from "../components/headline-card";
 import MoreHeadlinesCard from "../components/more-headlines-card";
 
 const Homepage = () => {
@@ -28,6 +29,9 @@ const Homepage = () => {
   const [selectedCategory, setSelectedCategory] = useState("Top Headlines");
   const navigate = useNavigate();
   const { searchQuery } = useParams();
+  const { width } = useWindowSize(); // Get window width
+  const sliceEnd = width >= 1536 ? 3 : 1;
+  const moreNewsSliceEnd = width >= 1536 ? 24 : 15; 
 
   const categories = [
     "Top News",
@@ -83,6 +87,7 @@ const Homepage = () => {
               news.status !== "404"
             );
           })
+          .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
           .map((news) => ({
             newsId: news.publishedAt + news.title,
             title: news.title,
@@ -235,16 +240,17 @@ const Homepage = () => {
       </section>
 
       <div className="flex pt-2 border-t-[1px] w-screeen border-gray-400">
-        <h2 className="text-4xl font-[Newsreader] ml-3 font-semibold drop-shadow-lg">
-          {selectedCategory}
-        </h2>
       </div>
 
       <section
         id="top-news"
-        className="grid grid-cols-1 gap-x-2 gap-y-2 pb-1 mx-3 bg-white border-b-[1px] border-newsBlue "
+        className="grid grid-cols-1 2xl:w-7/12 2xl:float-right gap-x-2 gap-y-0 pb-1 mx-3 2xl:mx-5 bg-white border-b border-gray-600"
       >
-        {newsItems.slice(0, 1).map((news) => (
+        <h2 className="text-4xl sm:text-5xl 2xl:text-6xl font-[Newsreader] ml-0 mt-1 2xl:ml-0 font-semibold drop-shadow-lg">
+          {selectedCategory}
+        </h2>
+
+        {newsItems.slice(0, sliceEnd).map((news) => (
           <HomepageCard
             key={news.newsId}
             news={news}
@@ -253,11 +259,8 @@ const Homepage = () => {
         ))}
       </section>
 
-      <section
-        id="more-news-hl"
-        className="grid grid-cols-1 mx-3"
-      >
-        {newsItems.slice(1, 20).map((news) => (
+      <section id="more-news-hl" className="grid grid-cols-1 mx-3 2xl:mt-[62.5px]">
+        {newsItems.slice(1, moreNewsSliceEnd).map((news) => (
           <MoreHeadlinesCard
             key={news.newsId}
             news={news}
