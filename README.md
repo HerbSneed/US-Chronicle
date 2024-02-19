@@ -1,6 +1,4 @@
-![US Chronicle](
- https://github.com/HerbSneed/US-Chronicle/client/src/assets/images/US-Chronical.png
-)
+![US Chronicle]( https://github.com/HerbSneed/US-Chronicle/client/src/assets/images/US-Chronical)
 
 ## Description
 Introducing "US Chronicle" - the ultimate platform for people interested in connecting with news channels and articles from the United States! It gathers news from multiple trusted source and presents them in a user-friendly applicaton. 
@@ -57,6 +55,7 @@ Screenshot of the deployed application
 ## User Experience
 
 ## Contributors
+
 Katrina: [GitHub](https://github.com/katgucilatar) -- [LinkedIn](https://www.linkedin.com/in/katrina-gucilatar-59983217b/) -- [Email](katgucilatar@outlook.com)
 
 Illir: [GitHub](https://github.com/IlirHajdari) -- [Email](ilir.hajdari111@gmail.com)
