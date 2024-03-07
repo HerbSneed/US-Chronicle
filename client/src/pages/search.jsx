@@ -32,7 +32,7 @@ const Search = () => {
         const headlines = await response.json();
 
         const newsData = headlines.articles
-                  .filter((news) => {
+          .filter((news) => {
             return (
               news.urlToImage !== null &&
               news.title !== "[Removed]" &&
@@ -56,33 +56,32 @@ const Search = () => {
       }
     };
 
-  if (searchQuery !== "latest") {
-    fetchSearchedNews();
-  }
-
+    if (searchQuery !== "latest") {
+      fetchSearchedNews();
+    }
   }, [searchQuery]);
 
-    const handleSaveArticle = (news) => {
-      // Call the mutation to save the news
-      saveNewsMutation({
-        variables: {
-          saveNews: {
-            newsId: news.newsId,
-            title: news.title,
-            summary: news.summary,
-            source_country: news.source_country,
-            url: news.url,
-            image: news.image,
-            language: news.language,
-            latest_publish_date: news.latest_publish_date,
-          },
+  const handleSaveArticle = (news) => {
+    // Call the mutation to save the news
+    saveNewsMutation({
+      variables: {
+        saveNews: {
+          newsId: news.newsId,
+          title: news.title,
+          summary: news.summary,
+          source_country: news.source_country,
+          url: news.url,
+          image: news.image,
+          language: news.language,
+          latest_publish_date: news.latest_publish_date,
         },
-      })
-        .then(() => {})
-        .catch((error) => {
-          console.error(error);
-        });
-    };
+      },
+    })
+      .then(() => {})
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   const formatDateTime = (isoString) => {
     const date = new Date(isoString);
@@ -108,23 +107,24 @@ const Search = () => {
   return (
     <>
       <div className="mt-3">
-        <SearchBar/>
+        <SearchBar />
       </div>
 
-      <section className="min-h-screen relative flex flex-col py-2 w-full bg-bgGray bg-cover">
-        <div className="z-20 bg-compBlue pb-10 w-full drop-shadow-lg rounded-md max-h-[80vh]">
-          <h1 className="z-20 mt-1 text-5xl drop-shadow-md font-semibold font-[Newsreader] text-center text-blue-500">
+      <section className="min-h-screen relative pt-2 pb-5 w-full bg-cover">
+        <div className="z-20 bg-compBlue pb-10 w-full drop-shadow-lg max-h-[80vh]">
+          <h1 className="z-20 text-5xl drop-shadow-md font-semibold font-[Newsreader] text-center text-blue-500">
             Search Results
           </h1>
-        <div>
-          {newsItems.map((news) => (
-          <SearchResultsCard
-            key={news.newsId}
-            news={news}
-            handleSaveArticle={handleSaveArticle}
-            />
-          ))}
-        </div>
+
+          <div className="grid lg:grid-cols-2 2xl:grid-cols-3">
+            {newsItems.map((news) => (
+              <SearchResultsCard
+                key={news.newsId}
+                news={news}
+                handleSaveArticle={handleSaveArticle}
+              />
+            ))}
+          </div>
         </div>
       </section>
     </>

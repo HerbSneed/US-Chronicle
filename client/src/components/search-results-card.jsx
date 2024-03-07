@@ -1,68 +1,57 @@
+import React from "react";
 import { useCurrentUserContext } from "../context/CurrentUser";
 
-const SearchResultsCard = ({ news, handleSaveArticle }) => {
+const SearchResultsCard = React.memo(({ news, handleSaveArticle }) => {
   const { isLoggedIn } = useCurrentUserContext();
 
     if (!news) {
       return null; 
     }
 
-  const truncateTitle = (title, maxLength) => {
-    if (title.length <= maxLength) {
-      return title;
-    }
-    return title.substring(0, maxLength) + "...";
-  };
-
   return (
     <>
+      <div className="mb-2 bg-gray-300 mx-4 p-2 rounded">
       <div
         key={news.newsId}
-        className="grid grid-cols-2 mx-3 space-y-2 items-center"
+        className="w-full items-center"
       >
         <div className="">
-          <h3 className="font-bold text-gray-900 text-xl mt-5 leading-[20px]">
-            {truncateTitle(news.title, 48)} 
-            <span>
-              {isLoggedIn() && (
-                <div className="flex font-normal">
-                  <a
-                    href={news.url}
-                    target="_blank"
-                    className="text-blue-600"
-                    rel="noopener noreferrer"
-                  >
-                    Source
-                  </a>
-                  <a
-                    target="_blank"
-                    className="text-red-600 ml-3"
-                    onClick={() => handleSaveArticle(news)}
-                    rel="noopener noreferrer"
-                  >
-                    Save Article
-                  </a>
-                </div>
-              )}
-            </span>
+          <h3 className="font-bold text-gray-900 text-lg leading-[20px] truncate">
+            {news.title}
           </h3>
         </div>
-
-        <div className="">
-          {news.image && (
-            <img
-              className="w-9/12 rounded-t-sm w-9/12 ml-12 shadow-lg"
-              src={news.image}
-              alt={`Image for ${news.title}`}
-            />
-          )}
-        </div>
+        
       </div>
-      <h4 className="text-xs ml-3 text-gray-900">
+
+      <h4 className="text-xs mt-0.5 text-gray-900">
         Updated {news.latest_publish_date}
       </h4>
+
+      {isLoggedIn() && (
+        <div className="flex font-normal">
+          <a
+            href={news.url}
+            target="_blank"
+            className="text-blue-600"
+            rel="noopener noreferrer"
+          >
+            Source
+          </a>
+          <a
+            target="_blank"
+            className="text-red-600 ml-3"
+            onClick={() => handleSaveArticle(news)}
+            rel="noopener noreferrer"
+          >
+            Save Article
+          </a>
+        </div>
+      )}
+      </div>
     </>
   );
-};
+});
+
+SearchResultsCard.displayName = "SearchResultsCard";
 
 export default SearchResultsCard;

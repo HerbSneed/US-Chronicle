@@ -35,18 +35,10 @@ const router = createBrowserRouter(
         }
       />
       <Route
-        path="sidebar/:searchQuery"
-        element={
-          <ProtectedRoute>
-            <Homepage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
         path="search/:searchQuery"
         element={
           <ProtectedRoute>
-            <Search />
+            <Search/>
           </ProtectedRoute>
         }
       />

@@ -18,8 +18,9 @@ import { QUERY_CURRENT_USER } from "../utils/queries";
 import { SAVE_NEWS } from "../utils/mutations";
 import { useNavigate, useParams } from "react-router-dom";
 import Footer from "../components/Footer";
-import HomepageCard from "../components/headline-card";
+import HeadlineCard from "../components/headline-card";
 import MoreHeadlinesCard from "../components/more-headlines-card";
+
 
 const Homepage = () => {
   const [newsItems, setNewsItems] = useState([]);
@@ -30,8 +31,10 @@ const Homepage = () => {
   const navigate = useNavigate();
   const { searchQuery } = useParams();
   const { width } = useWindowSize(); // Get window width
-  const sliceEnd = width >= 1536 ? 3 : 1;
-  const moreNewsSliceEnd = width >= 1536 ? 24 : 15; 
+  const sliceEnd =
+    width >= 1536 ? 3 : width >= 1280 ? 3 : width >= 1024 ? 2 : 1;
+  const moreNewsSliceEnd =
+    width >= 1536 ? 31 : width >= 1280 ? 30 : width >= 1024 ? 15 : 15;
 
   const categories = [
     "Top News",
@@ -56,7 +59,6 @@ const Homepage = () => {
         if (!userData) {
           response = await getUsHeadlines();
         } else if (searchQuery) {
-          console.log(searchQuery);
           setSelectedCategory([searchQuery]);
           response = await getSearchedHeadlines(searchQuery);
         } else {
@@ -229,47 +231,58 @@ const Homepage = () => {
 
   return (
     <>
-      <section
-        id="category-links"
-        className="bg-white h-10 sm:h-12 mr-5 py-1.5 sm:py-2 overflow-hidden"
-      >
-        <CategoryHeader
-          onCategoryChange={handleCategoryChange}
-          categories={categories}
-        />
-      </section>
+      <div id="homepage-container">
+        <section
+          id="category-links"
+          className="bg-white h-10 sm:h-12 mr-5 py-1.5 sm:py-2 overflow-hidden"
+        >
+          <CategoryHeader
+            onCategoryChange={handleCategoryChange}
+            categories={categories}
+          />
+        </section>
 
-      <div className="flex pt-2 border-t-[1px] w-screeen border-gray-400">
+        <div className="flex pt-0 sm:pt-2 border-t-[1px] w-screeen border-gray-400"></div>
+
+        <section
+          id="top-news"
+          className="grid grid-cols-1 2xl:w-7/12 xl:w-8/12 lg:w-8/12 lg:float-right 2xl:float-right gap-x-2 xl:gap-y-4  gap-y-0 pb-1 mx-3 2xl:mx-5 bg-white"
+        >
+          <h2 className="text-5xl sm:text-5xl -mb-1 xl:-mb-5 sm:text-6xl 2xl:text-6xl font-[Newsreader] ml-0 mt-1 2xl:ml-0 font-semibold drop-shadow-lg">
+            {selectedCategory}
+          </h2>
+
+          {newsItems.slice(0, sliceEnd).map((news) => (
+            <HeadlineCard
+              key={news.newsId}
+              news={news}
+              handleSaveArticle={handleSaveArticle}
+              currentUser={currentUser}
+              isLoggedIn={isLoggedIn}
+            />
+          ))}
+        </section>
+
+        <section
+          id="more-news-hl"
+          className="grid grid-cols-1  mx-3 mt-0 2xl:mt-[0px] mb-2"
+        >
+          <h2 className="text-2xl md:text-center xl:text-center 2xl:text-4xl text-white px-2 py-1 lg:py-1 2xl:pt-2 sm:text-3xl 2xl:text-3xl bg-blue-600 font-[Newsreader] ml-0 mt-0 2xl:ml-0 font-semibold drop-shadow-lg">
+            More {selectedCategory} Headlines
+          </h2>
+
+          {newsItems.slice(sliceEnd, moreNewsSliceEnd).map((news) => (
+            <MoreHeadlinesCard
+              key={news.newsId}
+              news={news}
+              handleSaveArticle={handleSaveArticle}
+              isLoggedIn={isLoggedIn}
+            />
+          ))}
+        </section>
+
+        <Footer />
       </div>
-
-      <section
-        id="top-news"
-        className="grid grid-cols-1 2xl:w-7/12 2xl:float-right gap-x-2 gap-y-0 pb-1 mx-3 2xl:mx-5 bg-white border-b border-gray-600"
-      >
-        <h2 className="text-4xl sm:text-5xl 2xl:text-6xl font-[Newsreader] ml-0 mt-1 2xl:ml-0 font-semibold drop-shadow-lg">
-          {selectedCategory}
-        </h2>
-
-        {newsItems.slice(0, sliceEnd).map((news) => (
-          <HomepageCard
-            key={news.newsId}
-            news={news}
-            handleSaveArticle={handleSaveArticle}
-          />
-        ))}
-      </section>
-
-      <section id="more-news-hl" className="grid grid-cols-1 mx-3 2xl:mt-[62.5px]">
-        {newsItems.slice(1, moreNewsSliceEnd).map((news) => (
-          <MoreHeadlinesCard
-            key={news.newsId}
-            news={news}
-            handleSaveArticle={handleSaveArticle}
-          />
-        ))}
-      </section>
-
-      <Footer />
     </>
   );
 };

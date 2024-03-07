@@ -9,14 +9,18 @@ const CategoryHeader = ({
   onCategoryChange,
   categories = [],
 }) => {
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategory, setSelectedCategory ] = useState("");
   const navigate = useNavigate();
   const { isLoggedIn } = useCurrentUserContext();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
   const handleCategoryClick = (category) => {
-
     if (isLoggedIn()) {
-    onCategoryChange(category); 
+    onCategoryChange(category);
+    setSelectedCategory(category); 
     navigate(`/${category}`);
     } else {
       navigate("/login");
@@ -73,19 +77,24 @@ const CategoryHeader = ({
   };
 
   return (
-    <div className="">
+    <>
       <Slider {...sliderSettings}>
         {categories.map((category, index) => (
           <button
             className={`text-blue-600 font-bold ${category === selectedCategory ? "bg-blue-300" : ""} rounded-lg text-md sm:text-lg lg:text-xl ${index === 0 ? "" : ""}`}
             key={index}
-            onClick={() => handleCategoryClick(category)}
+            onClick={() => {
+              handleCategoryClick(category);
+              if (isSidebarOpen) {
+                toggleSidebar();
+              }
+            }}
           >
             {category}
           </button>
         ))}
       </Slider>
-    </div>
+    </>
   );
 };
 
