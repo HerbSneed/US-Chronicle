@@ -57,7 +57,7 @@ const Dashboard = () => {
         className="relative bg-gray-200 pb-5 min-h-screen px-5 mx-auto w-[100%]"
       >
         <h1 className="text-center text-3xl xl:text-4xl font-[newsReader] font-bold pt-1  drop-shadow-lg text-blue-600">
-          {userData.firstName}'s Dashboard
+          {userData.firstName}&apos;s Dashboard
         </h1>
 
         <h2 className="font-bold font-[newsReader] -mt-1 drop-shadow-lg text-center text-2xl 2xl:text-2xl text-red-700">

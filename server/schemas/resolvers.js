@@ -22,14 +22,6 @@ const resolvers = {
       { firstName, lastName, email, password, userDefaultNews}
     ) => {
 
-      console.log('Registration parameters:', {
-        firstName,
-        lastName,
-        email,
-        password,
-        userDefaultNews,
-      });
-
       const user = await User.create({
         firstName,
         lastName,
@@ -38,13 +30,8 @@ const resolvers = {
         userDefaultNews,
       });
 
-      console.log('User created:', user);
-
-
       const token = signToken(user);
 
-      console.log('Token generated:', token);
-      
       return { token, currentUser: user };
     },
 

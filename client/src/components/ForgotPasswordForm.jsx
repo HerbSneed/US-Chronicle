@@ -38,27 +38,29 @@ export default function ForgotPassword() {
 
   return (
     <>
-      <div className="bg-newsGray p-6 rounded mx-4 h-5/6 my-5">
-        <h1 className="text-3xl text-center mb-3 font-bold mt-4">World Wire</h1>
-        <h2 className="text-center text-2xl mb-3">Forgot Your Password?</h2>
+      <div className="p-6 rounded mx-4 h-5/6 my-5">
+        <h2 className="text-center text-2xl mb-1">Forgot Your Password?</h2>
         <p className="text-center mb-4">
           Enter your email address and we will send you instructions to reset
           your password.
         </p>
-        <input
-          placeholder="Enter your email"
-          type="email"
-          value={resetEmail}
-          onChange={(e) => setResetEmail(e.target.value)}
-        />
-        <button
-          className="bg-newsBlue text-white p-2 rounded hover:bg-blue-600 mt-4 w-full mb-5"
-          onClick={handleForgotPassword}
-        >
-          Send Reset Email
-        </button>
+        <div className="flex h-10 items-center justify-center gap-x-2">
+          <input
+            placeholder="Enter your email"
+            type="email"
+            value={resetEmail}
+            onChange={(e) => setResetEmail(e.target.value)}
+            className="w-3/4 border border-gray-300 rounded-md text-black"
+          />
+          <button
+            className="bg-blue-600 text-white rounded hover:bg-blue-200 h-10 w-1/4 w-full"
+            onClick={handleForgotPassword}
+          >
+            Reset
+          </button>
+        </div>
 
-        <p className="font-bold text-center">
+        <p className="font-bold text-blue-600 text-center">
           <Link to="/login"> Back to Log in </Link>
         </p>
 

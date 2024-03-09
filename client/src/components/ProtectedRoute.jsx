@@ -1,18 +1,27 @@
 import { Navigate, useLocation } from "react-router-dom";
 
 import { useCurrentUserContext } from "../context/CurrentUser";
+import jwtDecode from "jwt-decode";
 
 function ProtectedRoute({ children }) {
-  const { isLoggedIn } = useCurrentUserContext();
+  const { isLoggedIn, getToken } = useCurrentUserContext();
   const location = useLocation();
-  if (!isLoggedIn()) {
-    // Redirect them to the /login page, but save the current location they were
-    // trying to go to when they were redirected. This allows us to send them
-    // along to that page after they login, which is a nicer user experience
-    // than dropping them off on the home page.
-    return <Navigate to="/login" state={{ from: location }} replace />;
-  }
 
+
+  const isTokenExpired = () => {
+    const token = getToken();
+    console.log(token);
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      return decodedToken.exp < Date.now() / 1000;
+    }
+    return true; 
+  };
+
+  if (!isLoggedIn() || isTokenExpired()) {
+
+   return <Navigate to="/login" state={{ from: location }} replace />;
+  }
   return children;
 }
 

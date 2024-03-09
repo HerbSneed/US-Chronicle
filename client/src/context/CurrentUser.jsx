@@ -36,15 +36,17 @@ export default function CurrentUserContextProvider({ children }) {
   }, [setCurrentUser, removeCookies]);
 
   const isLoggedIn = useCallback(() => currentUser.isAuthenticated, [currentUser.isAuthenticated]);
+  const getToken = useCallback(() => cookies.auth_token, [cookies.auth_token]);
 
   const contextValue = useMemo(() =>
   ({
     currentUser,
     loginUser,
     logoutUser,
-    isLoggedIn
+    isLoggedIn,
+    getToken
   }),
-    [currentUser, isLoggedIn, loginUser, logoutUser]);
+    [currentUser, isLoggedIn, loginUser, logoutUser, getToken]);
 
   return (
     <CurrentUserContext.Provider value={contextValue}>

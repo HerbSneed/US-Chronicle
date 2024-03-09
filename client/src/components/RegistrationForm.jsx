@@ -14,11 +14,12 @@ const RegistrationForm = () => {
     lastName: "",
     email: "",
     password: "",
-    userDefaultNews: "General",
+    userDefaultNews: "Top News",
   });
 
   const [errors, setErrors] = useState({});
-  const { register } = useMutation(REGISTER_USER);
+  const [ register ] = useMutation(REGISTER_USER);
+
 
   const handleRegistrationResponse = (
     alreadyRegistered,
@@ -27,16 +28,12 @@ const RegistrationForm = () => {
     error
   ) => {
     if (alreadyRegistered) {
-      // User is already in the database, display an alert or error message
       alert("User is already registered. Please login.");
       navigate("/login");
     } else if (currentUser && token) {
-      // User is successfully registered
       loginUser(currentUser, token);
       navigate("/dashboard");
     }
-
-    // Log any errors
     if (error) {
       console.log(error.message);
     }
@@ -100,7 +97,7 @@ const RegistrationForm = () => {
       <form
         id="registration-form"
         onSubmit={handleFormSubmit}
-        className="p-6 mx-4 h-5/6 my-5"
+        className="p-6 mx-4 h-5/6 my-5 mx-auto sm:w-3/5 md:w-2/4 lg:w-2/5 xl:w-2/6 2xl:w-2/6"
       >
         <div className="text-left">
           <h2 className="text-2xl text-4xl -mb-2 font-bold font-[Newsreader]">

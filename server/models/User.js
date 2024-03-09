@@ -28,17 +28,14 @@ const userSchema = new Schema({
   },
   userDefaultNews: {
     type: String,
-    enum: ["Business","Entertainment", "General", "Health", "Science", "Sports", "Technology"],
-    default: "General",
+    enum: ["Business", "Entertainment", "Top News", "Health", "Science", "Sports", "Technology"],
   },
   savedNews: [newsSchema],
   resetPasswordToken: {
-    // storing reset token
     type: String,
     default: null,
   },
   resetPasswordExpires: {
-    // token expiry
     type: Date,
     default: null,
   },

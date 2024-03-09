@@ -27,7 +27,7 @@ const Homepage = () => {
   const fetchNewsCalled = useRef(false);
   const { currentUser, isLoggedIn } = useCurrentUserContext();
   const [saveNewsMutation] = useMutation(SAVE_NEWS);
-  const [selectedCategory, setSelectedCategory] = useState("Top Headlines");
+  const [selectedCategory, setSelectedCategory] = useState("Top News");
   const navigate = useNavigate();
   const { searchQuery } = useParams();
   const { width } = useWindowSize(); // Get window width
@@ -56,7 +56,7 @@ const Homepage = () => {
       try {
         let response;
 
-        if (!userData) {
+        if (!userData || userData.userDefaultNews === "Top News") {
           response = await getUsHeadlines();
         } else if (searchQuery) {
           setSelectedCategory([searchQuery]);
@@ -74,7 +74,6 @@ const Homepage = () => {
         }
 
         if (typeof isLoggedIn === "function" && !isLoggedIn()) {
-          console.log("User not logged in. Navigating to default homepage");
           navigate("/");
         }
 
@@ -113,6 +112,15 @@ const Homepage = () => {
 
   const handleSaveArticle = (news) => {
     // Call the mutation to save the news
+    const alreadySaved = userData.savedNews.some((savedNews) => {
+      return savedNews.newsId === news.newsId;
+    });
+
+    if (alreadySaved) {
+      alert("News already saved");
+      return;
+    }
+
     saveNewsMutation({
       variables: {
         saveNews: {
@@ -141,7 +149,7 @@ const Homepage = () => {
     let headlines;
 
     switch (category) {
-      case "Top Headlines":
+      case "Top News":
         apiFunction = getUsHeadlines;
         break;
       case "Business":
@@ -162,8 +170,6 @@ const Homepage = () => {
       case "Technology":
         apiFunction = getTechnologyHeadlines;
         break;
-      default:
-        apiFunction = getUsHeadlines;
     }
 
     try {
@@ -234,7 +240,7 @@ const Homepage = () => {
       <div id="homepage-container">
         <section
           id="category-links"
-          className="bg-white h-10 sm:h-12 mr-5 py-1.5 sm:py-2 overflow-hidden"
+          className="bg-white h-10 sm:h-12 py-1.5 sm:py-2 overflow-hidden"
         >
           <CategoryHeader
             onCategoryChange={handleCategoryChange}
@@ -248,7 +254,7 @@ const Homepage = () => {
           id="top-news"
           className="grid grid-cols-1 2xl:w-7/12 xl:w-8/12 lg:w-8/12 lg:float-right 2xl:float-right gap-x-2 xl:gap-y-4  gap-y-0 pb-1 mx-3 2xl:mx-5 bg-white"
         >
-          <h2 className="text-5xl sm:text-5xl -mb-1 xl:-mb-5 sm:text-6xl 2xl:text-6xl font-[Newsreader] ml-0 mt-1 2xl:ml-0 font-semibold drop-shadow-lg">
+          <h2 className="text-5xl sm:text-5xl  xl:-mb-5 sm:text-6xl 2xl:text-6xl font-[Newsreader] ml-0 mt-3 2xl:ml-0 font-semibold drop-shadow-lg">
             {selectedCategory}
           </h2>
 

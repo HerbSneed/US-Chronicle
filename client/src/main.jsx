@@ -27,7 +27,23 @@ const router = createBrowserRouter(
       <Route path="/forgotPassword" element={<ForgotPassword />} />
       <Route path="/search" element={<Search />} />
       <Route
-        path="/:category"
+        path="user-default-news/:category"
+        element={
+          <ProtectedRoute>
+            <Homepage />
+          </ProtectedRoute>
+        }
+        />
+      <Route
+        path=":userCategory"
+        element={
+          <ProtectedRoute>
+            <Homepage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path=":category"
         element={
           <ProtectedRoute>
             <Homepage />
@@ -38,15 +54,23 @@ const router = createBrowserRouter(
         path="search/:searchQuery"
         element={
           <ProtectedRoute>
-            <Search/>
+            <Search />
           </ProtectedRoute>
         }
       />
       <Route
-        path="/dashboard"
+        path="dashboard"
         element={
           <ProtectedRoute>
             <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="sidebar/:query"
+        element={
+          <ProtectedRoute>
+            <Homepage />
           </ProtectedRoute>
         }
       />

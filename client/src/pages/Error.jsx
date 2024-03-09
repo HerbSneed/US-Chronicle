@@ -1,7 +1,5 @@
 function Error() {
-  return (
-    <h1 className="page-title">Error</h1>
-  )
+  return <h1 className="page-title">Error</h1>;
 }
 
-export default Error
+export default Error;

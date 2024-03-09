@@ -9,7 +9,7 @@ import logo from "../../src/assets/images/US-Chronical.png";
 import sidebarIcon from "../../src/assets/images/sidebar-icon.png";
 import search from "../../src/assets/images/search-icon.png";
 
-const Header = ({setIsSidebarOpen}) => {
+const Header = ({ setIsSidebarOpen }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
   const { isLoggedIn } = useCurrentUserContext();
@@ -19,29 +19,24 @@ const Header = ({setIsSidebarOpen}) => {
   });
 
   const userData = data?.currentUser || null;
+  const userCategory = userData?.userDefaultNews?.trim();
 
   const handleSidebarToggle = () => {
     toggleSidebar(setIsSidebarOpen);
   };
 
-  const handleHomepageClick = () => {
-    console.log("handleHomepageClick called with sidebar");
-    if (isLoggedIn()) {
-      const userCategory = userData?.userDefaultNews?.trim();
-      if (userCategory) {
+  const handleHomepageClick = (event) => {
+    event.preventDefault();
+    if (isLoggedIn() && userCategory) {
         setIsSidebarOpen(false);
-        navigate(`/${userCategory}`);
+        navigate(`/user-default-news/${userCategory}`);
       } else {
         console.error("User category not found");
-      }
-    } else {
-      setIsSidebarOpen(false);
-      navigate("/");
+        navigate("/");
     }
   };
 
   const handleSearch = () => {
-    // Define query or searchQuery here
     setIsSidebarOpen(false);
     navigate(`/search?query=${encodeURIComponent(searchQuery)}`);
     setSearchQuery(searchQuery);
@@ -51,13 +46,10 @@ const Header = ({setIsSidebarOpen}) => {
     const handleDocumentClick = (event) => {
       const header = document.querySelector("nav");
       if (!header.contains(event.target) && setIsSidebarOpen){
-        // Click occurred outside the header, close sidebar if open
         setIsSidebarOpen(false);
       }
     };
-
     document.addEventListener("click", handleDocumentClick);
-
     return () => {
       document.removeEventListener("click", handleDocumentClick);
     };
@@ -66,7 +58,7 @@ const Header = ({setIsSidebarOpen}) => {
   return (
     <>
       <nav className="h-12 sm:h-14 bg-white flex justify-between px-3 border-b border-gray-400 items-center text-neutral-500 hover:text-neutral-700 focus:text-neutral-700 dark:bg-neutral-600">
-        <button className="" onClick={handleSidebarToggle}>
+        <button className="" onClick={ handleSidebarToggle }>
           <img src={sidebarIcon} className="w-6 sm:w-8" alt="WorldWire Icon" />
         </button>
 

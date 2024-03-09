@@ -1,4 +1,3 @@
-import Search from "../src/pages/search";
 import "./App.css";
 import {
   ApolloClient,
@@ -53,13 +52,12 @@ function App({ children }) {
   
   return (
     <ApolloProvider client={client}>
-      <Header isOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}/>
-      <Sidebar isOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}/>
+      <Header isOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
+      <Sidebar isOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
       <main>
         <Outlet>
-          <Search/>
+          {children}
         </Outlet>
-        {children}
       </main>
     </ApolloProvider>
   );

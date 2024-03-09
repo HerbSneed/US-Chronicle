@@ -4,14 +4,22 @@ import { useLocation } from "react-router-dom";
 import SearchBar from "../components/search-bar.jsx";
 import SearchResultsCard from "../components/search-results-card.jsx";
 import { getSearchedHeadlines } from "../utils/news-api.js";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { SAVE_NEWS } from "../utils/mutations";
+import { QUERY_CURRENT_USER } from "../utils/queries";
+import { useCurrentUserContext } from "../context/CurrentUser";
 
 const Search = () => {
   const location = useLocation();
   const [searchQuery, setSearchQuery] = useState("latest");
   const [newsItems, setNewsItems] = useState([]);
   const [saveNewsMutation] = useMutation(SAVE_NEWS);
+  const { currentUser } = useCurrentUserContext();
+
+  const { data } = useQuery(QUERY_CURRENT_USER, {
+    variables: { email: currentUser.email },
+  });
+  const userData = data?.currentUser || null;
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -63,6 +71,15 @@ const Search = () => {
 
   const handleSaveArticle = (news) => {
     // Call the mutation to save the news
+    const alreadySaved = userData.savedNews.some((savedNews) => {
+      return savedNews.newsId === news.newsId;
+    });
+
+    if (alreadySaved) {
+      alert("News already saved");
+      return;
+    }
+
     saveNewsMutation({
       variables: {
         saveNews: {
@@ -110,7 +127,7 @@ const Search = () => {
         <SearchBar />
       </div>
 
-      <section className="min-h-screen relative pt-2 pb-5 w-full bg-cover">
+      <section className="min-h-screen relative pt-2 mx-auto pb-5 w-full bg-cover">
         <div className="z-20 bg-compBlue pb-10 w-full drop-shadow-lg max-h-[80vh]">
           <h1 className="z-20 text-5xl drop-shadow-md font-semibold font-[Newsreader] text-center text-blue-500">
             Search Results

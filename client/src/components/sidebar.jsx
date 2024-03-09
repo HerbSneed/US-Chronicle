@@ -44,8 +44,7 @@ const Sidebar = React.memo(({ isOpen, setIsSidebarOpen }) => {
     ));
   };
 
-  const handleHomepageClick = (event) => {
-    event.preventDefault();
+  const handleHomepageClick = () => {
     if (isLoggedIn()) {
       const userCategory = userData?.userDefaultNews?.trim();
       if (userCategory) {

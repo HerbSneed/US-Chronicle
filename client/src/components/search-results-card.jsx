@@ -10,7 +10,7 @@ const SearchResultsCard = React.memo(({ news, handleSaveArticle }) => {
 
   return (
     <>
-      <div className="mb-2 bg-gray-300 mx-4 p-2 rounded">
+      <div className="mb-2 bg-gray-300 mx-4 px-2 pt-2 rounded">
       <div
         key={news.newsId}
         className="w-full items-center"

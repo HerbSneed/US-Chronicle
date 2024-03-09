@@ -1,6 +1,9 @@
 import React from "react";
+import { useCurrentUserContext } from "../context/CurrentUser";
 
-const HeadlineCard = React.memo(({ news, handleSaveArticle, isLoggedIn }) => {
+const HeadlineCard = React.memo(({ news, handleSaveArticle}) => {
+  const { isLoggedIn } = useCurrentUserContext();
+  
   return (
     <>
       <div key={news.newsId} className="bg-white">
