@@ -8,7 +8,7 @@ import {
 import { setContext } from "@apollo/client/link/context";
 import { useCookies } from "react-cookie";
 import Header from "./components/Header";
-import Sidebar from "./components/Sidebar";
+import Sidebar from "./components/sidebar";
 import { Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "slick-carousel/slick/slick.css";
