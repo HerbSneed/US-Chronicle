@@ -1,26 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { useWindowSize } from "../utils/windowSize";
 import { useQuery, useMutation } from "@apollo/client";
-import {
-  getUsHeadlines,
-  getBusinessHeadlines,
-  getEntertainmentHeadlines,
-  getHealthHeadlines,
-  getScienceHeadlines,
-  getSportsHeadlines,
-  getTechnologyHeadlines,
-  getUserHeadlines,
-  getSearchedHeadlines,
-} from "../utils/news-api";
 import CategoryHeader from "../components/Category-Header";
 import { useCurrentUserContext } from "../context/CurrentUser";
+import axios from "axios";
 import { QUERY_CURRENT_USER } from "../utils/queries";
 import { SAVE_NEWS } from "../utils/mutations";
 import { useNavigate, useParams } from "react-router-dom";
 import Footer from "../components/Footer";
 import HeadlineCard from "../components/headline-card";
 import MoreHeadlinesCard from "../components/more-headlines-card";
-
 
 const Homepage = () => {
   const [newsItems, setNewsItems] = useState([]);
@@ -55,20 +44,26 @@ const Homepage = () => {
     const fetchNews = async () => {
       try {
         let response;
-
         if (!userData || userData.userDefaultNews === "Top News") {
-          response = await getUsHeadlines();
+          response = await axios.get("/api/usheadlines");
         } else if (searchQuery) {
           setSelectedCategory([searchQuery]);
-          response = await getSearchedHeadlines(searchQuery);
+          response = await axios.get(`/api/search?query=${searchQuery}`);
+        } else if (selectedCategory) {
+          setSelectedCategory([selectedCategory]);
+          response = await axios.get(
+            `/api/categoryheadlines?category=${selectedCategory}`
+          );
         } else {
           const userCategory = userData.userDefaultNews.trim();
-          setSelectedCategory(userCategory);
-          response = await getUserHeadlines(userCategory);
-          console.log("Response from API:", response);
+          console.log(userCategory);
+          setSelectedCategory([userCategory]);
+          response = await axios.get(
+            `/api/userheadlines?category=${userCategory}`
+          );
         }
 
-        if (!response || !response.ok) {
+        if (response.status !== 200) {
           console.error("Error in response:", response);
           return;
         }
@@ -77,12 +72,12 @@ const Homepage = () => {
           navigate("/");
         }
 
-        const headlines = await response.json();
+        const headlines = response.data;
 
         const newsData = headlines.articles
           .filter((news) => {
             return (
-              news.urlToImage !== null &&
+              news.url !== null &&
               news.title !== "[Removed]" &&
               news.status !== "410" &&
               news.status !== "404"
@@ -108,7 +103,7 @@ const Homepage = () => {
     };
 
     fetchNews();
-  }, [searchQuery, userData, isLoggedIn, navigate]);
+  }, [searchQuery, userData, isLoggedIn, navigate, selectedCategory]);
 
   const handleSaveArticle = (news) => {
     // Call the mutation to save the news
@@ -142,47 +137,40 @@ const Homepage = () => {
   };
 
   const handleCategoryChange = async (category) => {
-    console.log("Category changed:", category);
     setSelectedCategory(category);
 
-    let apiFunction;
     let headlines;
+    let response;
 
     switch (category) {
       case "Top News":
-        apiFunction = getUsHeadlines;
+        axios.get("/api/usheadlines");
         break;
       case "Business":
-        apiFunction = getBusinessHeadlines;
-        break;
       case "Entertainment":
-        apiFunction = getEntertainmentHeadlines;
-        break;
       case "Health":
-        apiFunction = getHealthHeadlines;
-        break;
       case "Science":
-        apiFunction = getScienceHeadlines;
-        break;
       case "Sports":
-        apiFunction = getSportsHeadlines;
-        break;
       case "Technology":
-        apiFunction = getTechnologyHeadlines;
+        axios.get(`/api/categoryheadlines?category=${category}`);
         break;
+      default:
+        console.error("Invalid category:", category);
+        return;
     }
 
     try {
-      const response = await apiFunction();
-      console.log("API Response:", response);
+      if (category) {
+        response = await axios.get(`/api/categoryheadlines?category=${category}`
+        );
+      }
 
-      if (!response.ok) {
+      if (response.status !== 200) {
         console.error("Error in API response:", response.statusText);
         return;
       }
 
-      headlines = await response.json();
-      console.log("Parsed API Response:", headlines);
+      headlines = response.data;
 
       if (!headlines || headlines.loading) {
         console.log("Loading headlines...");

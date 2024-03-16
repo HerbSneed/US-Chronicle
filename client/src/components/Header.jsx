@@ -28,11 +28,10 @@ const Header = ({ setIsSidebarOpen }) => {
   const handleHomepageClick = (event) => {
     event.preventDefault();
     if (isLoggedIn() && userCategory) {
-        setIsSidebarOpen(false);
-        navigate(`/user-default-news/${userCategory}`);
-      } else {
-        console.error("User category not found");
-        navigate("/");
+      navigate(`/user-default-news/${userCategory}`);
+    } else {
+      console.error("User category not found");
+      navigate("/");
     }
   };
 
@@ -45,7 +44,7 @@ const Header = ({ setIsSidebarOpen }) => {
   useEffect(() => {
     const handleDocumentClick = (event) => {
       const header = document.querySelector("nav");
-      if (!header.contains(event.target) && setIsSidebarOpen){
+      if (!header.contains(event.target) && setIsSidebarOpen) {
         setIsSidebarOpen(false);
       }
     };
@@ -58,15 +57,19 @@ const Header = ({ setIsSidebarOpen }) => {
   return (
     <>
       <nav className="h-12 sm:h-14 bg-white flex justify-between px-3 border-b border-gray-400 items-center text-neutral-500 hover:text-neutral-700 focus:text-neutral-700 dark:bg-neutral-600">
-        <button className="" onClick={ handleSidebarToggle }>
-          <img src={sidebarIcon} className="w-6 sm:w-8" alt="WorldWire Icon" />
+        <button className="" onClick={handleSidebarToggle}>
+          <img
+            src={sidebarIcon}
+            className="w-6 sm:w-8"
+            alt="US Chronicle Icon"
+          />
         </button>
 
         <Link to="/" onClick={handleHomepageClick}>
           <img
             src={logo}
             className="w-36 sm:w-36 2xl:w-40"
-            alt="American Chronicle Logo"
+            alt="US Chronicle Logo"
           />
         </Link>
 

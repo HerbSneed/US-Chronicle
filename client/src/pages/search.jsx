@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import SearchBar from "../components/search-bar.jsx";
 import SearchResultsCard from "../components/search-results-card.jsx";
-import { getSearchedHeadlines } from "../utils/news-api.js";
 import { useMutation, useQuery } from "@apollo/client";
 import { SAVE_NEWS } from "../utils/mutations";
 import { QUERY_CURRENT_USER } from "../utils/queries";

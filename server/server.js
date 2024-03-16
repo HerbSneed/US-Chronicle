@@ -4,6 +4,7 @@ const { ApolloServer } = require('@apollo/server');
 const { expressMiddleware } = require('@apollo/server/express4');
 const { authMiddleware } = require('./middleware/auth');
 const cors = require('cors');
+const newsRoutes = require('./routes/newsRoutes')
 
 const { typeDefs, resolvers } = require('./schemas');
 const db = require('./config/connection');
@@ -21,6 +22,7 @@ const startApolloServer = async () => {
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
   app.use(cors());
+  app.use('/api', newsRoutes);
 
   app.use('/graphql', expressMiddleware(server, { context: authMiddleware }));
 
@@ -32,7 +34,6 @@ const startApolloServer = async () => {
       res.sendFile(path.join(__dirname, '../client/dist/index.html'));
     });
   }
-
 
   db.once('open', () => {
     app.listen(PORT, "localhost", () => {
