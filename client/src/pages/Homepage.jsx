@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useWindowSize } from "../utils/windowSize";
 import { useQuery, useMutation } from "@apollo/client";
 import CategoryHeader from "../components/Category-Header";
@@ -6,20 +6,24 @@ import { useCurrentUserContext } from "../context/CurrentUser";
 import axios from "axios";
 import { QUERY_CURRENT_USER } from "../utils/queries";
 import { SAVE_NEWS } from "../utils/mutations";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import Footer from "../components/Footer";
 import HeadlineCard from "../components/headline-card";
 import MoreHeadlinesCard from "../components/more-headlines-card";
 
+
 const Homepage = () => {
   const [newsItems, setNewsItems] = useState([]);
-  const fetchNewsCalled = useRef(false);
   const { currentUser, isLoggedIn } = useCurrentUserContext();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
   const [saveNewsMutation] = useMutation(SAVE_NEWS);
   const [selectedCategory, setSelectedCategory] = useState("Top News");
+  const [userDefaultCategory, setUserDefaultCategory] = useState("");
   const navigate = useNavigate();
-  const { searchQuery } = useParams();
-  const { width } = useWindowSize(); // Get window width
+  const link = queryParams.get("link");
+  console.log("link", link)
+  const { width } = useWindowSize();
   const sliceEnd =
     width >= 1536 ? 3 : width >= 1280 ? 3 : width >= 1024 ? 2 : 1;
   const moreNewsSliceEnd =
@@ -41,49 +45,91 @@ const Homepage = () => {
   const userData = data?.currentUser || null;
 
   useEffect(() => {
-    const fetchNews = async () => {
+    const fetchData = async () => {
       try {
         let response;
-        if (!userData || userData.userDefaultNews === "Top News") {
-          response = await axios.get("/api/usheadlines");
-        } else if (searchQuery) {
-          setSelectedCategory([searchQuery]);
-          response = await axios.get(`/api/search?query=${searchQuery}`);
-        } else if (selectedCategory) {
-          setSelectedCategory([selectedCategory]);
-          response = await axios.get(
-            `/api/categoryheadlines?category=${selectedCategory}`
-          );
-        } else {
-          const userCategory = userData.userDefaultNews.trim();
-          console.log(userCategory);
-          setSelectedCategory([userCategory]);
+
+        if (link) {
+          response = await axios.get(`api/search?searchQuery=${link}`)
+          console.log(link);
+        } else if (userData && userData.userDefaultNews !== "Top News") {
+          const userCategory = userData.userDefaultNews;
           response = await axios.get(
             `/api/userheadlines?category=${userCategory}`
           );
+          setUserDefaultCategory(userCategory);
+          setSelectedCategory(userCategory); 
+        } else {
+          response = await axios.get("/api/usheadlines")
         }
+      
 
-        if (response.status !== 200) {
-          console.error("Error in response:", response);
-          return;
+        if (response && response.status === 200) {
+          const headlines = response.data;
+          console.log(headlines)
+
+          if (typeof isLoggedIn === "function" && !isLoggedIn()) {
+            navigate("/");
+          }
+
+          const newsData = headlines.articles
+            .filter((news) => {
+              return (
+                news.urlToImage !== null &&
+                news.url !== null &&
+                news.title !== "[Removed]" &&
+                news.status !== "410" &&
+                news.status !== "404"
+              );
+            })
+            .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
+            .map((news) => ({
+              newsId: news.publishedAt + news.title,
+              title: news.title,
+              image: news.urlToImage,
+              url: news.url,
+              summary: news.description || "Summary not available.",
+              source_country: news.source.name,
+              latest_publish_date: formatDateTime(news.publishedAt),
+            }));
+          setNewsItems(newsData);
+          if (link) {
+            setSelectedCategory(link);
+          }
+        } else {
+          console.error("Invalid response:", response);
         }
+      } catch (err) {
+        console.error("Error in fetchUserDefaultNews:", err);
+      }
+    };
 
-        if (typeof isLoggedIn === "function" && !isLoggedIn()) {
-          navigate("/");
-        }
+    fetchData();
+  }, [ link, userData ]);
 
+  const fetchNewsByCategory = async (category) => {
+    try {
+      let response;
+
+      if (category === "Top News") {
+        response = await axios.get("/api/usheadlines");
+      } else {
+        response = await axios.get(`/api/categoryheadlines?category=${category}`);
+      console.log(category)
+      }
+
+      if (response.status === 200) {
         const headlines = response.data;
 
         const newsData = headlines.articles
           .filter((news) => {
             return (
-              news.url !== null &&
+              news.urlToImage !== null &&
               news.title !== "[Removed]" &&
               news.status !== "410" &&
               news.status !== "404"
             );
           })
-          .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
           .map((news) => ({
             newsId: news.publishedAt + news.title,
             title: news.title,
@@ -95,18 +141,28 @@ const Homepage = () => {
           }));
 
         setNewsItems(newsData);
-      } catch (err) {
-        console.error("Error in fetchNews:", err);
-      } finally {
-        fetchNewsCalled.current = true;
+        setSelectedCategory(category);
+      } else {
+        console.error("Invalid response:", response);
       }
-    };
+    } catch (err) {
+      console.error("Error in fetchNewsByCategory:", err);
+    }
+  };
 
-    fetchNews();
-  }, [searchQuery, userData, isLoggedIn, navigate, selectedCategory]);
+
+  const handleCategoryChange = async (category) => {
+    if (category === selectedCategory) return; 
+    setSelectedCategory(category);
+    fetchNewsByCategory(category);
+  };
+
+  const handleLogoClick = () => {
+    setSelectedCategory(userDefaultCategory);
+    fetchNewsByCategory(userDefaultCategory);
+  };
 
   const handleSaveArticle = (news) => {
-    // Call the mutation to save the news
     const alreadySaved = userData.savedNews.some((savedNews) => {
       return savedNews.newsId === news.newsId;
     });
@@ -134,72 +190,6 @@ const Homepage = () => {
       .catch((error) => {
         console.error(error);
       });
-  };
-
-  const handleCategoryChange = async (category) => {
-    setSelectedCategory(category);
-
-    let headlines;
-    let response;
-
-    switch (category) {
-      case "Top News":
-        axios.get("/api/usheadlines");
-        break;
-      case "Business":
-      case "Entertainment":
-      case "Health":
-      case "Science":
-      case "Sports":
-      case "Technology":
-        axios.get(`/api/categoryheadlines?category=${category}`);
-        break;
-      default:
-        console.error("Invalid category:", category);
-        return;
-    }
-
-    try {
-      if (category) {
-        response = await axios.get(`/api/categoryheadlines?category=${category}`
-        );
-      }
-
-      if (response.status !== 200) {
-        console.error("Error in API response:", response.statusText);
-        return;
-      }
-
-      headlines = response.data;
-
-      if (!headlines || headlines.loading) {
-        console.log("Loading headlines...");
-        return;
-      }
-
-      const newsData = headlines.articles
-        .filter((news) => {
-          return (
-            news.urlToImage !== null &&
-            news.title !== "[Removed]" &&
-            news.status !== "410" &&
-            news.status !== "404"
-          );
-        })
-        .map((news) => ({
-          newsId: news.publishedAt + news.title,
-          title: news.title,
-          image: news.urlToImage,
-          url: news.url,
-          summary: news.description || "Summary not available.",
-          source_country: news.source.name,
-          latest_publish_date: formatDateTime(news.publishedAt),
-        }));
-
-      setNewsItems(newsData);
-    } catch (error) {
-      console.error("Error in handleCategoryClick:", error);
-    }
   };
 
   const formatDateTime = (isoString) => {
@@ -231,7 +221,10 @@ const Homepage = () => {
           className="bg-white h-10 sm:h-12 py-1.5 sm:py-2 overflow-hidden"
         >
           <CategoryHeader
+            defaultCategory={userDefaultCategory}
+            selectedCategory={selectedCategory}
             onCategoryChange={handleCategoryChange}
+            onLogoClick={handleLogoClick}
             categories={categories}
           />
         </section>
@@ -242,7 +235,10 @@ const Homepage = () => {
           id="top-news"
           className="grid grid-cols-1 2xl:w-7/12 xl:w-8/12 lg:w-8/12 lg:float-right 2xl:float-right gap-x-2 xl:gap-y-4  gap-y-0 pb-1 mx-3 2xl:mx-5 bg-white"
         >
-          <h2 className="text-5xl sm:text-5xl  xl:-mb-5 sm:text-6xl 2xl:text-6xl font-[Newsreader] ml-0 mt-3 2xl:ml-0 font-semibold drop-shadow-lg">
+          <h2
+            id="mainHeadlineHeader"
+            className="text-5xl sm:text-5xl  xl:-mb-5 sm:text-6xl 2xl:text-6xl font-[Newsreader] ml-0 mt-3 2xl:ml-0 font-semibold drop-shadow-lg"
+          >
             {selectedCategory}
           </h2>
 

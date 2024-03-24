@@ -4,7 +4,6 @@ import { QUERY_CURRENT_USER } from "../utils/queries";
 import { useNavigate, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { toggleSidebar } from "../utils/sidebarUtils";
-
 import logo from "../../src/assets/images/US-Chronical.png";
 import sidebarIcon from "../../src/assets/images/sidebar-icon.png";
 import search from "../../src/assets/images/search-icon.png";
@@ -28,7 +27,8 @@ const Header = ({ setIsSidebarOpen }) => {
   const handleHomepageClick = (event) => {
     event.preventDefault();
     if (isLoggedIn() && userCategory) {
-      navigate(`/user-default-news/${userCategory}`);
+      navigate("/");
+      console.log(userCategory)
     } else {
       console.error("User category not found");
       navigate("/");

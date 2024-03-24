@@ -14,7 +14,7 @@ const RegistrationForm = () => {
     lastName: "",
     email: "",
     password: "",
-    userDefaultNews: "Top News",
+    userDefaultNews: "Select a category",
   });
 
   const [errors, setErrors] = useState({});
@@ -32,7 +32,7 @@ const RegistrationForm = () => {
       navigate("/login");
     } else if (currentUser && token) {
       loginUser(currentUser, token);
-      navigate("/dashboard");
+      navigate("/");
     }
     if (error) {
       console.log(error.message);
@@ -48,7 +48,13 @@ const RegistrationForm = () => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    const requiredFields = ["firstName", "lastName", "email", "password"];
+    const requiredFields = [
+      "firstName",
+      "lastName",
+      "email",
+      "password",
+      "userDefaultNews",
+    ];
     const fieldErrors = {};
 
     requiredFields.forEach((field) => {
@@ -73,6 +79,7 @@ const RegistrationForm = () => {
 
       if (formState.userDefaultNews === "Select a category") {
         variables.selectedCategory = formState.selectedCategory;
+        alert("Please select a default news category")
       }
 
       const mutationResponse = await register({

@@ -21,10 +21,10 @@ const Sidebar = React.memo(({ isOpen, setIsSidebarOpen }) => {
   const handleLatestClick = async ({ query }) => {
     try {
       const path = isLoggedIn()
-        ? `sidebar/${encodeURIComponent(query)}`
+        ? `/sidebar?link=${encodeURIComponent(query)}`
         : "/login";
       await navigate(path);
-      toggleSidebar(isOpen, setIsSidebarOpen);
+      setIsSidebarOpen(false);
     } catch (error) {
       console.error(error);
     }

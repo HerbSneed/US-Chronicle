@@ -27,14 +27,6 @@ const router = createBrowserRouter(
       <Route path="/forgotPassword" element={<ForgotPassword />} />
       <Route path="/search" element={<Search />} />
       <Route
-        path="user-default-news/:category"
-        element={
-          <ProtectedRoute>
-            <Homepage />
-          </ProtectedRoute>
-        }
-        />
-      <Route
         path=":userCategory"
         element={
           <ProtectedRoute>
@@ -51,7 +43,7 @@ const router = createBrowserRouter(
         }
       />
       <Route
-        path="search/:searchQuery"
+        path="search/:query"
         element={
           <ProtectedRoute>
             <Search />
@@ -67,7 +59,7 @@ const router = createBrowserRouter(
         }
       />
       <Route
-        path="sidebar/:query"
+        path="/sidebar"
         element={
           <ProtectedRoute>
             <Homepage />
@@ -87,5 +79,4 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         </RouterProvider>
       </CurrentUserProvider>
     </CookiesProvider>
-
 );

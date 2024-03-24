@@ -3,10 +3,10 @@ const express = require('express');
 const router = express.Router();
 const newsController = require('../controllers/newsController');
 
-router.get('/api/search', async (req, res) => {
- const { query } = req.query;
+router.get('/search', async (req, res) => {
+ const { searchQuery } = req.query;
  try {
-  const data = await newsController.getSearchedHeadlines(query);
+  const data = await newsController.getSearchedHeadlines(searchQuery);
   res.json(data);
  } catch (error) {
   console.error(error);

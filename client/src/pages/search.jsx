@@ -7,6 +7,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { SAVE_NEWS } from "../utils/mutations";
 import { QUERY_CURRENT_USER } from "../utils/queries";
 import { useCurrentUserContext } from "../context/CurrentUser";
+import axios from "axios";
 
 const Search = () => {
   const location = useLocation();
@@ -29,14 +30,15 @@ const Search = () => {
   useEffect(() => {
     const fetchSearchedNews = async () => {
       try {
-        const response = await getSearchedHeadlines(searchQuery);
+        let response;
+        response = await axios.get(`/api/search?query=${searchQuery}`);
 
-        if (!response.ok) {
-          console.error("Error in response:", response);
-          return;
-        }
+         if (response.status !== 200) {
+           console.error("Error in response:", response);
+           return;
+         }
 
-        const headlines = await response.json();
+        const headlines = response.data;
 
         const newsData = headlines.articles
           .filter((news) => {

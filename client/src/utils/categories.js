@@ -1,4 +1,4 @@
-export const categories = [
+export const categories = ["Select a category",
   "Top News", "Business", "Entertainment", "Health", "Science", "Sports", "Technology"
 ];
 

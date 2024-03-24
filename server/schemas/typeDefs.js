@@ -54,7 +54,7 @@ const typeDefs = `#graphql
       lastName: String!
       email: String!
       password: String!
-      userDefaultNews: String
+      userDefaultNews: String!
     ): Auth
     login(email: String!, password: String!): Auth
     saveNews(saveNews: NewsInput!): Auth

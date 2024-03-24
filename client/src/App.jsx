@@ -1,3 +1,4 @@
+import Search from "../src/pages/search";
 import "./App.css";
 import {
   ApolloClient,
@@ -8,7 +9,7 @@ import {
 import { setContext } from "@apollo/client/link/context";
 import { useCookies } from "react-cookie";
 import Header from "./components/Header";
-import Sidebar from "./components/sidebar";
+import Sidebar from "./components/Sidebar";
 import { Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "slick-carousel/slick/slick.css";
@@ -52,12 +53,13 @@ function App({ children }) {
   
   return (
     <ApolloProvider client={client}>
-      <Header isOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
-      <Sidebar isOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
+      <Header isOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}/>
+      <Sidebar isOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}/>
       <main>
         <Outlet>
-          {children}
+          <Search/>
         </Outlet>
+        {children}
       </main>
     </ApolloProvider>
   );

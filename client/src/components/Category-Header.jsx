@@ -76,6 +76,16 @@ const CategoryHeader = ({
           dots: false,
         },
       },
+      {
+        breakpoint: 361,
+        settings: {
+          className: "px-3",
+          slidesToShow: 2,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: false,
+        },
+      },
     ],
   };
 
