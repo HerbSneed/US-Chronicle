@@ -6,11 +6,10 @@ import { useCurrentUserContext } from "../context/CurrentUser";
 import axios from "axios";
 import { QUERY_CURRENT_USER } from "../utils/queries";
 import { SAVE_NEWS } from "../utils/mutations";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Footer from "../components/Footer";
 import HeadlineCard from "../components/headline-card";
 import MoreHeadlinesCard from "../components/more-headlines-card";
-
 
 const Homepage = () => {
   const [newsItems, setNewsItems] = useState([]);
@@ -116,8 +115,10 @@ const Homepage = () => {
       if (category === "Top News") {
         response = await axios.get("/api/usheadlines");
       } else {
-        response = await axios.get(`/api/categoryheadlines?category=${category}`);
-      console.log(category)
+        response = await axios.get(
+          `/api/categoryheadlines?category=${category}`
+        );
+        console.log(category);
       }
 
       if (response.status === 200) {
@@ -152,9 +153,8 @@ const Homepage = () => {
     }
   };
 
-
   const handleCategoryChange = async (category) => {
-    if (category === selectedCategory) return; 
+    if (category === selectedCategory) return;
     setSelectedCategory(category);
     fetchNewsByCategory(category);
   };
