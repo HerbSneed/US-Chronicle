@@ -35,10 +35,24 @@ const startApolloServer = async () => {
     });
   }
 
+  db.on('error', (error) => {
+    console.error('MongoDB connection error:', error);
+  });
+
+
+
   db.once('open', () => {
-    app.listen(PORT, "localhost", () => {
+    console.log('Connected to MongoDB!');
+    app.listen(PORT, () => {
       console.log(`API server running on port ${PORT}!`);
       console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
+    });
+  });
+
+  process.on('SIGINT', () => {
+    db.close(() => {
+      console.log('MongoDB connection closed.');
+      process.exit(0);
     });
   });
 };
