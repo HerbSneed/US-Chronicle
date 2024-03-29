@@ -22,7 +22,6 @@ const Homepage = () => {
   const [userDefaultCategory, setUserDefaultCategory] = useState("");
   const navigate = useNavigate();
   const link = queryParams.get("link");
-  console.log("link", link)
   const { width } = useWindowSize();
   const sliceEnd =
     width >= 1536 ? 3 : width >= 1280 ? 3 : width >= 1024 ? 2 : 1;
@@ -50,49 +49,52 @@ const Homepage = () => {
         let response;
 
         if (link) {
-          response = await axios.get(`api/search?searchQuery=${link}`)
-          console.log(link);
+          response = await axios.get(`api/search?searchQuery=${link}`);
         } else if (userData && userData.userDefaultNews !== "Top News") {
           const userCategory = userData.userDefaultNews;
           response = await axios.get(
             `/api/userheadlines?category=${userCategory}`
           );
           setUserDefaultCategory(userCategory);
-          setSelectedCategory(userCategory); 
+          setSelectedCategory(userCategory);
         } else {
-          response = await axios.get("/api/usheadlines")
+          response = await axios.get("/api/usheadlines");
         }
-      
 
         if (response && response.status === 200) {
           const headlines = response.data;
-          console.log(headlines)
 
           if (typeof isLoggedIn === "function" && !isLoggedIn()) {
             navigate("/");
           }
 
-          const newsData = headlines.articles
-            .filter((news) => {
-              return (
+          const filteredNewsData = headlines.articles
+            .filter(
+              (news) =>
                 news.urlToImage !== null &&
                 news.url !== null &&
                 news.title !== "[Removed]" &&
                 news.status !== "410" &&
                 news.status !== "404"
-              );
-            })
+            )
             .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
-            .map((news) => ({
-              newsId: news.publishedAt + news.title,
-              title: news.title,
-              image: news.urlToImage,
-              url: news.url,
-              summary: news.description || "Summary not available.",
-              source_country: news.source.name,
-              latest_publish_date: formatDateTime(news.publishedAt),
-            }));
-          setNewsItems(newsData);
+            .reduce((accumulator, currentNews) => {
+              const newsId = currentNews.publishedAt + currentNews.title;
+              if (!accumulator.some((news) => news.newsId === newsId)) {
+                accumulator.push({
+                  newsId: newsId,
+                  title: currentNews.title,
+                  image: currentNews.urlToImage,
+                  url: currentNews.url,
+                  summary: currentNews.description || "Summary not available.",
+                  source_country: currentNews.source.name,
+                  latest_publish_date: formatDateTime(currentNews.publishedAt),
+                });
+              }
+              return accumulator;
+            }, []);
+
+          setNewsItems(filteredNewsData);
           if (link) {
             setSelectedCategory(link);
           }
@@ -100,12 +102,12 @@ const Homepage = () => {
           console.error("Invalid response:", response);
         }
       } catch (err) {
-        console.error("Error in fetchUserDefaultNews:", err);
+        console.error("Error in fetchData:", err);
       }
     };
 
     fetchData();
-  }, [ link, userData ]);
+  }, [link, userData]);
 
   const fetchNewsByCategory = async (category) => {
     try {

@@ -14,7 +14,7 @@ async function getSearchedHeadlines(searchQuery) {
 
 async function getUserHeadlines(userCategory) {
  try {
-  const response = await fetch(`${apiUrl}/top-headlines?country=US&category=${userCategory}&pageSize=100&apiKey=${apiKey}`);
+  const response = await fetch(`${apiUrl}/top-headlines?country=US&category=${userCategory}&language=en&pageSize=100&apiKey=${apiKey}`);
   return await response.json();
  } catch (error) {
   console.error("Error in getUserHeadlines", error)
@@ -24,7 +24,7 @@ async function getUserHeadlines(userCategory) {
 
 async function getUsHeadlines() {
  try {
-  const response = await fetch(`${apiUrl}/top-headlines?country=US&category=general&pageSize=100&apiKey=${apiKey}`);
+  const response = await fetch(`${apiUrl}/top-headlines?country=US&category=general&language=en&pageSize=100&apiKey=${apiKey}`);
   return await response.json();
  } catch (error) {
   console.error("Error in getUsHeadlines", error);
@@ -34,7 +34,7 @@ async function getUsHeadlines() {
 
 async function getCategoryHeadlines(category) {
  try {
-  const response = await fetch(`${apiUrl}/top-headlines?country=US&category=${category}&pageSize=100&apiKey=${apiKey}`);
+  const response = await fetch(`${apiUrl}/top-headlines?country=US&category=${category}&language=en&pageSize=100&apiKey=${apiKey}`);
   return await response.json();
  } catch (error) {
   console.error("Error in getCategoryHeadlines", error)

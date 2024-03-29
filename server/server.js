@@ -18,11 +18,11 @@ const server = new ApolloServer({
 
 const startApolloServer = async () => {
   await server.start();
-
+  app.use(cors());
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
-  app.use(cors());
   app.use('/api', newsRoutes);
+  app.use('/public', express.static(path.join(__dirname, 'client', 'dist')));
 
   app.use('/graphql', expressMiddleware(server, { context: authMiddleware }));
 
