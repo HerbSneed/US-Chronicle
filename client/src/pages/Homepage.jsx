@@ -257,7 +257,7 @@ const Homepage = () => {
 
         <section
           id="more-news-hl"
-          className="grid grid-cols-1  mx-3 mt-0 2xl:mt-[0px] mb-2"
+          className="grid grid-cols-1 mx-3 mb-2"
         >
           <h2 className="text-2xl md:text-center xl:text-center 2xl:text-4xl text-white px-2 py-1 lg:py-1 2xl:pt-2 sm:text-3xl 2xl:text-3xl bg-blue-600 font-[Newsreader] ml-0 mt-0 2xl:ml-0 font-semibold drop-shadow-lg">
             More {selectedCategory} Headlines

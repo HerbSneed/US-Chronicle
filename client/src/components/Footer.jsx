@@ -12,7 +12,7 @@ function Footer() {
       >
         <img
           src={whiteLogo}
-          className="w-32 overflow-hidden -mt-3 sm:w-34"
+          className="w-32 h-10 overflow-hidden -mt-3"
           alt="US Chronical Icon"
         />
         <p className="text-white text-center text-xs sm:text-sm mt-1 sm:mt-2">

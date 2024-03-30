@@ -1,5 +1,5 @@
 const crypto = require("crypto");
-const { User, News } = require("../models");
+const { User, News } = require("../middleware/models");
 const { signToken, AuthenticationError } = require("../utils");
 const { sendResetEmail } = require("../utils/helpers");
 
