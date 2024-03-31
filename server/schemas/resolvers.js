@@ -89,41 +89,85 @@ const resolvers = {
     },
 
     forgotPassword: async (parent, { email }) => {
-      const user = await User.findOne({ email });
+      try {
+        const user = await User.findOne({ email });
 
-      if (!user) {
+        if (!user) {
+          return {
+            success: false,
+            message: "No account with this email address exists.",
+          };
+        }
+
+        // Generate reset token
+        const resetToken = generateResetToken();
+        const resetTokenExpires = Date.now() + 3600000; // 1 hour time frame
+
+        user.resetPasswordToken = resetToken;
+        user.resetPasswordExpires = resetTokenExpires;
+
+        await user.save();
+
+        // reset email
+        const emailSent = await sendResetEmail(email, resetToken);
+
+        if (!emailSent) {
+          return {
+            success: false,
+            message:
+              "Error sending the password reset email. Please try again later.",
+          };
+        }
+
+        return {
+          success: true,
+          message: "Password reset token generated successfully.",
+        };
+      } catch (error) {
+        console.error("Error in forgotPassword resolver:", error);
         return {
           success: false,
-          message: "No account with this email address exists.",
+          message: "An error occurred while processing your request.",
         };
       }
-
-      // Generate reset token
-      const resetToken = generateResetToken();
-      const resetTokenExpires = Date.now() + 3600000; // 1 hour time frame
-
-      user.resetPasswordToken = resetToken;
-      user.resetPasswordExpires = resetTokenExpires;
-
-      await user.save();
-
-      // reset email
-      const emailSent = await sendResetEmail(email, resetToken);
-
-      if (!emailSent) {
-        return {
-          success: false,
-          message:
-            "Error sending the password reset email. Please try again later.",
-        };
-      }
-
-      return {
-        success: true,
-        message: "Password reset token generated successfully.",
-      };
     },
+
+    resetPassword: async (parent, { token, newPassword }) => {
+      try {
+        // Find the user with the provided reset token
+        const user = await User.findOne({
+          resetPasswordToken: token,
+          resetPasswordExpires: { $gt: Date.now() }, // Check if the token is still valid
+        });
+
+        if (!user) {
+          // If no user found with the token or the token has expired
+          return {
+            success: false,
+            message: "Invalid or expired reset token.",
+          };
+        }
+
+        // Update the user's password
+        user.password = newPassword;
+        user.resetPasswordToken = null;
+        user.resetPasswordExpires = null;
+        await user.save();
+
+        return {
+          success: true,
+          message: "Password reset successfully.",
+        };
+      } catch (error) {
+        console.error("Error resetting password:", error);
+        return {
+          success: false,
+          message: "An error occurred while resetting the password.",
+        };
+      }
+    },
+
   },
-};
+}
 
 module.exports = resolvers;

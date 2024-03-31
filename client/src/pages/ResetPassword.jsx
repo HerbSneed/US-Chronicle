@@ -3,7 +3,7 @@ import { useMutation } from "@apollo/client";
 import { useParams, useNavigate } from "react-router-dom";
 import { RESET_PASSWORD } from "../utils/mutations";
 
-function ResetPasswordPage() {
+function ResetPassword() {
   const { token } = useParams();
   const [newPassword, setNewPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -13,9 +13,16 @@ function ResetPasswordPage() {
 
   const handleReset = async () => {
     try {
+
+      console.log("New Password", newPassword);
+      console.log("Token", token);
+
       const { data } = await resetPassword({
         variables: { token, newPassword },
       });
+
+      console.log("data", data)
+
       if (data && data.resetPassword && data.resetPassword.success) {
         setMessage("Password reset successful. Redirecting to login...");
         setTimeout(() => {
@@ -49,4 +56,4 @@ function ResetPasswordPage() {
   );
 }
 
-export default ResetPasswordPage;
+export default ResetPassword;

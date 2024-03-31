@@ -14,6 +14,7 @@ import Homepage from "./pages/Homepage";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import ResetPassword from "./pages/ResetPassword";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ForgotPassword from "./pages/forgotPassword";
 import Search from "./pages/search";
@@ -25,6 +26,7 @@ const router = createBrowserRouter(
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/forgotPassword" element={<ForgotPassword />} />
+      <Route path="/resetPassword/:token" element={<ResetPassword/>} />
       <Route path="/search" element={<Search />} />
       <Route
         path=":userCategory"

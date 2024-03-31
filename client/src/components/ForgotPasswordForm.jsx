@@ -23,6 +23,7 @@ export default function ForgotPassword() {
 
       if (data.forgotPassword.success) {
         setResetFeedback(data.forgotPassword.message);
+
         // Navigate to the login page after 3 seconds
         setTimeout(() => {
           navigate("/login");
@@ -50,10 +51,10 @@ export default function ForgotPassword() {
             type="email"
             value={resetEmail}
             onChange={(e) => setResetEmail(e.target.value)}
-            className="w-3/4 border border-gray-300 rounded-md text-black"
+            className="w-4/6 border border-gray-300 rounded-md text-black"
           />
           <button
-            className="bg-blue-600 text-white rounded hover:bg-blue-200 h-10 w-1/4 w-full"
+            className="bg-blue-600 text-white rounded hover:bg-blue-200 h-10 w-1/4"
             onClick={handleForgotPassword}
           >
             Reset

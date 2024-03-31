@@ -16,6 +16,9 @@ const server = new ApolloServer({
   resolvers,
 });
 
+const BASE_URL = process.env.NODE_ENV === 'production' ? 'https://us-chronicle-5f8b6391feb6.herokuapp.com/' : `http://localhost:${PORT}`;
+
+
 const startApolloServer = async () => {
   await server.start();
   app.use(cors());
@@ -39,13 +42,11 @@ const startApolloServer = async () => {
     console.error('MongoDB connection error:', error);
   });
 
-
-
   db.once('open', () => {
     console.log('Connected to MongoDB!');
     app.listen(PORT, () => {
       console.log(`API server running on port ${PORT}!`);
-      console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
+      console.log(`Use GraphQL at ${BASE_URL}/graphql`);
     });
   });
 

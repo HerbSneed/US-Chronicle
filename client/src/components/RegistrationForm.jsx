@@ -20,7 +20,6 @@ const RegistrationForm = () => {
   const [errors, setErrors] = useState({});
   const [ register ] = useMutation(REGISTER_USER);
 
-
   const handleRegistrationResponse = (
     alreadyRegistered,
     currentUser,

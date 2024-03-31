@@ -81,7 +81,6 @@ export const DELETE_NEWS = gql`
 }
 `;
 
-
 export const FORGOT_PASSWORD = gql`
   mutation ForgotPassword($email: String!) {
     forgotPassword(email: $email) {
