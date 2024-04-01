@@ -1,5 +1,5 @@
 <div style="text-align: center;">
-    <img src="client/src/assets/images/US-Chronical-White.png" alt="US Chronical Logo" width="100">
+    <img src="client/src/assets/images/US-Chronical.png" alt="US Chronical Logo" width="100">
 </div>
 
 
