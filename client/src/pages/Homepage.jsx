@@ -23,9 +23,9 @@ const Homepage = () => {
   const link = queryParams.get("link");
   const { width } = useWindowSize();
   const sliceEnd =
-    width >= 1536 ? 3 : width >= 1280 ? 3 : width >= 1024 ? 2 : 1;
+    width >= 1536 ? 4 : width >= 1280 ? 4 : width >= 1024 ? 2 : 1;
   const moreNewsSliceEnd =
-    width >= 1536 ? 31 : width >= 1280 ? 30 : width >= 1024 ? 15 : 15;
+    width >= 1536 ? 38 : width >= 1280 ? 35 : width >= 1024 ? 15 : 15;
 
   const categories = [
     "Top News",
@@ -52,7 +52,7 @@ const Homepage = () => {
         } else if (userData && userData.userDefaultNews !== "Top News") {
           const userCategory = userData.userDefaultNews;
           response = await axios.get(
-            `/api/userheadlines?category=${userCategory}`
+            `api/userheadlines?category=${userCategory}`
           );
           setUserDefaultCategory(userCategory);
           setSelectedCategory(userCategory);
@@ -239,7 +239,7 @@ const Homepage = () => {
         >
           <h2
             id="mainHeadlineHeader"
-            className="text-5xl sm:text-5xl  xl:-mb-5 sm:text-6xl 2xl:text-6xl font-[Newsreader] ml-0 mt-3 2xl:ml-0 font-semibold drop-shadow-lg"
+            className="text-4xl sm:text-5xl 2xl:text-6xl text-blue-600 font-[Newsreader] ml-0 mt-3 xl:-mb-5 2xl:ml-0 font-semibold drop-shadow-lg"
           >
             {selectedCategory}
           </h2>
@@ -255,10 +255,7 @@ const Homepage = () => {
           ))}
         </section>
 
-        <section
-          id="more-news-hl"
-          className="grid grid-cols-1 mx-3 mb-2"
-        >
+        <section id="more-news-hl" className="grid grid-cols-1 mx-3 mb-2">
           <h2 className="text-2xl md:text-center xl:text-center 2xl:text-4xl text-white px-2 py-1 lg:py-1 2xl:pt-2 sm:text-3xl 2xl:text-3xl bg-blue-600 font-[Newsreader] ml-0 mt-0 2xl:ml-0 font-semibold drop-shadow-lg">
             More {selectedCategory} Headlines
           </h2>

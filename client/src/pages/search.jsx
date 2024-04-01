@@ -1,5 +1,6 @@
 // SearchResults.jsx
 import { useState, useEffect } from "react";
+import { useWindowSize } from "../utils/windowSize";
 import { useLocation } from "react-router-dom";
 import SearchBar from "../components/search-bar.jsx";
 import SearchResultsCard from "../components/search-results-card.jsx";
@@ -8,6 +9,7 @@ import { SAVE_NEWS } from "../utils/mutations";
 import { QUERY_CURRENT_USER } from "../utils/queries";
 import { useCurrentUserContext } from "../context/CurrentUser";
 import axios from "axios";
+import Footer from "../components/Footer.jsx";
 
 const Search = () => {
   const location = useLocation();
@@ -15,6 +17,9 @@ const Search = () => {
   const [newsItems, setNewsItems] = useState([]);
   const [saveNewsMutation] = useMutation(SAVE_NEWS);
   const { currentUser } = useCurrentUserContext();
+  const { width } = useWindowSize();
+  const sliceEnd =
+    width >= 1536 ? 42 : width >= 1280 ? 28 : width >= 1024 ? 28 : width >= 768 ? 20 : 20;
 
   const { data } = useQuery(QUERY_CURRENT_USER, {
     variables: { email: currentUser.email },
@@ -31,7 +36,7 @@ const Search = () => {
     const fetchSearchedNews = async () => {
       try {
         let response;
-        response = await axios.get(`/api/search?query=${searchQuery}`);
+        response = await axios.get(`api/search?searchQuery=${searchQuery}`);
 
          if (response.status !== 200) {
            console.error("Error in response:", response);
@@ -45,6 +50,7 @@ const Search = () => {
             return (
               news.urlToImage !== null &&
               news.title !== "[Removed]" &&
+              news.title !== "null" &&
               news.status !== "410" &&
               news.status !== "404"
             );
@@ -124,6 +130,7 @@ const Search = () => {
 
   return (
     <>
+      <div id="searchPage-container" className="flex flex-col min-h-screen">
       <div className="mt-3">
         <SearchBar />
       </div>
@@ -134,8 +141,8 @@ const Search = () => {
             Search Results
           </h1>
 
-          <div className="grid lg:grid-cols-2 2xl:grid-cols-3">
-            {newsItems.map((news) => (
+          <div className="grid sm:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3">
+            {newsItems.slice(0, sliceEnd).map((news) => (
               <SearchResultsCard
                 key={news.newsId}
                 news={news}
@@ -145,6 +152,7 @@ const Search = () => {
           </div>
         </div>
       </section>
+      </div>
     </>
   );
 };

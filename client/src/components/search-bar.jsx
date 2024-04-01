@@ -14,7 +14,7 @@ const SearchBar = ({ isSidebarOpen, setIsSidebarOpen }) => {
       navigate(`/search?query=${encodeURIComponent(searchQuery)}`);
   };
 
-  const handdleSearchAndSidebar = () => {
+  const handleSearchAndSidebar = () => {
     handleSearch();
     handleSidebar();
   }
@@ -35,7 +35,7 @@ const SearchBar = ({ isSidebarOpen, setIsSidebarOpen }) => {
           className="px-2 py-1 ml-3 border w-full border-gray-300 rounded-md text-black"
         />
         <button
-          onClick={handdleSearchAndSidebar}
+          onClick={handleSearch}
           className="inset-y-0 right-0 px-4 ml-3 mr-3 bg-blue-500 text-white rounded-md"
         >
           Search

@@ -3,12 +3,12 @@ export const categories = ["Select a category",
 ];
 
 export const latestLinks = [
-  { label: "Politics", query: "Politics" },
+  { label: "Politics", query: "Political" },
   { label: "Crime", query: "Crime" },
   { label: "Money", query: "Money" },
   { label: "Social Media", query: "Social Media" },
   { label: "Travel", query: "Travel" },
-  { label: "Arts & Culture", query: "Arts Culture" },
+  { label: "Arts & Culture", query: "Arts & Culture" },
 ];
 
 export const localNewsLinks = [

@@ -2,14 +2,11 @@ import { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { Link, useNavigate } from "react-router-dom";
 import { FORGOT_PASSWORD } from "../utils/mutations";
-// import { useCurrentUserContext } from '../context/CurrentUser';
 
 export default function ForgotPassword() {
   const navigate = useNavigate();
-
   const [resetEmail, setResetEmail] = useState("");
   const [resetFeedback, setResetFeedback] = useState(null);
-
   const [forgotPassword] = useMutation(FORGOT_PASSWORD);
 
   const handleForgotPassword = async () => {
@@ -39,7 +36,7 @@ export default function ForgotPassword() {
 
   return (
     <>
-      <div className="p-6 rounded mx-4 h-5/6 my-5">
+      <div className="py-6 rounded mx-auto my-5 w-11/12 sm:w-9/12 md:w-8/12 lg:w-7/12 xl:w-6/12 2xl:w-5/12">
         <h2 className="text-center text-2xl mb-1">Forgot Your Password?</h2>
         <p className="text-center mb-4">
           Enter your email address and we will send you instructions to reset
@@ -61,7 +58,7 @@ export default function ForgotPassword() {
           </button>
         </div>
 
-        <p className="font-bold text-blue-600 text-center">
+        <p className="font-bold mt-1 text-blue-600 text-center">
           <Link to="/login"> Back to Log in </Link>
         </p>
 

@@ -1,4 +1,5 @@
-![US Chronicle](https://github.com/HerbSneed/US-Chronicle/client/src/assets/images/US-Chronical.png)
+![US Chronicle](https://raw.githubusercontent.com/HerbSneed/US-Chronicle/main/client/src/assets/images/US-Chronical.png)
+
 
 ## Description
 Introducing "US Chronicle" - the ultimate platform for people interested in connecting with news channels and articles from the United States! It gathers news from multiple trusted source and presents them in a user-friendly applicaton. 
