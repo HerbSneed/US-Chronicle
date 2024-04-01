@@ -7,7 +7,7 @@ const SALT_ROUNDS = 10;
 
 const hashPassword = async (password) => bcrypt.hash(password, SALT_ROUNDS);
 
-const sendResetEmail = async (email, token) => {
+const sendResetEmail = async (email, token, BASE_URL) => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     host: "smtp.gmail.com",
@@ -19,8 +19,8 @@ const sendResetEmail = async (email, token) => {
     },
   });
 
-  const resetLink = `${process.env.BASE_URL}/resetPassword/${token}`;
-  console.log(process.env.BASE_URL);
+  const resetLink = `${BASE_URL}/resetPassword/${token}`;
+  console.log(BASE_URL);
   console.log(token);
 
   const mailOptions = {

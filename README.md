@@ -1,4 +1,6 @@
-![US Chronicle](https://raw.githubusercontent.com/HerbSneed/US-Chronicle/main/client/src/assets/images/US-Chronical.png)
+<div style="text-align: center;">
+    <img src="client/src/assets/images/US-Chronical-White.png" alt="US Chronical Logo" width="100">
+</div>
 
 
 ## Description
@@ -37,11 +39,13 @@ Introducing "US Chronicle" - the ultimate platform for people interested in conn
 * npm run develop
 
 ## Motivation
+The motivation behind this project was to develop a comprehensive and innovative news application tailored to the diverse landscape of the United States. Recognizing the need for reliable, insightful, and engaging news coverage in an era of information overload, the project aimed to provide a platform that not only aggregated news but also fostered community, dialogue, and engagement among users. Ultimately, the goal was to create a digital ecosystem that informed and inspired users across the breadth and depth of American society.
 
 
 ## Future Development
 * Allow user to add profile picture.
 * Empliment Mapbox API with pin points that updates daily headlines.
+* Allow users to have open dialog on news headline by leaving comments and replies.
 
 ## Technologies
 1. React
@@ -49,11 +53,9 @@ Introducing "US Chronicle" - the ultimate platform for people interested in conn
 3. MongoDB
 
 ## Application
-[Link of deployed application](https://worldwire-news-863d47e11145.herokuapp.com/)
+[Link of deployed application](https://us-chronicle-5f8b6391feb6.herokuapp.com/)
 ## Screenshots
 Screenshot of the deployed application
-
-## User Experience
 
 ## Contributors
 

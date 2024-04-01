@@ -227,7 +227,7 @@ const Landing = () => {
                   : "border-b-[1px] border-newsBlue"
               }`}
             >
-              {/* Wrap the title in an anchor tag */}
+              
               <h3 className="flex justify-right font-bold p-0">
                 <a
                   className=""

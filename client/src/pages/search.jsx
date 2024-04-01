@@ -9,7 +9,6 @@ import { SAVE_NEWS } from "../utils/mutations";
 import { QUERY_CURRENT_USER } from "../utils/queries";
 import { useCurrentUserContext } from "../context/CurrentUser";
 import axios from "axios";
-import Footer from "../components/Footer.jsx";
 
 const Search = () => {
   const location = useLocation();

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-// Hook to get window size
+
 export const useWindowSize = () => {
  const [windowSize, setWindowSize] = useState({
   width: window.innerWidth,

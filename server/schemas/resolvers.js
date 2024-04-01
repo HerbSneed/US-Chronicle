@@ -88,7 +88,7 @@ const resolvers = {
       throw new AuthenticationError("User not authenticated");
     },
 
-    forgotPassword: async (parent, { email }) => {
+    forgotPassword: async (parent, { email }, context) => {
       try {
         const user = await User.findOne({ email });
 
@@ -109,7 +109,10 @@ const resolvers = {
         await user.save();
 
         // reset email
-        const emailSent = await sendResetEmail(email, resetToken);
+
+        const BASE_URL = process.env.NODE_ENV === 'production' ? process.env.BASE_URL : 'http://localhost:3000';
+        const emailSent = await sendResetEmail(email, resetToken, BASE_URL);
+
 
         if (!emailSent) {
           return {
@@ -134,21 +137,18 @@ const resolvers = {
 
     resetPassword: async (parent, { token, newPassword }) => {
       try {
-        // Find the user with the provided reset token
         const user = await User.findOne({
           resetPasswordToken: token,
-          resetPasswordExpires: { $gt: Date.now() }, // Check if the token is still valid
+          resetPasswordExpires: { $gt: Date.now() }, 
         });
 
         if (!user) {
-          // If no user found with the token or the token has expired
           return {
             success: false,
             message: "Invalid or expired reset token.",
           };
         }
-
-        // Update the user's password
+        
         user.password = newPassword;
         user.resetPasswordToken = null;
         user.resetPasswordExpires = null;
