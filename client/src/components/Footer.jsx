@@ -1,7 +1,7 @@
 import facebook from "../assets/images/facebook_icon.webp";
 import email from "../assets/images/email-icon.webp";
 import insta from "../assets/images/instagram_icon.webp";
-import whiteLogo from "../assets/images/US-Chronical-White.png";
+import whiteLogo from "../assets/images/US-Chronical-White.webp";
 
 function Footer() {
   return (
@@ -19,7 +19,7 @@ function Footer() {
           Copyright ©2030 US Chronical Inc. All rights reserved.
         </p>
 
-        <div className="flex flex-row w-2/12 mt-1 sm:mt-3 sm:w-2/12 md:w-[110px] lg:w-[110px] xl:w-[110px] 2xl:w-[110px] justify-center space-x-3 ">
+        <div className="flex flex-row w-[100px] mt-1 sm:mt-3 sm:w-2/12 md:w-[110px] lg:w-[110px] xl:w-[110px] 2xl:w-[110px] justify-center space-x-3 ">
           <a href="https://www.facebook.com/" target="_blank" rel="noreferrer">
             <img src={facebook} alt="Facebook" className="" />
           </a>

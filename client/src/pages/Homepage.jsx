@@ -237,12 +237,12 @@ const Homepage = () => {
           id="top-news"
           className="grid grid-cols-1 2xl:w-7/12 xl:w-8/12 lg:w-8/12 lg:float-right 2xl:float-right gap-x-2 xl:gap-y-4  gap-y-0 pb-1 mx-3 2xl:mx-5 bg-white"
         >
-          <h2
+          <h1
             id="mainHeadlineHeader"
             className="text-4xl sm:text-5xl 2xl:text-6xl text-blue-600 font-[Newsreader] ml-0 mt-3 xl:-mb-5 2xl:ml-0 font-semibold drop-shadow-lg"
           >
             {selectedCategory}
-          </h2>
+          </h1>
 
           {newsItems.slice(0, sliceEnd).map((news) => (
             <HeadlineCard
@@ -256,7 +256,7 @@ const Homepage = () => {
         </section>
 
         <section id="more-news-hl" className="grid grid-cols-1 mx-3 mb-2">
-          <h2 className="text-2xl md:text-center xl:text-center 2xl:text-4xl text-white px-2 py-1 lg:py-1 2xl:pt-2 sm:text-3xl 2xl:text-3xl bg-blue-600 font-[Newsreader] ml-0 mt-0 2xl:ml-0 font-semibold drop-shadow-lg">
+          <h2 className="text-2xl md:text-center xl:text-center 2xl:text-4xl text-white px-2 pt-1  lg:pt-1  2xl:pt-2  sm:text-3xl 2xl:text-3xl bg-blue-600 font-[Newsreader] ml-0  2xl:ml-0 font-semibold drop-shadow-lg">
             More {selectedCategory} Headlines
           </h2>
 

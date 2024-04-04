@@ -65,7 +65,7 @@ const Sidebar = React.memo(({ isOpen, setIsSidebarOpen }) => {
     <>
       <div
         id="drawer-navigation"
-        className={`fixed top-0 left-0 z-40 w-68 h-screen p-4 overflow-y-auto transition-transform shadow-xl ${
+        className={`fixed top-0 left-0 z-40 w-full h-screen p-4 overflow-y-auto transition-transform shadow-xl ${
           isOpen ? "" : "-translate-x-full"
         } bg-white dark:bg-gray-800`}
         tabIndex="-1"
@@ -105,6 +105,8 @@ const Sidebar = React.memo(({ isOpen, setIsSidebarOpen }) => {
                   handleHomepageClick();
                   toggleSidebar(isOpen, setIsSidebarOpen);
                 }}
+                role="button"
+                tabIndex="0"
               >
                 Home
               </Link>
@@ -113,6 +115,8 @@ const Sidebar = React.memo(({ isOpen, setIsSidebarOpen }) => {
                 to="/dashboard"
                 className="text-blue-600 hover:text-blue-800 ml-3"
                 onClick={() => toggleSidebar(isOpen, setIsSidebarOpen)}
+                role="button"
+                tabIndex="0"
               >
                 Dashboard
               </Link>
@@ -124,6 +128,8 @@ const Sidebar = React.memo(({ isOpen, setIsSidebarOpen }) => {
                   logoutUser();
                   toggleSidebar(isOpen, setIsSidebarOpen);
                 }}
+                role="button"
+                tabIndex="0"
               >
                 LOGOUT
               </Link>
@@ -138,6 +144,8 @@ const Sidebar = React.memo(({ isOpen, setIsSidebarOpen }) => {
                   handleHomepageClick();
                   toggleSidebar(isOpen, setIsSidebarOpen);
                 }}
+                role="button"
+                tabIndex="0"
               >
                 Home
               </Link>
@@ -146,6 +154,8 @@ const Sidebar = React.memo(({ isOpen, setIsSidebarOpen }) => {
                 to="/login"
                 className="text-blue-600 hover:text-blue-800"
                 onClick={() => toggleSidebar(isOpen, setIsSidebarOpen)}
+                role="button"
+                tabIndex="0"
               >
                 Login
               </Link>
@@ -153,6 +163,8 @@ const Sidebar = React.memo(({ isOpen, setIsSidebarOpen }) => {
                 to="/register"
                 className="text-blue-600 hover:text-blue-800"
                 onClick={() => toggleSidebar(isOpen, setIsSidebarOpen)}
+                role="button"
+                tabIndex="0"
               >
                 Sign Up
               </Link>
@@ -160,23 +172,23 @@ const Sidebar = React.memo(({ isOpen, setIsSidebarOpen }) => {
           )}
         </div>
 
-        <h5
+        <h1
           id="drawer-navigation-label"
           className="text-base font-semibold text-gray-500 uppercase dark:text-gray-400 ml-3 mt-4"
         >
           Latest
-        </h5>
+        </h1>
 
         <ul className="font-medium grid grid-cols-2">
           {renderLinks(latestLinks)}
         </ul>
 
-        <h5
+        <h1
           id="drawer-navigation-label"
           className="text-base font-semibold text-gray-500 uppercase dark:text-gray-400 ml-3 mt-4"
         >
           Local News
-        </h5>
+        </h1>
 
         <ul className="font-medium grid grid-cols-2">
           {renderLinks(localNewsLinks)}

@@ -60,10 +60,10 @@ const Dashboard = () => {
           {userData.firstName}&apos;s Dashboard
         </h1>
 
-        <h2 className="font-bold font-[newsReader] -mt-1 drop-shadow-lg text-center text-2xl 2xl:text-2xl text-red-700">
-          {userData?.savedNews.length
-            ? `${userData.savedNews.length} Saved Headlines`
-            : "You have no saved news!"}
+        <h2 className="font-bold font-[newsReader] mt-0 drop-shadow-lg text-center text-2xl 2xl:text-2xl text-red-700">
+          {userData?.savedNews.length < 1
+            ? "You have no saved articles"
+            : null}
         </h2>
 
         <div className="top-0 w-full ">

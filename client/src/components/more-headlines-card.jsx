@@ -12,28 +12,32 @@ const MoreHeadlinesCard = React.memo(({ news, handleSaveArticle, isLastItem}) =>
       >
         <div className={`${news.index === 5 ? "" : ""}`}>
           <div className="mt-0">
-            <h3 className="font-bold text-gray-900 text-[17px] sm:text-[20px] md:text-[23px]  truncate">
+            <h1 className="font-bold text-gray-900 text-[17px] sm:text-[20px] md:text-[23px]  truncate">
               {news.title}
-            </h3>
-            <h4 className="text-xs md:text-sm -mt-1 text-gray-900">
+            </h1>
+            <h2 className="text-xs md:text-sm -mt-1 text-gray-900">
               {news.latest_publish_date}
-            </h4>
+            </h2>
 
             {isLoggedIn() && (
               <div className="flex -mt-1 sm:-mt-0.5 lg:-mt-1 2xl:-mt-1">
                 <a
                   href={news.url}
                   target="_blank"
-                  className="text-sm sm:text-md md:text-lg text-blue-600"
+                  className="text-sm sm:text-md md:text-lg text-blue-700"
                   rel="noopener noreferrer"
+                  role="button"
+                  tabIndex="0"
                 >
                   Source
                 </a>
                 <a
                   target="_blank"
-                  className="text-sm sm:text-md md:text-lg text-red-600 ml-5"
+                  className="text-sm sm:text-md md:text-lg text-red-700 ml-5"
                   onClick={() => handleSaveArticle(news)}
                   rel="noopener noreferrer"
+                  role="button"
+                  tabIndex="0"
                 >
                   Save Article
                 </a>

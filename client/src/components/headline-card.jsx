@@ -17,14 +17,13 @@ const HeadlineCard = React.memo(({ news, handleSaveArticle}) => {
           )}
 
           <div className="mt-1">
-            <h4 className="text-xs md:text-sm lg:text-md text-gray-900">
+            <h1 className="text-xs md:text-sm lg:text-md text-gray-900">
               {news.latest_publish_date}
-            </h4>
+            </h1>
 
-            {/* Wrap the title in an anchor tag */}
-            <h3 className="font-bold text-gray-900 leading-7 text-[25px] sm:text-[27px] md:text-[32px]">
+            <h2 className="font-bold text-gray-900 leading-7 text-[25px] sm:text-[27px] md:text-[32px]">
               {news.title}
-            </h3>
+            </h2>
             <p className="mt-0.5 text-xl leading-5">{news.summary}</p>
 
             {isLoggedIn() && (
@@ -32,16 +31,20 @@ const HeadlineCard = React.memo(({ news, handleSaveArticle}) => {
                 <a
                   href={news.url}
                   target="_blank"
-                  className="text-blue-600"
+                  className="text-blue-700"
                   rel="noopener noreferrer"
+                  role="button"
+                  tabIndex="0"
                 >
                   Source
                 </a>
                 <a
                   target="_blank"
-                  className="text-red-600 ml-3"
+                  className="text-red-700 ml-3"
                   onClick={() => handleSaveArticle(news)}
                   rel="noopener noreferrer"
+                  role="button"
+                  tabIndex="0"
                 >
                   Save Article
                 </a>

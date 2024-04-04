@@ -4,9 +4,9 @@ import { QUERY_CURRENT_USER } from "../utils/queries";
 import { useNavigate, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { toggleSidebar } from "../utils/sidebarUtils";
-import logo from "../../src/assets/images/US-Chronical.png";
-import sidebarIcon from "../../src/assets/images/sidebar-icon.png";
-import search from "../../src/assets/images/search-icon.png";
+import logo from "../../src/assets/images/US-Chronical.webp";
+import sidebarIcon from "../assets/images/sidebar-icon.webp";
+import search from "../assets/images/search-icon.webp";
 
 const Header = ({ setIsSidebarOpen }) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -30,7 +30,6 @@ const Header = ({ setIsSidebarOpen }) => {
       navigate("/");
       console.log(userCategory)
     } else {
-      console.error("User category not found");
       navigate("/");
     }
   };
@@ -60,15 +59,15 @@ const Header = ({ setIsSidebarOpen }) => {
         <button className="" onClick={handleSidebarToggle}>
           <img
             src={sidebarIcon}
-            className="w-6 sm:w-8"
-            alt="US Chronicle Icon"
+            className="w-[30px] sm:w-8"
+            alt="Sidebar Icon"
           />
         </button>
 
         <Link to="/" onClick={handleHomepageClick}>
           <img
             src={logo}
-            className="w-36 sm:w-36 2xl:w-40"
+            className="w-[120px] sm:w-36 2xl:w-40"
             alt="US Chronicle Logo"
           />
         </Link>
@@ -76,7 +75,7 @@ const Header = ({ setIsSidebarOpen }) => {
         <Link to="/search">
           <img
             src={search}
-            className="w-6 sm:w-8"
+            className="w-[30px] sm:w-8"
             alt="Search Icon"
             onClick={handleSearch}
           />
