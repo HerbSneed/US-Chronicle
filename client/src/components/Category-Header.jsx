@@ -5,11 +5,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useCurrentUserContext } from "../context/CurrentUser";
 
-const CategoryHeader = ({
-  onCategoryChange,
-  categories = [],
-}) => {
-  const [selectedCategory, setSelectedCategory ] = useState("");
+const CategoryHeader = ({ onCategoryChange, categories = [] }) => {
+  const [selectedCategory, setSelectedCategory] = useState("");
   const navigate = useNavigate();
   const { isLoggedIn } = useCurrentUserContext();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -19,9 +16,9 @@ const CategoryHeader = ({
 
   const handleCategoryClick = (category) => {
     if (isLoggedIn()) {
-    onCategoryChange(category);
-    setSelectedCategory(category); 
-    navigate(`/${category}`);
+      onCategoryChange(category);
+      setSelectedCategory(category);
+      navigate(`/${selectedCategory}`);
     } else {
       navigate("/login");
     }

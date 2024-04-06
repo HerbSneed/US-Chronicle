@@ -44,7 +44,7 @@ The motivation behind this project was to develop a comprehensive and innovative
 
 ## Future Development
 * Allow user to add profile picture.
-* Empliment Mapbox API with pin points that updates daily headlines.
+* Implement feature using Mapbox API with pin points that updates daily headlines.  This feature would be accessed in the sidebar.
 * Allow users to have open dialog on news headline by leaving comments and replies.
 
 ## Technologies
