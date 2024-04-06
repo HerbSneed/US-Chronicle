@@ -18,7 +18,7 @@ const Homepage = () => {
   const queryParams = new URLSearchParams(location.search);
   const [saveNewsMutation] = useMutation(SAVE_NEWS);
   const [selectedCategory, setSelectedCategory] = useState("Top News");
-  const [userDefaultCategory, setUserDefaultCategory] = useState("");
+  // const [userDefaultCategory, setUserDefaultCategory] = useState("");
   const navigate = useNavigate();
   const link = queryParams.get("link");
   const { width } = useWindowSize();
@@ -49,13 +49,14 @@ const Homepage = () => {
 
         if (link) {
           response = await axios.get(`api/search?searchQuery=${link}`);
-        } else if (userData && userData.userDefaultNews !== "Top News") {
+        } else if (userData) {
           const userCategory = userData.userDefaultNews;
+          // setUserDefaultCategory(userCategory);
+          setSelectedCategory(userCategory);
           response = await axios.get(
             `api/userheadlines?category=${userCategory}`
           );
-          setUserDefaultCategory(userCategory);
-          setSelectedCategory(userCategory);
+
         } else {
           response = await axios.get("/api/usheadlines");
         }
@@ -106,7 +107,7 @@ const Homepage = () => {
     };
 
     fetchData();
-  }, [link, userData]);
+  }, [link, userData, isLoggedIn, navigate]);
 
   const fetchNewsByCategory = async (category) => {
     try {
@@ -159,10 +160,10 @@ const Homepage = () => {
     fetchNewsByCategory(category);
   };
 
-  const handleLogoClick = () => {
-    setSelectedCategory(userDefaultCategory);
-    fetchNewsByCategory(userDefaultCategory);
-  };
+  // const handleLogoClick = () => {
+  //   setSelectedCategory(userDefaultCategory);
+  //   fetchNewsByCategory(userDefaultCategory);
+  // };
 
   const handleSaveArticle = (news) => {
     const alreadySaved = userData.savedNews.some((savedNews) => {
@@ -223,11 +224,8 @@ const Homepage = () => {
           className="bg-white h-10 sm:h-12 py-1.5 sm:py-2 overflow-hidden"
         >
           <CategoryHeader
-            defaultCategory={userDefaultCategory}
-            selectedCategory={selectedCategory}
-            onCategoryChange={handleCategoryChange}
-            onLogoClick={handleLogoClick}
             categories={categories}
+            onCategoryChange={handleCategoryChange}
           />
         </section>
 

@@ -103,7 +103,7 @@ const Sidebar = React.memo(({ isOpen, setIsSidebarOpen }) => {
                 onClick={(e) => {
                   e.preventDefault();
                   handleHomepageClick();
-                  toggleSidebar(isOpen, setIsSidebarOpen);
+                  // toggleSidebar(isOpen, setIsSidebarOpen);
                 }}
                 role="button"
                 tabIndex="0"
