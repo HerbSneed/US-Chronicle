@@ -1,6 +1,3 @@
-import { useQuery } from "@apollo/client";
-import { useCurrentUserContext } from "../context/CurrentUser";
-import { QUERY_CURRENT_USER } from "../utils/queries";
 import { useNavigate, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { toggleSidebar } from "../utils/sidebarUtils";
@@ -11,27 +8,9 @@ import search from "../assets/images/search-icon.webp";
 const Header = ({ setIsSidebarOpen }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
-  const { isLoggedIn } = useCurrentUserContext();
-  const { currentUser } = useCurrentUserContext();
-  const { data } = useQuery(QUERY_CURRENT_USER, {
-    variables: { email: currentUser?.email },
-  });
-
-  const userData = data?.currentUser || null;
-  const userCategory = userData?.userDefaultNews?.trim();
 
   const handleSidebarToggle = () => {
     toggleSidebar(setIsSidebarOpen);
-  };
-
-  const handleHomepageClick = (event) => {
-    event.preventDefault();
-    if (isLoggedIn() && userCategory) {
-      navigate("/");
-      console.log(userCategory)
-    } else {
-      navigate("/");
-    }
   };
 
   const handleSearch = () => {
@@ -64,13 +43,13 @@ const Header = ({ setIsSidebarOpen }) => {
           />
         </button>
 
-        <Link to="/" onClick={handleHomepageClick}>
-          <img
-            src={logo}
-            className="w-[120px] sm:w-36 2xl:w-40"
-            alt="US Chronicle Logo"
-          />
-        </Link>
+
+        <img
+          src={logo}
+          className="w-[120px] sm:w-36 2xl:w-40"
+          alt="US Chronicle Logo"
+        />
+
 
         <Link to="/search">
           <img

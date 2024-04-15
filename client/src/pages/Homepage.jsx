@@ -18,7 +18,6 @@ const Homepage = () => {
   const queryParams = new URLSearchParams(location.search);
   const [saveNewsMutation] = useMutation(SAVE_NEWS);
   const [selectedCategory, setSelectedCategory] = useState("Top News");
-  // const [userDefaultCategory, setUserDefaultCategory] = useState("");
   const navigate = useNavigate();
   const link = queryParams.get("link");
   const { width } = useWindowSize();
@@ -40,6 +39,7 @@ const Homepage = () => {
   const { data } = useQuery(QUERY_CURRENT_USER, {
     variables: { email: currentUser.email },
   });
+  
   const userData = data?.currentUser || null;
 
   useEffect(() => {
@@ -51,7 +51,6 @@ const Homepage = () => {
           response = await axios.get(`api/search?searchQuery=${link}`);
         } else if (userData) {
           const userCategory = userData.userDefaultNews;
-          // setUserDefaultCategory(userCategory);
           setSelectedCategory(userCategory);
           response = await axios.get(
             `api/userheadlines?category=${userCategory}`
@@ -79,7 +78,7 @@ const Homepage = () => {
             )
             .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
             .reduce((accumulator, currentNews) => {
-              const newsId = currentNews.publishedAt + currentNews.title;
+              const newsId = currentNews.publishedAt + currentNews.title + currentNews.source_country;
               if (!accumulator.some((news) => news.newsId === newsId)) {
                 accumulator.push({
                   newsId: newsId,
@@ -119,7 +118,6 @@ const Homepage = () => {
         response = await axios.get(
           `/api/categoryheadlines?category=${category}`
         );
-        console.log(category);
       }
 
       if (response.status === 200) {
@@ -144,8 +142,9 @@ const Homepage = () => {
             latest_publish_date: formatDateTime(news.publishedAt),
           }));
 
+
         setNewsItems(newsData);
-        setSelectedCategory(category);
+        
       } else {
         console.error("Invalid response:", response);
       }
@@ -159,11 +158,6 @@ const Homepage = () => {
     setSelectedCategory(category);
     fetchNewsByCategory(category);
   };
-
-  // const handleLogoClick = () => {
-  //   setSelectedCategory(userDefaultCategory);
-  //   fetchNewsByCategory(userDefaultCategory);
-  // };
 
   const handleSaveArticle = (news) => {
     const alreadySaved = userData.savedNews.some((savedNews) => {

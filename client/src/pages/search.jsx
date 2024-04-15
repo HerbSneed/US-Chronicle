@@ -31,49 +31,59 @@ const Search = () => {
     setSearchQuery(query);
   }, [location.search]);
 
-  useEffect(() => {
-    const fetchSearchedNews = async () => {
-      try {
-        let response;
-        response = await axios.get(`api/search?searchQuery=${searchQuery}`);
+useEffect(() => {
+  const fetchSearchedNews = async () => {
+    try {
+      let response;
+      response = await axios.get(`api/search?searchQuery=${searchQuery}`);
 
-         if (response.status !== 200) {
-           console.error("Error in response:", response);
-           return;
-         }
-
-        const headlines = response.data;
-
-        const newsData = headlines.articles
-          .filter((news) => {
-            return (
-              news.urlToImage !== null &&
-              news.title !== "[Removed]" &&
-              news.title !== "null" &&
-              news.status !== "410" &&
-              news.status !== "404"
-            );
-          })
-          .map((news) => ({
-            newsId: news.publishedAt + news.title,
-            title: news.title,
-            image: news.urlToImage,
-            url: news.url,
-            summary: news.description || "Summary not available.",
-            source_country: news.source.name,
-            latest_publish_date: formatDateTime(news.publishedAt),
-          }));
-
-        setNewsItems(newsData);
-      } catch (err) {
-        console.error("Error in fetchNews:", err);
+      if (response.status !== 200) {
+        console.error("Error in response:", response);
+        return;
       }
-    };
 
-    if (searchQuery !== "latest") {
-      fetchSearchedNews();
+      const headlines = response.data;
+
+      const uniqueNewsItems = new Set(); // Use a set to keep track of unique news items
+
+      headlines.articles.forEach((news) => {
+        if (
+          news.urlToImage !== null &&
+          news.title !== "[Removed]" &&
+          news.title !== "null" &&
+          news.status !== "410" &&
+          news.status !== "404"
+        ) {
+          const newsId = news.publishedAt + news.title + news.source.name;
+
+          
+          if (!uniqueNewsItems.has(newsId)) {
+            uniqueNewsItems.add(newsId);
+
+            const formattedNews = {
+              newsId: newsId,
+              title: news.title,
+              image: news.urlToImage,
+              url: news.url,
+              summary: news.description || "Summary not available.",
+              source_country: news.source.name,
+              latest_publish_date: formatDateTime(news.publishedAt),
+            };
+
+            setNewsItems((prevNewsItems) => [...prevNewsItems, formattedNews]);
+          }
+        }
+      });
+    } catch (err) {
+      console.error("Error in fetchNews:", err);
     }
-  }, [searchQuery]);
+  };
+
+  if (searchQuery !== "latest") {
+    fetchSearchedNews();
+  }
+}, [searchQuery]);
+
 
   const handleSaveArticle = (news) => {
     // Call the mutation to save the news

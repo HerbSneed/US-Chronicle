@@ -15,8 +15,8 @@ const CategoryHeader = ({ onCategoryChange, categories = [] }) => {
 
   const handleCategoryClick = (category) => {
     if (isLoggedIn()) {
-      onCategoryChange(category);
       navigate(`/${category}`);
+      onCategoryChange(category);
     } else {
       navigate("/login");
     }
