@@ -1,5 +1,3 @@
-import { DEFAULT_MIN_BREAKPOINT } from 'react-bootstrap/esm/ThemeProvider';
-
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [

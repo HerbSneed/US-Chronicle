@@ -1,7 +1,7 @@
-import React from "react";
+import {memo} from "react";
 import { useCurrentUserContext } from "../context/CurrentUser";
 
-const HeadlineCard = React.memo(({ news, handleSaveArticle}) => {
+const HeadlineCard = memo(({ news, handleSaveArticle}) => {
   const { isLoggedIn } = useCurrentUserContext();
   
   return (

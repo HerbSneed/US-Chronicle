@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
-import { useWindowSize } from "../utils/windowSize";
 import { useQuery, useMutation } from "@apollo/client";
+import axios from "axios";
+import { useNavigate, useLocation } from "react-router-dom";
+
+import { useWindowSize } from "../utils/windowSize";
 import CategoryHeader from "../components/Category-Header";
 import { useCurrentUserContext } from "../context/CurrentUser";
-import axios from "axios";
 import { QUERY_CURRENT_USER } from "../utils/queries";
 import { SAVE_NEWS } from "../utils/mutations";
-import { useNavigate, useLocation } from "react-router-dom";
 import Footer from "../components/Footer";
 import HeadlineCard from "../components/headline-card";
 import MoreHeadlinesCard from "../components/more-headlines-card";
 
 const Homepage = () => {
+  const { get } = axios;
   const [newsItems, setNewsItems] = useState([]);
   const { currentUser, isLoggedIn } = useCurrentUserContext();
   const location = useLocation();
@@ -21,10 +23,12 @@ const Homepage = () => {
   const navigate = useNavigate();
   const link = queryParams.get("link");
   const { width } = useWindowSize();
+  
   const sliceEnd =
     width >= 1536 ? 4 : width >= 1280 ? 4 : width >= 1024 ? 2 : 1;
   const moreNewsSliceEnd =
     width >= 1536 ? 38 : width >= 1280 ? 35 : width >= 1024 ? 15 : 15;
+  
 
   const categories = [
     "Top News",
@@ -48,16 +52,16 @@ const Homepage = () => {
         let response;
 
         if (link) {
-          response = await axios.get(`api/search?searchQuery=${link}`);
+          response = await get(`api/search?searchQuery=${link}`);
         } else if (userData) {
           const userCategory = userData.userDefaultNews;
           setSelectedCategory(userCategory);
-          response = await axios.get(
+          response = await get(
             `api/userheadlines?category=${userCategory}`
           );
 
         } else {
-          response = await axios.get("/api/usheadlines");
+          response = await get("/api/usheadlines");
         }
 
         if (response && response.status === 200) {
@@ -113,9 +117,9 @@ const Homepage = () => {
       let response;
 
       if (category === "Top News") {
-        response = await axios.get("/api/usheadlines");
+        response = await get("/api/usheadlines");
       } else {
-        response = await axios.get(
+        response = await get(
           `/api/categoryheadlines?category=${category}`
         );
       }

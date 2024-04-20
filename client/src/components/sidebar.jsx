@@ -1,4 +1,4 @@
-import React from "react";
+import {memo} from "react";
 import { useCurrentUserContext } from "../context/CurrentUser";
 import { useQuery } from "@apollo/client";
 import { QUERY_CURRENT_USER } from "../utils/queries";
@@ -7,7 +7,7 @@ import { latestLinks, localNewsLinks } from "../utils/categories";
 import { toggleSidebar } from "../utils/sidebarUtils";
 
 
-const Sidebar = React.memo(({ isOpen, setIsSidebarOpen }) => {
+const Sidebar = memo(({ isOpen, setIsSidebarOpen }) => {
   const navigate = useNavigate();
   const { isLoggedIn, logoutUser } = useCurrentUserContext();
   const { currentUser } = useCurrentUserContext();

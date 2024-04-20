@@ -1,7 +1,7 @@
 import { useNavigate, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { toggleSidebar } from "../utils/sidebarUtils";
-import logo from "../../src/assets/images/US-Chronical.webp";
+import logo from "../assets/images/US-Chronical.webp";
 import sidebarIcon from "../assets/images/sidebar-icon.webp";
 import search from "../assets/images/search-icon.webp";
 
@@ -16,7 +16,7 @@ const Header = ({ setIsSidebarOpen }) => {
   const handleSearch = () => {
     setIsSidebarOpen(false);
     navigate(`/search?query=${encodeURIComponent(searchQuery)}`);
-    setSearchQuery(searchQuery);
+    setSearchQuery();
   };
 
   useEffect(() => {
@@ -35,7 +35,11 @@ const Header = ({ setIsSidebarOpen }) => {
   return (
     <>
       <nav className="h-12 sm:h-14 bg-white flex justify-between px-3 border-b border-gray-400 items-center text-neutral-500 hover:text-neutral-700 focus:text-neutral-700 dark:bg-neutral-600">
-        <button className="" onClick={handleSidebarToggle}>
+        <button 
+          className="" 
+          onClick={handleSidebarToggle}
+          rel="preload"
+          >
           <img
             src={sidebarIcon}
             className="w-[30px] sm:w-8"
@@ -43,15 +47,17 @@ const Header = ({ setIsSidebarOpen }) => {
           />
         </button>
 
-
         <img
           src={logo}
-          className="w-[120px] sm:w-36 2xl:w-40"
-          alt="US Chronicle Logo"
+          className="w-[120px] h-[40px] sm:w-36 2xl:w-40"
+          alt="American Chronicle Logo"
+          loading="lazy"
+          rel="preload"
         />
 
-
-        <Link to="/search">
+        <Link 
+          to="/search"
+          rel="preload">
           <img
             src={search}
             className="w-[30px] sm:w-8"

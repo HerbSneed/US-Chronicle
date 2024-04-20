@@ -1,7 +1,7 @@
-import React from "react";
+import {memo} from "react";
 import { useCurrentUserContext } from "../context/CurrentUser";
 
-const DashboardCard = React.memo(({news, handleDeleteNews}) => {
+const DashboardCard = memo(({news, handleDeleteNews}) => {
   const { isLoggedIn } = useCurrentUserContext();
   
   return (
