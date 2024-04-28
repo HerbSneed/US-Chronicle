@@ -1,9 +1,12 @@
-/* eslint-disable func-names */
+// Import necessary modules
 const { Schema, model } = require("mongoose");
+// Bcryps is a password hashing algorithm designed for safe password hashing.
 const bcrypt = require("bcryptjs");
 
+//Import news schema
 const newsSchema = require("./News");
 
+// Define schema for user data
 const userSchema = new Schema({
   firstName: {
     type: String,
@@ -19,6 +22,7 @@ const userSchema = new Schema({
     type: String,
     required: true,
     unique: true,
+    // Validate email format
     match: [/.+@.+\..+/, "Must match an email address!"],
   },
   password: {
@@ -30,7 +34,7 @@ const userSchema = new Schema({
     type: String,
     enum: ["Business", "Entertainment", "Top News", "Health", "Science", "Sports", "Technology"],
   },
-  savedNews: [newsSchema],
+  savedNews: [newsSchema], //Embed news schema as arry of saved user news
   resetPasswordToken: {
     type: String,
     default: null,
@@ -41,6 +45,7 @@ const userSchema = new Schema({
   },
 });
 
+// Hash password before aving
 userSchema.pre("save", async function (next) {
   if (this.isNew || this.isModified("password")) {
     const saltRounds = 10;
@@ -49,10 +54,12 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
+// Method to compare passwords
 userSchema.methods.isCorrectPassword = async function (password) {
   return bcrypt.compare(password, this.password);
 };
 
+//Create User model
 const User = model("User", userSchema);
 
 module.exports = User;

@@ -1,5 +1,7 @@
+// Import Schema from mongoose
 const { Schema } = require('mongoose');
 
+// Define schema fro news Data
 const newsSchema = new Schema ({
     title: {
         type: String,
@@ -36,6 +38,5 @@ const newsSchema = new Schema ({
 
 });
 
-module.exports = newsSchema;
 
-// BASED OFF ENDPOINTS OF SEARCH NEWS FROM WORLD NEWS API
+module.exports = newsSchema;

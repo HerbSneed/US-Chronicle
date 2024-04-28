@@ -4,14 +4,14 @@ const typeDefs = `#graphql
     firstName: String
     lastName: String
     email: String
-    password: String
-    savedNews: [News]
-    userDefaultNews: String
+    password: String # Password should not be queried
+    savedNews: [News] # List of saved news for the user
+    userDefaultNews: String # Default news category for the user
   }
 
   type Auth {
-    token: ID!
-    currentUser: User
+    token: ID! # JWT token for authentication
+    currentUser: User # Current user data
   }
 
   type News {
@@ -39,13 +39,13 @@ const typeDefs = `#graphql
   }
 
   type PasswordResetResponse {
-    success: Boolean!
-    message: String!
+    success: Boolean! # Indicates whether the password reset was successful
+    message: String! # Message related to password reset
   }
 
   type Query {
-    currentUser(email: String!): User
-    news: [News]!
+    currentUser(email: String!): User # Query to get current user by email
+    news: [News]! # Query to get all news
   }
 
   type Mutation {
@@ -55,12 +55,12 @@ const typeDefs = `#graphql
       email: String!
       password: String!
       userDefaultNews: String!
-    ): Auth
-    login(email: String!, password: String!): Auth
-    saveNews(saveNews: NewsInput!): Auth
-    deleteNews(newsId: ID!): User
-    forgotPassword(email: String!): PasswordResetResponse!
-    resetPassword(token: String!, newPassword: String!): PasswordResetResponse!
+    ): Auth # Mutation to register a new user
+    login(email: String!, password: String!): Auth # Mutation to log in user
+    saveNews(saveNews: NewsInput!): Auth # Mutation to save news for a user
+    deleteNews(newsId: ID!): User # Mutation to delete news from a user's saved news
+    forgotPassword(email: String!): PasswordResetResponse! # Mutation to initiate password reset
+    resetPassword(token: String!, newPassword: String!): PasswordResetResponse! # Mutation to reset password
   }
 `;
 
