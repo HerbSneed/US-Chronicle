@@ -1,0 +1,70 @@
+useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let response;
+
+        if (link) {
+          response = await get(`api/search?searchQuery=${link}`);
+        } else if (userData) {
+          const userCategory = userData.userDefaultNews;
+          setSelectedCategory(userCategory);
+          response = await get(
+            `api/userheadlines?category=${userCategory}`
+          );
+
+        } else {
+          response = await get("/api/usheadlines");
+        }
+
+        if (response && response.status === 200) {
+          const headlines = response.data;
+
+          if (typeof isLoggedIn === "function" && !isLoggedIn()) {
+            navigate("/");
+          }
+
+          const filteredNewsData = headlines.articles
+            .filter(
+              (news) =>
+                news.urlToImage !== null &&
+                news.url !== null &&
+                news.title !== "[Removed]" &&
+                news.status !== "410" &&
+                news.status !== "404"
+            )
+            .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
+            .reduce((accumulator, currentNews) => {
+              const newsId = currentNews.publishedAt + currentNews.title + currentNews.source_country;
+              if (!accumulator.some((news) => news.newsId === newsId)) {
+                accumulator.push({
+                  newsId: newsId,
+                  title: currentNews.title,
+                  image: currentNews.urlToImage,
+                  url: currentNews.url,
+                  summary: currentNews.description || "Summary not available.",
+                  source_country: currentNews.source.name,
+                  latest_publish_date: formatDateTime(currentNews.publishedAt),
+                });
+              }
+              return accumulator;
+            }, []);
+
+          setNewsItems(filteredNewsData);
+          if (link) {
+            setSelectedCategory(link);
+          }
+        } else {
+          console.error("Invalid response:", response);
+        }
+      } catch (err) {
+        console.error("Error in fetchData:", err);
+      }
+    };
+
+    fetchData();
+  }, [
+    link, 
+    userData?.userDefaultNews, 
+    isLoggedIn,
+    setSelectedCategory, 
+    navigate]);

@@ -61,7 +61,7 @@ const router = createBrowserRouter(
         }
       />
       <Route
-        path="/sidebar"
+        path="sidebar"
         element={
           <ProtectedRoute>
             <Homepage />

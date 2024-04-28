@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
-
 import { useWindowSize } from "../utils/windowSize";
 import CategoryHeader from "../components/Category-Header";
 import { useCurrentUserContext } from "../context/CurrentUser";
@@ -12,14 +11,15 @@ import Footer from "../components/Footer";
 import HeadlineCard from "../components/headline-card";
 import MoreHeadlinesCard from "../components/more-headlines-card";
 
+
 const Homepage = () => {
   const { get } = axios;
-  const [newsItems, setNewsItems] = useState([]);
   const { currentUser, isLoggedIn } = useCurrentUserContext();
+  const [newsItems, setNewsItems] = useState([]);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const [saveNewsMutation] = useMutation(SAVE_NEWS);
-  const [selectedCategory, setSelectedCategory] = useState("Top News");
+  const [selectedCategory, setSelectedCategory] = useState();
   const navigate = useNavigate();
   const link = queryParams.get("link");
   const { width } = useWindowSize();
@@ -29,7 +29,6 @@ const Homepage = () => {
   const moreNewsSliceEnd =
     width >= 1536 ? 38 : width >= 1280 ? 35 : width >= 1024 ? 15 : 15;
   
-
   const categories = [
     "Top News",
     "Business",
@@ -52,115 +51,83 @@ const Homepage = () => {
         let response;
 
         if (link) {
-          response = await get(`api/search?searchQuery=${link}`);
-        } else if (userData) {
-          const userCategory = userData.userDefaultNews;
-          setSelectedCategory(userCategory);
-          response = await get(
-            `api/userheadlines?category=${userCategory}`
-          );
+          response = await get(`/api/search?searchQuery=${link}`);
+          setSelectedCategory(link);
 
-        } else {
+        } else if (selectedCategory === "Top News") {
           response = await get("/api/usheadlines");
+
+        } else if (userData?.userDefaultNews && !selectedCategory) {
+          setSelectedCategory(userData.userDefaultNews);
+          response = await get(`/api/userheadlines?category=${userData.userDefaultNews}`);
+      } else {
+        response = await get(`/api/categoryheadlines?category=${selectedCategory}`);
+      }
+        
+
+      if (response && response.status === 200) {
+        const headlines = response.data;
+
+        if (typeof isLoggedIn === "function" && !isLoggedIn()) {
+          navigate("/");
         }
 
-        if (response && response.status === 200) {
-          const headlines = response.data;
+        const filteredNewsData = headlines.articles
+          .filter(
+            (news) =>
+              news.urlToImage !== null &&
+              news.url !== null &&
+              news.title !== "[Removed]" &&
+              news.status !== "410" &&
+              news.status !== "404"
+          )
+          .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
+          .reduce((accumulator, currentNews) => {
+            const newsId =
+              currentNews.publishedAt +
+              currentNews.title +
+              currentNews.source_country;
+            if (!accumulator.some((news) => news.newsId === newsId)) {
+              accumulator.push({
+                newsId: newsId,
+                title: currentNews.title,
+                image: currentNews.urlToImage,
+                url: currentNews.url,
+                summary: currentNews.description || "Summary not available.",
+                source_country: currentNews.source.name,
+                latest_publish_date: formatDateTime(currentNews.publishedAt),
+              });
+            }
+            return accumulator;
+          }, []);
 
-          if (typeof isLoggedIn === "function" && !isLoggedIn()) {
-            navigate("/");
-          }
-
-          const filteredNewsData = headlines.articles
-            .filter(
-              (news) =>
-                news.urlToImage !== null &&
-                news.url !== null &&
-                news.title !== "[Removed]" &&
-                news.status !== "410" &&
-                news.status !== "404"
-            )
-            .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
-            .reduce((accumulator, currentNews) => {
-              const newsId = currentNews.publishedAt + currentNews.title + currentNews.source_country;
-              if (!accumulator.some((news) => news.newsId === newsId)) {
-                accumulator.push({
-                  newsId: newsId,
-                  title: currentNews.title,
-                  image: currentNews.urlToImage,
-                  url: currentNews.url,
-                  summary: currentNews.description || "Summary not available.",
-                  source_country: currentNews.source.name,
-                  latest_publish_date: formatDateTime(currentNews.publishedAt),
-                });
-              }
-              return accumulator;
-            }, []);
-
-          setNewsItems(filteredNewsData);
-          if (link) {
-            setSelectedCategory(link);
-          }
-        } else {
-          console.error("Invalid response:", response);
+        setNewsItems(filteredNewsData);
+        if (link) {
+          setSelectedCategory(link);
         }
+      } else {
+        console.error("Invalid response:", response);
+      }
       } catch (err) {
         console.error("Error in fetchData:", err);
       }
     };
 
     fetchData();
-  }, [link, userData, isLoggedIn, navigate]);
+  }, [
+    link,
+    userData,
+    isLoggedIn,
+    selectedCategory,
+    setSelectedCategory, 
+    get,
+    navigate]
+  );
 
-  const fetchNewsByCategory = async (category) => {
-    try {
-      let response;
-
-      if (category === "Top News") {
-        response = await get("/api/usheadlines");
-      } else {
-        response = await get(
-          `/api/categoryheadlines?category=${category}`
-        );
-      }
-
-      if (response.status === 200) {
-        const headlines = response.data;
-
-        const newsData = headlines.articles
-          .filter((news) => {
-            return (
-              news.urlToImage !== null &&
-              news.title !== "[Removed]" &&
-              news.status !== "410" &&
-              news.status !== "404"
-            );
-          })
-          .map((news) => ({
-            newsId: news.publishedAt + news.title,
-            title: news.title,
-            image: news.urlToImage,
-            url: news.url,
-            summary: news.description || "Summary not available.",
-            source_country: news.source.name,
-            latest_publish_date: formatDateTime(news.publishedAt),
-          }));
-
-
-        setNewsItems(newsData);
-        
-      } else {
-        console.error("Invalid response:", response);
-      }
-    } catch (err) {
-      console.error("Error in fetchNewsByCategory:", err);
-    }
-  };
 
   const handleCategoryChange = async (category) => {
     if (category === selectedCategory) return;
     setSelectedCategory(category);
-    fetchNewsByCategory(category);
   };
 
   const handleSaveArticle = (news) => {

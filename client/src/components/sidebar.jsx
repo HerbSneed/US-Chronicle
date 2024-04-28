@@ -44,16 +44,17 @@ const Sidebar = memo(({ isOpen, setIsSidebarOpen }) => {
     ));
   };
 
-  const handleHomepageClick = () => {
-    if (isLoggedIn()) {
+  const handleHomepageClick =  async() => {
+    try {
       const userCategory = userData?.userDefaultNews?.trim();
-      if (userCategory) {
-        navigate(`/${userCategory}`);
-      } else {
-        console.error("User category not found");
-      }
-    } else {
-      navigate("/");
+      const path = isLoggedIn()
+      ? `/${userCategory}`
+      : "/";
+      await navigate(path);
+      setIsSidebarOpen(false);
+      window.location.reload(); 
+    } catch(error) {
+      console.error(error)
     }
   };
 
@@ -65,7 +66,7 @@ const Sidebar = memo(({ isOpen, setIsSidebarOpen }) => {
     <>
       <div
         id="drawer-navigation"
-        className={`fixed top-0 left-0 z-40 w-full h-screen p-4 overflow-y-auto transition-transform shadow-xl ${
+        className={`fixed top-0 left-0 z-40 w-full md:w-1/2 xl:w-1/3 h-screen p-4 overflow-y-auto transition-transform shadow-xl ${
           isOpen ? "" : "-translate-x-full"
         } bg-white dark:bg-gray-800`}
         tabIndex="-1"

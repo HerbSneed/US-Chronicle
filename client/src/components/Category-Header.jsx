@@ -13,12 +13,15 @@ const CategoryHeader = ({ onCategoryChange, categories = [] }) => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const handleCategoryClick = (category) => {
-    if (isLoggedIn()) {
-      navigate(`/${category}`);
+  const handleCategoryClick = async(category) => {
+    try {
+      const path = isLoggedIn()
+      ? `/category=${encodeURIComponent(category)}`
+      : "/login";
       onCategoryChange(category);
-    } else {
-      navigate("/login");
+      await navigate(path);
+    } catch(error) {
+      console.error(error);
     }
   };
 

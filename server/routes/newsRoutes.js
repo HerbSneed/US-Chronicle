@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const newsController = require('../controllers/newsController');
+const { FetchError } = require('node-fetch');
 
 router.get('/search', async (req, res) => {
  const { searchQuery } = req.query;
@@ -39,6 +40,7 @@ router.get('/usheadlines', async (req, res) => {
   }
  }
 });
+
 
 router.get('/categoryheadlines', async (req, res) => {
  const { category } = req.query;

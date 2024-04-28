@@ -9,7 +9,8 @@ const Header = ({ setIsSidebarOpen }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
-  const handleSidebarToggle = () => {
+  const handleSidebarToggle = (event) => {
+    event.preventDefault();
     toggleSidebar(setIsSidebarOpen);
   };
 
