@@ -1,7 +1,9 @@
+// Define categories for news selection
 export const categories = ["Select a category",
   "Top News", "Business", "Entertainment", "Health", "Science", "Sports", "Technology"
 ];
 
+// Define links for latest news in specific categories
 export const latestLinks = [
   { label: "Politics", query: "Political" },
   { label: "Crime", query: "Crime" },
@@ -11,6 +13,7 @@ export const latestLinks = [
   { label: "Arts & Culture", query: "Arts & Culture" },
 ];
 
+// Define links for local news in specific locations
 export const localNewsLinks = [
   { label: "New York, NY", query: "New York, NY" },
   { label: "Los Angeles, CA", query: "Los Angeles, CA" },

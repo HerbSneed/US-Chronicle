@@ -3,7 +3,7 @@ import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import styles from "../Dashboard.module.css";
 import { useMutation } from "@apollo/client";
-import { SAVE_NEWS } from "../utils/mutations";
+import { SAVE_NEWS } from "../client/src/utils/mutations";
 
 const MAPBOX_TOKEN =
   "pk.eyJ1Ijoic3dteXRob3MiLCJhIjoiY2xsbXc5MmE1MDRjMjNla3F6bDhueTV5OSJ9.cu9Y3UeEMkFTX45o0UDaSw";

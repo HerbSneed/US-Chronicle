@@ -1,5 +1,6 @@
 import { gql } from "@apollo/client";
 
+// Query to get current user's information
 export const QUERY_CURRENT_USER = gql`
   query getCurrentUser($email: String!) {
     currentUser(email: $email) {
@@ -23,6 +24,7 @@ export const QUERY_CURRENT_USER = gql`
   }
 `;
 
+// Query to get news
 export const QUERY_NEWS = gql`
   query getNews {
     news {

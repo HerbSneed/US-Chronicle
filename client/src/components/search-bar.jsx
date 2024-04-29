@@ -1,23 +1,31 @@
-// SearchBar.jsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+// SearchBar component
 const SearchBar = ({ isSidebarOpen, setIsSidebarOpen }) => {
+  // State for search query
   const [searchQuery, setSearchQuery] = useState("");
+  // Hook for navigation
   const navigate = useNavigate();
 
+  // Function to toggle sidebar state
   const handleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  // Function to handle search
   const handleSearch = () => {
-      navigate(`/search?query=${encodeURIComponent(searchQuery)}`);
+    // Navigate to search page with query parameter
+    navigate(`/search?query=${encodeURIComponent(searchQuery)}`);
   };
 
+  // Function to handle search and sidebar
   const handleSearchAndSidebar = () => {
+    // Perform search
     handleSearch();
+    // Toggle sidebar
     handleSidebar();
-  }
+  };
 
   return (
     <>

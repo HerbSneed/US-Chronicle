@@ -9,22 +9,28 @@ const CategoryHeader = ({ onCategoryChange, categories = [] }) => {
   const navigate = useNavigate();
   const { isLoggedIn } = useCurrentUserContext();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  // Function to toggle the sidebar
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const handleCategoryClick = async(category) => {
+  // Function to handle category click
+  const handleCategoryClick = async (category) => {
     try {
+      // If user is logged in, navigate to the category page
+      // Otherwise, navigate to the login page
       const path = isLoggedIn()
-      ? `/category=${encodeURIComponent(category)}`
-      : "/login";
+        ? `/category=${encodeURIComponent(category)}`
+        : "/login";
       onCategoryChange(category);
       await navigate(path);
-    } catch(error) {
+    } catch (error) {
       console.error(error);
     }
   };
 
+  // Settings for the slider component
   const sliderSettings = {
     className: "slider px-10",
     dots: false,

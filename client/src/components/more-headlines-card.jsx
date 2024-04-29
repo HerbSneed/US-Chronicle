@@ -1,9 +1,11 @@
-import {memo} from "react";
+import { memo } from "react";
 import { useCurrentUserContext } from "../context/CurrentUser";
 
-const MoreHeadlinesCard = memo(({ news, handleSaveArticle, isLastItem}) => {
+// MoreHeadlinesCard component
+const MoreHeadlinesCard = memo(({ news, handleSaveArticle, isLastItem }) => {
+  // Get the isLoggedIn function from the CurrentUserContext
   const { isLoggedIn } = useCurrentUserContext();
-  
+
   return (
     <>
       <div

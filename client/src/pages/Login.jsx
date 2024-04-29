@@ -18,44 +18,54 @@ export default function Login() {
   const [resetEmail, setResetEmail] = useState("");
   const [resetFeedback, setResetFeedback] = useState(null);
 
+  // Mutation hooks
   const [login, { error }] = useMutation(LOGIN_USER);
   const [forgotPassword] = useMutation(FORGOT_PASSWORD);
 
+  // Function to handle login form submission
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     try {
-      const mutationResponse = await login({
+      const { data } = await login({
         variables: {
           email: formState.email,
           password: formState.password,
         },
       });
-      const { token, currentUser } = mutationResponse.data.login;
+      const { token, currentUser } = data.login;
+      // Call the function to update user context
       loginUser(currentUser, token);
+      // Set token in local storage
       Auth.login(token);
+      // Redirect user to the home page
       navigate("/");
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      console.error("Login error:", error);
     }
   };
 
+  // Function to handle input changes
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormState({ ...formState, [name]: value });
   };
 
+  // Function to handle forgot password
   const handleForgotPassword = async () => {
     try {
       const { data } = await forgotPassword({
         variables: { email: resetEmail },
       });
       if (data.forgotPassword.success) {
+        // Set feedback for successful password reset
         setResetFeedback(data.forgotPassword.message);
       } else {
+        // Set feedback for failed password reset
         setResetFeedback("Failed to send reset email. Please try again!");
       }
-    } catch (err) {
-      console.error("There was an issue resetting the password: ", err);
+    } catch (error) {
+      console.error("Forgot password error:", error);
+      // Set feedback for error during password reset
       setResetFeedback("An error occurred. Please try again!");
     }
   };

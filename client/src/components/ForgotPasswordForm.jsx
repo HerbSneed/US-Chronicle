@@ -5,32 +5,35 @@ import { FORGOT_PASSWORD } from "../utils/mutations";
 
 export default function ForgotPassword() {
   const navigate = useNavigate();
-  const [resetEmail, setResetEmail] = useState("");
-  const [resetFeedback, setResetFeedback] = useState(null);
-  const [forgotPassword] = useMutation(FORGOT_PASSWORD);
+  const [resetEmail, setResetEmail] = useState(""); // State to store the email for password reset
+  const [resetFeedback, setResetFeedback] = useState(null); // State to store feedback after password reset
+  const [forgotPassword] = useMutation(FORGOT_PASSWORD); // Mutation hook for password reset
 
+  // Function to handle password reset
   const handleForgotPassword = async () => {
-    console.log("Email to reset:", resetEmail);
+    console.log("Email to reset:", resetEmail); // Log the email for reset
 
     try {
-      console.log("Sending password reset request for:", resetEmail);
+      console.log("Sending password reset request for:", resetEmail); // Log sending reset request
       const { data } = await forgotPassword({
-        variables: { email: resetEmail },
+        variables: { email: resetEmail }, // Pass email to the mutation
       });
 
+      // If reset is successful
       if (data.forgotPassword.success) {
-        setResetFeedback(data.forgotPassword.message);
+        setResetFeedback(data.forgotPassword.message); // Set feedback message
 
         // Navigate to the login page after 3 seconds
         setTimeout(() => {
           navigate("/login");
         }, 3000);
       } else {
+        // If reset fails, set error feedback
         setResetFeedback("Failed to send reset email. Please try again!");
       }
     } catch (err) {
-      console.error("Error resetting password:", err.message || err);
-      setResetFeedback("An error occurred. Please try again!");
+      console.error("Error resetting password:", err.message || err); // Log error message
+      setResetFeedback("An error occurred. Please try again!"); // Set error feedback
     }
   };
 

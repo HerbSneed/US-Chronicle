@@ -1,12 +1,15 @@
-import {memo} from "react";
+import { memo } from "react";
 import { useCurrentUserContext } from "../context/CurrentUser";
 
+// Memoized SearchResultsCard component
 const SearchResultsCard = memo(({ news, handleSaveArticle }) => {
+  // Access isLoggedIn function from CurrentUserContext
   const { isLoggedIn } = useCurrentUserContext();
 
-    if (!news) {
-      return null; 
-    }
+  // If news is null, return null
+  if (!news) {
+    return null;
+  }
 
   return (
     <>

@@ -9,6 +9,7 @@ const RegistrationForm = () => {
   const { loginUser } = useCurrentUserContext();
   const navigate = useNavigate();
 
+  // State to manage form input values and errors
   const [formState, setFormState] = useState({
     firstName: "",
     lastName: "",
@@ -16,10 +17,12 @@ const RegistrationForm = () => {
     password: "",
     userDefaultNews: "Select a category",
   });
-
   const [errors, setErrors] = useState({});
+
+  // Mutation hook for registration
   const [register] = useMutation(REGISTER_USER);
 
+  // Function to handle registration response
   const handleRegistrationResponse = (
     alreadyRegistered,
     currentUser,
@@ -38,15 +41,18 @@ const RegistrationForm = () => {
     }
   };
 
+  // Function to handle input changes
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormState({ ...formState, [name]: value });
     setErrors({ ...errors, [name]: "" });
   };
 
+  // Function to handle form submission
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
+    // Validation for required fields
     const requiredFields = [
       "firstName",
       "lastName",
@@ -64,11 +70,13 @@ const RegistrationForm = () => {
 
     setErrors(fieldErrors);
 
+    // If there are errors, return without submitting
     if (Object.keys(fieldErrors).length > 0) {
       return;
     }
 
     try {
+      // Prepare variables for registration mutation
       let variables = {
         firstName: formState.firstName,
         lastName: formState.lastName,
@@ -77,20 +85,25 @@ const RegistrationForm = () => {
         userDefaultNews: formState.userDefaultNews,
       };
 
+      // If the default news category is not selected, alert the user
       if (formState.userDefaultNews === "Select a category") {
         variables.selectedCategory = formState.selectedCategory;
         alert("Please select a default news category");
       }
 
+      // Perform registration mutation
       const mutationResponse = await register({
         variables: variables,
       });
 
+      // Extract data from mutation response
       const { token, currentUser, alreadyRegistered } =
         mutationResponse.data.register;
 
+      // Handle registration response
       handleRegistrationResponse(alreadyRegistered, currentUser, token);
     } catch (error) {
+      // Handle registration errors
       if (error.message.includes("E11000 duplicate key error collection")) {
         handleRegistrationResponse(true, null, null, error);
       } else {

@@ -8,8 +8,8 @@ import {
   getSportsHeadlines,
   getTechnologyHeadlines,
 } from "../utils/news-api";
-import CategoryHeader from "../components/Category-Header";
-import Footer from "../components/Footer";
+import CategoryHeader from "../client/src/components/Category-Header";
+import Footer from "../client/src/components/Footer";
 
 const Landing = () => {
   const [newsItems, setNewsItems] = useState([]);

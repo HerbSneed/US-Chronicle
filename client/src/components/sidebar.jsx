@@ -1,4 +1,4 @@
-import {memo} from "react";
+import { memo } from "react";
 import { useCurrentUserContext } from "../context/CurrentUser";
 import { useQuery } from "@apollo/client";
 import { QUERY_CURRENT_USER } from "../utils/queries";
@@ -6,7 +6,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { latestLinks, localNewsLinks } from "../utils/categories";
 import { toggleSidebar } from "../utils/sidebarUtils";
 
-
+// Memoized Sidebar component
 const Sidebar = memo(({ isOpen, setIsSidebarOpen }) => {
   const navigate = useNavigate();
   const { isLoggedIn, logoutUser } = useCurrentUserContext();
@@ -18,6 +18,7 @@ const Sidebar = memo(({ isOpen, setIsSidebarOpen }) => {
 
   const userData = data?.currentUser || null;
 
+  // Handle click on the latest news category
   const handleLatestClick = async ({ query }) => {
     try {
       const path = isLoggedIn()
@@ -30,6 +31,7 @@ const Sidebar = memo(({ isOpen, setIsSidebarOpen }) => {
     }
   };
 
+  // Render the list of links
   const renderLinks = (links) => {
     return links.map((link) => (
       <li key={link.label}>
@@ -44,20 +46,20 @@ const Sidebar = memo(({ isOpen, setIsSidebarOpen }) => {
     ));
   };
 
-  const handleHomepageClick =  async() => {
+  // Handle click on the homepage link
+  const handleHomepageClick = async () => {
     try {
       const userCategory = userData?.userDefaultNews?.trim();
-      const path = isLoggedIn()
-      ? `/${userCategory}`
-      : "/";
+      const path = isLoggedIn() ? `/${userCategory}` : "/";
       await navigate(path);
       setIsSidebarOpen(false);
-      window.location.reload(); 
-    } catch(error) {
-      console.error(error)
+      window.location.reload(); // Refresh the page
+    } catch (error) {
+      console.error(error);
     }
   };
 
+  // Handle closing the sidebar
   const handleCloseSidebar = () => {
     setIsSidebarOpen(false);
   };
