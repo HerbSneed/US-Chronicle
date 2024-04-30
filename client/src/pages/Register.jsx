@@ -117,7 +117,7 @@ const RegistrationForm = () => {
       <form
         id="registration-form"
         onSubmit={handleFormSubmit}
-        className="px-6 pt-2 mx-4 h-5/6 my-3 mx-auto sm:w-3/5 md:w-2/4 lg:w-2/5 xl:w-2/6 2xl:w-2/6"
+        className="px-6 pt-2 mx-4 h-screen my-3 mx-auto sm:w-3/5 md:w-2/4 lg:w-2/5 xl:w-2/6 2xl:w-2/6"
       >
         <div className="text-left">
           <h1 className="text-[36px] -mb-3 font-bold font-[Newsreader]">

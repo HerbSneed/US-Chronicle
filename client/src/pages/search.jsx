@@ -27,7 +27,7 @@ const Search = () => {
     width >= 1536
       ? 42
       : width >= 1280
-        ? 28
+        ? 42
         : width >= 1024
           ? 28
           : width >= 768
@@ -173,7 +173,7 @@ const Search = () => {
               Search Results
             </h1>
 
-            <div className="grid grid-cols-1  sm:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3">
+            <div className="grid grid-cols-1  sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
               {newsItems.slice(0, sliceEnd).map((news) => (
                 <SearchResultsCard
                   key={news.newsId}

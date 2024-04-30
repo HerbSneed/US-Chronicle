@@ -4,6 +4,7 @@ import { useMutation, useQuery } from "@apollo/client"; // Importing hooks for G
 import { QUERY_CURRENT_USER } from "../utils/queries"; // Importing GraphQL query for current user data
 import { DELETE_NEWS } from "../utils/mutations"; // Importing GraphQL mutation for deleting news
 import DashboardCard from "../components/dashboard-card"; // Importing DashboardCard component
+import Footer from "../components/Footer"
 
 // Dashboard component
 const Dashboard = () => {
@@ -60,7 +61,7 @@ const Dashboard = () => {
       {/* Dashboard layout */}
       <div
         key={userData?.firstName}
-        className="relative bg-gray-200 pb-5 min-h-screen px-5 mx-auto w-[100%]"
+        className="relative bg-white pb-5 min-h-screen px-5 mx-auto w-[100%]"
       >
         {/* Dashboard header */}
         <h1 className="text-center text-3xl xl:text-4xl font-[newsReader] font-bold pt-1  drop-shadow-lg text-blue-600">
@@ -101,6 +102,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 };

@@ -81,7 +81,7 @@ export default function Login() {
       <form
         id="login-form"
         onSubmit={handleFormSubmit}
-        className="p-6 rounded mx-4 h-5/6 my-5 mx-auto sm:w-3/5 md:w-2/4 lg:w-2/5 xl:w-2/6 2xl:w-2/6"
+        className="p-6 rounded mx-4 h-screen my-5 mx-auto sm:w-3/5 md:w-2/4 lg:w-2/5 xl:w-2/6 2xl:w-2/6"
       >
         <div className="text-left">
           <h1 className="text-4xl -mb-2 font-bold font-[Newsreader]">Log In</h1>

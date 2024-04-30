@@ -58,7 +58,7 @@ const Homepage = () => {
         if (link) {
           response = await get(`/api/search?searchQuery=${link}`);
           setSelectedCategory(link);
-        } else if (selectedCategory === "Top News") {
+        } else if (!isLoggedIn()) {
           // Fetch top news headlines
           response = await get("/api/usheadlines");
         } else if (userData?.userDefaultNews && !selectedCategory) {

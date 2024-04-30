@@ -21,7 +21,7 @@ const DashboardCard = memo(({ news, handleDeleteNews }) => {
         </h2>
 
         {isLoggedIn() && (
-          <div className="flex text-sm sm:text-md 2xl:text-lg pb-1 py-1 mx-3 -mt-1 sm:mt-0 2xl:-mt-1.5">
+          <div className="flex text-sm sm:text-md 2xl:text-md pb-1 py-1 mx-3 -mt-1 -sm:mt-0 2xl:-mt-1.5">
             <a
               href={news.url}
               target="_blank"
