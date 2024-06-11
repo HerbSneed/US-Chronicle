@@ -1,5 +1,4 @@
 // Import necessary modules and styles
-import Search from "../src/pages/search";
 import "./App.css";
 import {
   ApolloClient,
