@@ -18,7 +18,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ResetPassword from "./pages/ResetPassword";
 import ProtectedRoute from "./components/ProtectedRoute";
-import ForgotPassword from "./pages/ForgotPassword";
+import ForgotPassword from "./pages/forgotPassword";
 import Search from "./pages/Search";
 
 // Create router with routes
