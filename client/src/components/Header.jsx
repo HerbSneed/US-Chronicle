@@ -51,13 +51,19 @@ const Header = ({ setIsSidebarOpen }) => {
           />
         </button>
 
-        <img
-          src={logo}
-          className="w-[120px] h-[40px] sm:w-36 2xl:w-40"
-          alt="American Chronicle Logo"
-          loading="lazy"
+        <Link
+          to="/"
           rel="preload"
-        />
+          onClick={() => console.log("Homepage icon clicked")}
+        >
+          <img
+            src={logo}
+            className="w-[120px] h-[40px] sm:w-36 2xl:w-40"
+            alt="American Chronicle Logo"
+            loading="lazy"
+            rel="preload"
+          />
+        </Link>
 
         <Link to="/search" rel="preload">
           <img

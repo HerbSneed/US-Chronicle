@@ -21,7 +21,7 @@ const CategoryHeader = ({ onCategoryChange, categories = [] }) => {
       // If user is logged in, navigate to the category page
       // Otherwise, navigate to the login page
       const path = isLoggedIn()
-        ? `/category=${encodeURIComponent(category)}`
+        ? `/category?category=${encodeURIComponent(category)}`
         : "/login";
       onCategoryChange(category);
       await navigate(path);
@@ -32,20 +32,22 @@ const CategoryHeader = ({ onCategoryChange, categories = [] }) => {
 
   // Settings for the slider component
   const sliderSettings = {
-    className: "slider px-10",
+    className: "slider pt-2",
     dots: false,
     infinite: true,
     speed: 500,
     slidesToShow: 7,
     slidesToScroll: 0,
-    arrows: true,
+    centerPadding: 100,
+    swipetoSlie: true,
+    arrows: false,
     responsive: [
       {
         breakpoint: 1280,
         settings: {
-          className: "px-8",
-          slidesToShow: 5,
-          slidesToScroll: 2,
+          className: "",
+          slidesToShow: 6,
+          slidesToScroll: 1,
           infinite: true,
           dots: false,
         },
@@ -53,9 +55,9 @@ const CategoryHeader = ({ onCategoryChange, categories = [] }) => {
       {
         breakpoint: 1024,
         settings: {
-          className: "px-6",
+          className: "",
           slidesToShow: 4,
-          slidesToScroll: 3,
+          slidesToScroll: 1,
           infinite: true,
           dots: false,
         },
@@ -63,9 +65,9 @@ const CategoryHeader = ({ onCategoryChange, categories = [] }) => {
       {
         breakpoint: 768,
         settings: {
-          className: "px-4",
+          className: "",
           slidesToShow: 4,
-          slidesToScroll: 3,
+          slidesToScroll: 1,
           infinite: true,
           dots: false,
         },
@@ -73,9 +75,9 @@ const CategoryHeader = ({ onCategoryChange, categories = [] }) => {
       {
         breakpoint: 640,
         settings: {
-          className: "px-3",
+          className: "",
           slidesToShow: 3,
-          slidesToScroll: 3,
+          slidesToScroll: 1,
           infinite: true,
           dots: false,
         },
@@ -83,9 +85,9 @@ const CategoryHeader = ({ onCategoryChange, categories = [] }) => {
       {
         breakpoint: 361,
         settings: {
-          className: "px-3",
+          className: "",
           slidesToShow: 2,
-          slidesToScroll: 3,
+          slidesToScroll: 1,
           infinite: true,
           dots: false,
         },
@@ -95,22 +97,24 @@ const CategoryHeader = ({ onCategoryChange, categories = [] }) => {
 
   return (
     <>
-      <Slider {...sliderSettings}>
-        {categories.map((category, index) => (
-          <button
-            className="text-blue-600 bg-white hover:bg-blue-300 font-bold rounded-lg text-md sm:text-lg lg:text-xl"
-            key={index}
-            onClick={() => {
-              handleCategoryClick(category);
-              if (isSidebarOpen) {
-                toggleSidebar();
-              }
-            }}
-          >
-            {category}
-          </button>
-        ))}
-      </Slider>
+      <div className="w-full px-5">
+        <Slider {...sliderSettings}>
+          {categories.map((category, index) => (
+            <button
+              className="cursor-pointer text-center text-blue-600 bg-white focus:text-newsRed focus:italic hover:text-newsRed  font-bold rounded-lg text-md sm:text-lg lg:text-xl"
+              key={index}
+              onClick={() => {
+                handleCategoryClick(category);
+                if (isSidebarOpen) {
+                  toggleSidebar();
+                }
+              }}
+            >
+              {category}
+            </button>
+          ))}
+        </Slider>
+      </div>
     </>
   );
 };

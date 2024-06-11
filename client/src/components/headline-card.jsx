@@ -12,20 +12,20 @@ const HeadlineCard = memo(({ news, handleSaveArticle }) => {
         <div className={`${news.index === 0 ? "" : ""}`}>
           {news.image && (
             <img
-              className="w-full rounded-sm mt-1 shadow-md"
+              className="w-full rounded-sm mt-1.5 shadow-md"
               src={news.image}
               alt={`Image for ${news.title}`}
             />
           )}
 
           <div className="mt-1">
-            <h1 className="text-xs md:text-sm lg:text-md text-gray-900">
+            <h2 className="text-xs md:text-sm lg:text-md text-gray-900">
               {news.latest_publish_date}
-            </h1>
-
-            <h2 className="font-bold text-gray-900 leading-7 text-[25px] sm:text-[27px] md:text-[32px]">
-              {news.title}
             </h2>
+
+            <h1 className="font-bold text-gray-900 leading-7 md:leading-8 text-[25px] sm:text-[27px] md:text-[32px]">
+              {news.title}
+            </h1>
             <p className="mt-0.5 text-xl leading-5">{news.summary}</p>
 
             {isLoggedIn() && (

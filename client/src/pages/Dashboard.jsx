@@ -61,17 +61,19 @@ const Dashboard = () => {
       {/* Dashboard layout */}
       <div
         key={userData?.firstName}
-        className="relative bg-white pb-5 min-h-screen px-5 mx-auto w-[100%]"
+        className="relative bg-white border-t-[1px] border-gray-400 min-h-screen px-5 mx-auto w-[100%]"
       >
         {/* Dashboard header */}
-        <h1 className="text-center text-3xl xl:text-4xl font-[newsReader] font-bold pt-1  drop-shadow-lg text-blue-600">
+        <h1 className="text-center text-3xl xl:text-4xl font-[newsReader] font-bold p-3 mt-1 drop-shadow-lg text-blue-600">
           {userData.firstName}&apos;s Dashboard
         </h1>
 
         {/* Message for empty saved articles */}
-        <h2 className="font-bold font-[newsReader] mt-0 drop-shadow-lg text-center text-2xl 2xl:text-2xl text-red-700">
-          {userData?.savedNews.length < 1 ? "You have no saved articles" : null}
-        </h2>
+        <h1
+          className={`font-bold font-[newsReader] -mt-3 drop-shadow-lg text-center text-2xl xl:text-3xl text-red-700 ${userData?.savedNews.length > 0 ? "hidden" : ""}`}
+        >
+          You have no saved articles
+        </h1>
 
         {/* Saved news cards */}
         <div className="top-0 w-full ">

@@ -16,7 +16,7 @@ function Footer() {
           alt="US Chronical Icon"
         />
         <p className="text-white text-center text-xs sm:text-sm mt-1 sm:mt-2">
-          Copyright ©2030 US Chronical Inc. All rights reserved.
+          Copyright ©2024 US Chronical Inc. All rights reserved.
         </p>
 
         <div className="flex flex-row w-[100px] mt-1 sm:mt-3 sm:w-2/12 md:w-[110px] lg:w-[110px] xl:w-[110px] 2xl:w-[110px] justify-center space-x-3 ">

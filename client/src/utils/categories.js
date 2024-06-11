@@ -53,4 +53,14 @@ export const localNewsLinks = [
   { label: "San Jose, CA", query: "San Jose, CA" },
 ];
 
+// export const categories = [
+//   { label: "Top News", query: "Top News" },
+//   { label: "Business", query: "Business" },
+//   { label: "Entertainment", query: "Entertainment" },
+//   { label: "Health", query: "Health" },
+//   { label: "Science", query: "Science" },
+//   { label: "Sports", query: "Sports" },
+//   { label: "Technology", query: "Technology" },
+// ];
+
 

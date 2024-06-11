@@ -8,11 +8,13 @@ import {
   createHttpLink,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
+
 import { useCookies } from "react-cookie";
 import Header from "./components/Header";
 import Sidebar from "./components/sidebar";
 import { Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useNavigate} from "react-router-dom";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -22,6 +24,8 @@ function App({ children }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   // Get cookies (including auth token) using react-cookie
   const [cookies] = useCookies(["auth_token"]);
+  const [selectedCategory, setSelectedCategory] = useState("Top News");
+  const navigate = useNavigate();
 
   // Create HTTP link for Apollo Client
   const httpLink = createHttpLink({
@@ -46,7 +50,7 @@ function App({ children }) {
   useEffect(() => {
     const handleDocumentClick = (event) => {
       const header = document.querySelector("nav");
-      if (!header.contains(event.target) && setIsSidebarOpen) {
+      if (!header.contains(event.target) && isSidebarOpen) {
         setIsSidebarOpen(false);
       }
     };
@@ -56,7 +60,7 @@ function App({ children }) {
     return () => {
       document.removeEventListener("click", handleDocumentClick);
     };
-  }, [setIsSidebarOpen]);
+  }, [isSidebarOpen]);
 
   // Render the app
   return (
@@ -71,6 +75,7 @@ function App({ children }) {
         <Outlet>
           <Search />
         </Outlet>
+
         {/* Render children components */}
         {children}
       </main>

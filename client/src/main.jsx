@@ -48,7 +48,7 @@ const router = createBrowserRouter(
         }
       />
       <Route
-        path=":category"
+        path="category"
         element={
           <ProtectedRoute>
             <Homepage />
