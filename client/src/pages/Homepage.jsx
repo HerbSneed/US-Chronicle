@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useWindowSize } from "../utils/windowSize";
 import { useCurrentUserContext } from "../context/CurrentUser";
 import { QUERY_CURRENT_USER } from "../utils/queries";
+import { SAVE_NEWS } from "../utils/mutations";
 import Footer from "../components/Footer";
 import HeadlineCard from "../components/headline-card";
 import MoreHeadlinesCard from "../components/more-headlines-card";
@@ -19,6 +20,7 @@ const Homepage = () => {
   const navigate = useNavigate();
   const { width } = useWindowSize();
   const [selectedCategory, setSelectedCategory] = useState("Top News");
+  const [saveNewsMutation] = useMutation(SAVE_NEWS);
 
   const sliceEnd =
     width >= 1536 ? 4 : width >= 1280 ? 4 : width >= 1024 ? 2 : 1;
@@ -239,7 +241,7 @@ const Homepage = () => {
         >
           <h1
             id="mainHeadlineHeader"
-            className="text-4xl sm:text-5xl 2xl:text-[55px] text-blue-600 font-[Newsreader] ml-0 mt-2 lg:mt-2 xl:mt-2 mb-1 lg:-mb-0 xl:-mb-4 2xl:ml-0 font-semibold drop-shadow-lg"
+            className="text-5xl 2xl:text-[55px] text-blue-600 font-[Newsreader] ml-0 mt-2 lg:mt-2 xl:mt-2 mb-0 lg:-mb-0 xl:-mb-4 2xl:ml-0 font-semibold drop-shadow-lg"
           >
             {selectedCategory}
           </h1>

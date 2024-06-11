@@ -8,11 +8,11 @@ function Footer() {
     <>
       <footer
         id="footer-section"
-        className="w-full bg-black h-32 sm:h-34 justify-center flex flex-col items-center z-50"
+        className="w-full bg-black flex  justify-center flex-col items-center z-50 h-40"
       >
         <img
           src={whiteLogo}
-          className="w-32 h-10 overflow-hidden -mt-3"
+          className="w-32 h-10 overflow-hidden"
           alt="US Chronical Icon"
         />
         <p className="text-white text-center text-xs sm:text-sm mt-1 sm:mt-2">

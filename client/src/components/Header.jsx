@@ -58,7 +58,7 @@ const Header = ({ setIsSidebarOpen }) => {
         >
           <img
             src={logo}
-            className="w-[120px] h-[40px] sm:w-36 2xl:w-40"
+            className="w-[120px] sm:w-36 2xl:w-40"
             alt="American Chronicle Logo"
             loading="lazy"
             rel="preload"

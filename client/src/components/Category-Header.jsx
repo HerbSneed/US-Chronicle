@@ -45,7 +45,7 @@ const CategoryHeader = ({ onCategoryChange, categories = [] }) => {
       {
         breakpoint: 1280,
         settings: {
-          className: "",
+          className: "pt-2",
           slidesToShow: 6,
           slidesToScroll: 1,
           infinite: true,
@@ -55,7 +55,7 @@ const CategoryHeader = ({ onCategoryChange, categories = [] }) => {
       {
         breakpoint: 1024,
         settings: {
-          className: "",
+          className: "pt-2",
           slidesToShow: 4,
           slidesToScroll: 1,
           infinite: true,
@@ -65,7 +65,7 @@ const CategoryHeader = ({ onCategoryChange, categories = [] }) => {
       {
         breakpoint: 768,
         settings: {
-          className: "",
+          className: "pt-2",
           slidesToShow: 4,
           slidesToScroll: 1,
           infinite: true,
@@ -75,7 +75,7 @@ const CategoryHeader = ({ onCategoryChange, categories = [] }) => {
       {
         breakpoint: 640,
         settings: {
-          className: "",
+          className: "pt-2",
           slidesToShow: 3,
           slidesToScroll: 1,
           infinite: true,
@@ -85,7 +85,7 @@ const CategoryHeader = ({ onCategoryChange, categories = [] }) => {
       {
         breakpoint: 361,
         settings: {
-          className: "",
+          className: "pt-2",
           slidesToShow: 2,
           slidesToScroll: 1,
           infinite: true,
