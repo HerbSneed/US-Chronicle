@@ -15,6 +15,7 @@ import Sidebar from "./components/sidebar";
 import { Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useNavigate} from "react-router-dom";
+import Search from "./pages/search";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 

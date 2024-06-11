@@ -19,7 +19,7 @@ import Register from "./pages/Register";
 import ResetPassword from "./pages/ResetPassword";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ForgotPassword from "./pages/forgotPassword";
-import Search from "./pages/Search";
+import Search from "./pages/search";
 
 // Create router with routes
 const router = createBrowserRouter(
