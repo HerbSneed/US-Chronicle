@@ -39,7 +39,7 @@ export default function ForgotPassword() {
 
   return (
     <>
-      <div className="py-6 rounded mx-auto my-5 w-11/12 sm:w-9/12 md:w-8/12 lg:w-7/12 xl:w-6/12 2xl:w-5/12">
+      <div className="rounded min-h-screen mx-auto mt-5 w-11/12 sm:w-9/12 md:w-8/12 lg:w-7/12 xl:w-6/12 2xl:w-5/12">
         <h2 className="text-center text-2xl mb-1">Forgot Your Password?</h2>
         <p className="text-center mb-4">
           Enter your email address and we will send you instructions to reset

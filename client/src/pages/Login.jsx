@@ -72,68 +72,72 @@ export default function Login() {
 
   return (
     <>
-      {error ? (
-        <div>
-          <p className="error-text">The provided credentials are incorrect</p>
-        </div>
-      ) : null}
+      <div className="w-full">
+        {error ? (
+          <div>
+            <p className="error-text">The provided credentials are incorrect</p>
+          </div>
+        ) : null}
 
-      <form
-        id="login-form"
-        onSubmit={handleFormSubmit}
-        className="p-6 rounded mx-4 h-screen my-5 mx-auto sm:w-3/5 md:w-2/4 lg:w-2/5 xl:w-2/6 2xl:w-2/6"
-      >
-        <div className="text-left">
-          <h1 className="text-4xl -mb-2 font-bold font-[Newsreader]">Log In</h1>
-          <h2 className="text-2xl mb-0 font-[Newsreader]">to your account</h2>
-        </div>
+        <form
+          id="login-form"
+          onSubmit={handleFormSubmit}
+          className="px-6 rounded m-4  mx-auto sm:w-3/5 md:w-2/4 lg:w-2/5 xl:w-2/6 2xl:w-2/6"
+        >
+          <div className="text-left">
+            <h1 className="text-4xl -mb-2 font-bold font-[Newsreader]">
+              Log In
+            </h1>
+            <h2 className="text-2xl mb-0 font-[Newsreader]">to your account</h2>
+          </div>
 
-        <label htmlFor="email" className="block font-semibold mb-2 mt-4">
-          Email:
-          <input
-            placeholder="youremail@test.com"
-            name="email"
-            type="email"
-            value={formState.email}
-            onChange={handleChange}
-            className="mt-1 p-2 mb-3 w-full font-normal border rounded"
-          />
-        </label>
-        <label htmlFor="password" className="block mb-8 font-semibold">
-          Password:
-          <input
-            placeholder="******"
-            name="password"
-            type="password"
-            value={formState.password}
-            onChange={handleChange}
-            className="mt-1 px-2 w-full border rounded font-normal"
-          />
-          <p>
-            <Link
-              to="/forgotPassword"
-              className="float-right mt-1 text-xs text-blue-600"
-            >
-              Forgot Password?
+          <label htmlFor="email" className="block font-semibold mb-2 mt-4">
+            Email:
+            <input
+              placeholder="youremail@test.com"
+              name="email"
+              type="email"
+              value={formState.email}
+              onChange={handleChange}
+              className="mt-1 p-2 mb-3 w-full font-normal border rounded"
+            />
+          </label>
+          <label htmlFor="password" className="block mb-8 font-semibold">
+            Password:
+            <input
+              placeholder="******"
+              name="password"
+              type="password"
+              value={formState.password}
+              onChange={handleChange}
+              className="mt-1 px-2 w-full border rounded font-normal"
+            />
+            <p>
+              <Link
+                to="/forgotPassword"
+                className="float-right mt-1 text-xs text-blue-600"
+              >
+                Forgot Password?
+              </Link>
+            </p>
+          </label>
+
+          <button
+            type="submit"
+            className="bg-newsBlue text-white p-2 rounded hover:bg-blue-600 mt-1 w-full mb-2"
+          >
+            Login
+          </button>
+
+          <p className="font-bold text-right">
+            Need an account?{" "}
+            <Link to="/register" className="text-blue-600">
+              Sign up
             </Link>
           </p>
-        </label>
-
-        <button
-          type="submit"
-          className="bg-newsBlue text-white p-2 rounded hover:bg-blue-600 mt-1 w-full mb-2"
-        >
-          Login
-        </button>
-
-        <p className="font-bold text-right">
-          Need an account?{" "}
-          <Link to="/register" className="text-blue-600">
-            Sign up
-          </Link>
-        </p>
-        <p>{resetFeedback}</p>
-      </form>
+          <p>{resetFeedback}</p>
+        </form>
+      </div>
     </>
   );
 }

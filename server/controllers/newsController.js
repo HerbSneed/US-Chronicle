@@ -6,7 +6,8 @@ const { apiKey, apiUrl } = require('../config/apiConfig'); // API configuration
 async function getSearchedHeadlines(searchQuery) {
  try {
   // Make a GET request to News API with search query
-  const response = await fetch(`${apiUrl}/everything?q=${searchQuery}&language=en&pageSize=100&apiKey=${apiKey}`);
+  const response = await fetch(`${apiUrl}/everything?q=${searchQuery}&searchIn=content&sortBy=popularity&language=en&pageSize=100&apiKey=${apiKey}`);
+
   // Parse response JSON and return
   return await response.json();
  } catch (error) {

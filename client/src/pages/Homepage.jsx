@@ -25,7 +25,7 @@ const Homepage = () => {
   const sliceEnd =
     width >= 1536 ? 4 : width >= 1280 ? 4 : width >= 1024 ? 2 : 1;
   const moreNewsSliceEnd =
-    width >= 1536 ? 38 : width >= 1280 ? 35 : width >= 1024 ? 15 : 15;
+    width >= 1536 ? 35 : width >= 1280 ? 35 : width >= 1024 ? 25 : 15;
 
   const { data } = useQuery(QUERY_CURRENT_USER, {
     variables: { email: currentUser.email },
@@ -232,12 +232,13 @@ const Homepage = () => {
         categories={categories}
         onCategoryChange={handleCategoryChange}
       />
-      <div id="homepage-container">
-        <div className="flex pt-1 mt-2 sm:pt-2 border-t-[1px] w-full border-gray-500"></div>
-
+      <div
+        id="homepage-container"
+        className="bg-white min-h-screen pt-1 mt-2 sm:pt-2 border-t-[1px] w-full border-gray-500"
+      >
         <section
           id="top-news"
-          className="grid grid-cols-1 2xl:w-7/12 xl:w-8/12 lg:w-8/12 lg:float-right 2xl:float-right gap-x-2 xl:gap-y-4  gap-y-0 pb-1 mx-3 2xl:mx-3 bg-white"
+          className="grid grid-cols-1 2xl:w-7/12 xl:w-8/12 lg:w-8/12 lg:float-right 2xl:float-right gap-x-2 xl:gap-y-4  gap-y-0 pb-5 mx-3 2xl:mx-3 bg-white"
         >
           <h1
             id="mainHeadlineHeader"
@@ -258,7 +259,9 @@ const Homepage = () => {
         </section>
 
         <section id="more-news-hl" className="grid grid-cols-1 mx-3 mb-2">
-          <h2 className="text-2xl 
+          <h2
+            className="
+          text-2xl 
           md:text-center 
           xl:text-center
           lg:text-[30px] 
@@ -271,7 +274,8 @@ const Homepage = () => {
           2xl:text-4xl 
           bg-blue-600 
           font-[Newsreader] 
-          ml-0 mb-1  2xl:ml-0 font-semibold drop-shadow-lg">
+          ml-0 mb-1  2xl:ml-0 font-semibold drop-shadow-lg"
+          >
             More {selectedCategory} Headlines
           </h2>
 

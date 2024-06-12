@@ -8,6 +8,7 @@ import { SAVE_NEWS } from "../utils/mutations";
 import { QUERY_CURRENT_USER } from "../utils/queries";
 import { useCurrentUserContext } from "../context/CurrentUser";
 import axios from "axios";
+import Footer from "../components/Footer";
 
 const Search = () => {
   // State for search query, news items, and save news mutation
@@ -25,14 +26,16 @@ const Search = () => {
   // Define slice end for news items
   const sliceEnd =
     width >= 1536
-      ? 42
+      ? 75
       : width >= 1280
-        ? 42
+        ? 75
         : width >= 1024
-          ? 28
+          ? 52
           : width >= 768
-            ? 20
-            : 20;
+            ? 52
+            : width >= 640
+            ? 52
+            : 40;
 
   // Query current user data
   const { data } = useQuery(QUERY_CURRENT_USER, {
@@ -162,14 +165,14 @@ const Search = () => {
 
   return (
     <>
-      <div id="searchPage-container" className="flex flex-col min-h-screen">
+      <div id="searchPage-container" className="flex flex-col pb-5">
         <div className="mt-3">
           <SearchBar />
         </div>
 
-        <section className="min-h-screen relative pt-2 mx-auto pb-5 w-full bg-cover">
-          <div className="z-20 bg-compBlue pb-10 w-full drop-shadow-lg max-h-[80vh]">
-            <h1 className="z-20 text-5xl drop-shadow-md font-semibold font-[Newsreader] text-center text-blue-500">
+        <section className="relative pt-2 mx-auto  w-full">
+          <div className="z-20 bg-compBlue pb-10 w-full drop-shadow-lg">
+            <h1 className="z-20 text-4xl md:text-5xl drop-shadow-md font-semibold font-[Newsreader] text-center text-blue-500">
               Search Results
             </h1>
 
@@ -185,6 +188,7 @@ const Search = () => {
           </div>
         </section>
       </div>
+      <Footer />
     </>
   );
 };

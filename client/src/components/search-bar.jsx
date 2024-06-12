@@ -17,6 +17,7 @@ const SearchBar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const handleSearch = () => {
     // Navigate to search page with query parameter
     navigate(`/search?query=${encodeURIComponent(searchQuery)}`);
+    window.location.reload();
   };
 
   // Function to handle search and sidebar
@@ -29,7 +30,7 @@ const SearchBar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 
   return (
     <>
-      <div className="flex w-full justify-between">
+      <div className="flex w-full justify-between lg:justify-center">
         <input
           type="text"
           placeholder="Search for News..."
@@ -40,7 +41,7 @@ const SearchBar = ({ isSidebarOpen, setIsSidebarOpen }) => {
               handleSearch();
             }
           }}
-          className="px-2 py-1 ml-3 border w-full border-gray-300 rounded-md text-black"
+          className="px-2 py-1 ml-3 border w-full lg:w-1/2 border-gray-300 rounded-md text-black"
         />
         <button
           onClick={handleSearch}
