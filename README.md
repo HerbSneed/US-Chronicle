@@ -56,12 +56,17 @@ The motivation behind this project was to develop a comprehensive and innovative
 
 ## Screenshots
 ## Screenshots
+Desktop
 <div style="text-align: center;">
     <img src="client/src/assets/screenshots/AC_Desktop.png" alt="Screenshot 1" width="75%">
 </div>
+
+Mobile Tablet
 <div style="text-align: center;">
     <img src="client/src/assets/screenshots/AC_Tablet.png" alt="Screenshot 2" width="50%">
 </div>
+
+Moible Cellphone
 <div style="text-align: center;">
     <img src="client/src/assets/screenshots/AC_Mobile.png" alt="Screenshot 3" width="25%">
 </div>
