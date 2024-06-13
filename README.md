@@ -55,7 +55,6 @@ The motivation behind this project was to develop a comprehensive and innovative
 4. Node JS
 
 ## Screenshots
-<br>
 <h2>Desktop</h2>
 <div style="text-align: center;">
     <img src="client/src/assets/screenshots/AC_Desktop.png" alt="Screenshot 1" width="75%"
