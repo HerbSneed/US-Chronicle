@@ -1,5 +1,5 @@
 <div style="text-align: center;">
-    <img src="client/src/assets/images/US-Chronical.png" alt="US Chronical Logo" width="100">
+    <img src="client/src/assets/images/US-Chronical.webp" alt="US Chronical Logo" width="100">
 </div>
 
 
@@ -32,6 +32,7 @@ Introducing "American Chronicle" - the ultimate platform for people interested i
 |[Vite](https://www.npmjs.com/package/vite)               |`npm i vite`       |
 
 
+
 ## Usage
 * npm i
 * npm i --save mapbox-gl
@@ -48,12 +49,22 @@ The motivation behind this project was to develop a comprehensive and innovative
 * Allow users to have open dialog on news headline by leaving comments and replies.
 
 ## Technologies
-1. React
+1. MongoDB
 2. Express
-3. MongoDB
+3. React
+4. Node JS
+
+## Screenshots
+![Screenshot 1](client/src/assets/screenshots/AC_Desktop.png)
+![Screenshot 2](client/src/assets/screenshots/AC_Mobile.png)
+![Screenshot 3](client/src/assets/screenshots/AC_Tablet.png)
+
+
+
+
 
 ## Application
-[Link of deployed application](https://us-chronicle-5f8b6391feb6.herokuapp.com/)
+[Link of deployed application](https://american-chronicle-70778c15f55a.herokuapp.com//)
 ## Screenshots
 Screenshot of the deployed application
 
