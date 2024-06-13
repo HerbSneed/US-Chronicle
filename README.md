@@ -55,20 +55,21 @@ The motivation behind this project was to develop a comprehensive and innovative
 4. Node JS
 
 ## Screenshots
-<p>Desktop</p>
+
 <div style="text-align: center;">
+    <p style="text:bold">Desktop</p>
     <img src="client/src/assets/screenshots/AC_Desktop.png" alt="Screenshot 1" width="75%"
     style="display: block; margin: auto;">
 </div>
 
-<p>Mobile Tablet</p>
 <div style="text-align: center;">
+    <p style="text:bold">Mobile Tablet</p>
     <img src="client/src/assets/screenshots/AC_Tablet.png" alt="Screenshot 2" width="50%"
     style="display: block; margin: auto;">
 </div>
 
-<p>Mobile Cellphone</p>
 <div style="text-align: center;">
+    <p style="text:bold">Mobile Cellphone</p>
     <img src="client/src/assets/screenshots/AC_Mobile.png" alt="Screenshot 3" width="25%"
     style="display: block; margin: auto;">
 </div>
