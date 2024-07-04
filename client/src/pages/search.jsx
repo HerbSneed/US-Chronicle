@@ -176,7 +176,7 @@ const Search = () => {
               Search Results
             </h1>
 
-            <div className="grid grid-cols-1  sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
+            <div className="grid grid-cols-1  sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
               {newsItems.slice(0, sliceEnd).map((news) => (
                 <SearchResultsCard
                   key={news.newsId}
