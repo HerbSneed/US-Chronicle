@@ -8,7 +8,7 @@ function Footer() {
     <>
       <footer
         id="footer-section"
-        className="w-full bg-black flex  justify-center flex-col items-center z-50 h-40"
+        className="w-full bg-black flex  justify-start pt-5 flex-col items-center z-50 h-40"
       >
         <img
           src={whiteLogo}

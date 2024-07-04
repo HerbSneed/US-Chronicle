@@ -238,7 +238,7 @@ const Homepage = () => {
       >
         <section
           id="top-news"
-          className="grid grid-cols-1 2xl:w-7/12 xl:w-8/12 lg:w-8/12 lg:float-right 2xl:float-right gap-x-2 xl:gap-y-4  gap-y-0 pb-5 mx-3 2xl:mx-3 bg-white"
+          className="grid grid-cols-1 2xl:w-7/12 xl:w-8/12 lg:w-8/12 lg:float-right 2xl:float-right gap-x-2 xl:gap-y-4  gap-y-0 pb-3 mx-3 2xl:mx-3 bg-white"
         >
           <h1
             id="mainHeadlineHeader"

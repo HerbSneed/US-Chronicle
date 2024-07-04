@@ -25,14 +25,14 @@ const DashboardCard = memo(({ news, handleDeleteNews }) => {
             <a
               href={news.url}
               target="_blank"
-              className="text-blue-700"
+              className="text-blue-700 hover:font-bold"
               rel="noopener noreferrer"
             >
               Source
             </a>
             <a
               target="_blank"
-              className="text-red-700 ml-5"
+              className="text-red-700 ml-5 hover:font-bold"
               onClick={() => handleDeleteNews(news.newsId)}
               rel="noopener noreferrer"
             >

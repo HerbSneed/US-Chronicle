@@ -29,11 +29,11 @@ const HeadlineCard = memo(({ news, handleSaveArticle }) => {
             <p className="mt-0.5 text-xl leading-5">{news.summary}</p>
 
             {isLoggedIn() && (
-              <div className="flex">
+              <div className="flex pb-0 md:text-[22px]">
                 <a
                   href={news.url}
                   target="_blank"
-                  className="text-blue-700"
+                  className="text-blue-700 hover:font-bold"
                   rel="noopener noreferrer"
                   role="button"
                   tabIndex="0"
@@ -42,7 +42,7 @@ const HeadlineCard = memo(({ news, handleSaveArticle }) => {
                 </a>
                 <a
                   target="_blank"
-                  className="text-red-700 ml-3"
+                  className="text-red-700 ml-3 hover:font-bold"
                   onClick={() => handleSaveArticle(news)}
                   rel="noopener noreferrer"
                   role="button"

@@ -86,7 +86,8 @@ const Dashboard = () => {
           lg:grid-cols-3 
           2xl:grid-cols-4
           gap-4
-          px-3"
+          px-3
+          pb-5"
           >
             {/* Map over sorted saved news and render DashboardCard for each */}
             {sortedSavedNews.map((news) => {

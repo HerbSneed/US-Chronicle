@@ -13,7 +13,7 @@ const SearchResultsCard = memo(({ news, handleSaveArticle }) => {
 
   return (
     <>
-      <div className="mb-2 bg-gray-300 mx-4 px-2 py-2 rounded">
+      <div className="mb-2 bg-gray-300 mx-4 px-2 pt-3 pb-1 rounded">
         <div key={news.newsId} className="w-full items-center">
           <div className="">
             <h1 className="font-bold text-gray-900 text-lg leading-[20px] truncate">
@@ -27,11 +27,11 @@ const SearchResultsCard = memo(({ news, handleSaveArticle }) => {
         </h2>
 
         {isLoggedIn() && (
-          <div className="flex font-normal">
+          <div className="flex font-normal mt-1">
             <a
               href={news.url}
               target="_blank"
-              className="text-blue-700"
+              className="text-blue-700 hover:font-bold"
               rel="noopener noreferrer"
               role="button"
               tabIndex="0"
@@ -40,7 +40,7 @@ const SearchResultsCard = memo(({ news, handleSaveArticle }) => {
             </a>
             <a
               target="_blank"
-              className="text-red-700 ml-3"
+              className="text-red-700 ml-3 hover:font-bold"
               onClick={() => handleSaveArticle(news)}
               rel="noopener noreferrer"
               role="button"
