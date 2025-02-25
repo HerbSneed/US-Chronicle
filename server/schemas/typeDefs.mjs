@@ -1,4 +1,5 @@
-const typeDefs = `#graphql
+// Define the GraphQL schema for types and queries/mutations
+export const typeDefs = `#graphql
   type User {
     _id: ID
     firstName: String
@@ -64,4 +65,4 @@ const typeDefs = `#graphql
   }
 `;
 
-module.exports = typeDefs;
+export default typeDefs;

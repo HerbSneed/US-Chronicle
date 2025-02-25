@@ -1,10 +1,10 @@
 // Import necessary modules
-const { Schema, model } = require("mongoose");
-// Bcryps is a password hashing algorithm designed for safe password hashing.
-const bcrypt = require("bcryptjs");
+import { Schema, model } from 'mongoose';
+// Bcrypt is a password hashing algorithm designed for safe password hashing.
+import bcrypt from 'bcryptjs';
 
-//Import news schema
-const newsSchema = require("./News");
+// Import news schema
+import newsSchema from './News.mjs';
 
 // Define schema for user data
 const userSchema = new Schema({
@@ -34,7 +34,7 @@ const userSchema = new Schema({
     type: String,
     enum: ["Business", "Entertainment", "Top News", "Health", "Science", "Sports", "Technology"],
   },
-  savedNews: [newsSchema], //Embed news schema as arry of saved user news
+  savedNews: [newsSchema], // Embed news schema as an array of saved user news
   resetPasswordToken: {
     type: String,
     default: null,
@@ -45,9 +45,9 @@ const userSchema = new Schema({
   },
 });
 
-// Hash password before aving
-userSchema.pre("save", async function (next) {
-  if (this.isNew || this.isModified("password")) {
+// Hash password before saving
+userSchema.pre('save', async function (next) {
+  if (this.isNew || this.isModified('password')) {
     const saltRounds = 10;
     this.password = await bcrypt.hash(this.password, saltRounds);
   }
@@ -59,7 +59,7 @@ userSchema.methods.isCorrectPassword = async function (password) {
   return bcrypt.compare(password, this.password);
 };
 
-//Create User model
-const User = model("User", userSchema);
+// Create User model
+const User = model('User', userSchema);
 
-module.exports = User;
+export default User;

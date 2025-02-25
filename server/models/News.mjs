@@ -1,8 +1,8 @@
 // Import Schema from mongoose
-const { Schema } = require('mongoose');
+import { Schema } from 'mongoose';
 
-// Define schema fro news Data
-const newsSchema = new Schema ({
+// Define schema for news Data
+const newsSchema = new Schema({
     title: {
         type: String,
         required: true,
@@ -18,25 +18,23 @@ const newsSchema = new Schema ({
     newsId: {
         type: String,
         required: true,
-      },
+    },
     url: {
         type: String,
         required: true,
     },
     image: {
-        type: String
+        type: String,
     },
     language: {
-        type: String
+        type: String,
     },
     latest_publish_date: {
-        type: String
+        type: String,
     },
     category: {
-        type: String
+        type: String,
     },
-
 });
 
-
-module.exports = newsSchema;
+export default newsSchema;

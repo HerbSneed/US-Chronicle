@@ -1,7 +1,5 @@
 // Import middleware modules
-const { authMiddleware } = require('./auth');
+import { authMiddleware } from './auth.js';
 
 // Export middleware functions
-module.exports = {
-  authMiddleware
-};
+export { authMiddleware };

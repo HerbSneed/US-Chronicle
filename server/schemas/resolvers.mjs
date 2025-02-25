@@ -1,8 +1,9 @@
 // Import necessary modules
-const crypto = require("crypto");
-const { User, News } = require("../models");
-const { signToken, AuthenticationError } = require("../utils");
-const { sendResetEmail } = require("../utils/helpers");
+import crypto from "crypto";
+import { User, News } from "../models/index.mjs";
+import { signToken } from "../utils/index.mjs";
+import { AuthenticationError } from "../utils/error.mjs";
+import { sendResetEmail } from "../utils/helpers.mjs";
 
 // Function to generate a random reset token
 function generateResetToken() {
@@ -200,4 +201,4 @@ const resolvers = {
 };
 
 // Export the resolvers
-module.exports = resolvers;
+export { resolvers } ;

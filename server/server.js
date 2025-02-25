@@ -1,18 +1,23 @@
 // Import necessary modules
-const path = require('path');
-const express = require('express');
-const { ApolloServer } = require('@apollo/server');
-const { expressMiddleware } = require('@apollo/server/express4');
-const { authMiddleware } = require('./middleware/auth');
-const cors = require('cors');
-const compression = require('compression');
-const newsRoutes = require('./routes/newsRoutes')
+import path from 'path';
+import express from 'express';
+import { ApolloServer } from '@apollo/server';
+import { expressMiddleware } from '@apollo/server/express4';
+import { authMiddleware } from './server/middleware/auth.js';
+import cors from 'cors';
+import compression from 'compression';
+import newsRoutes from './server/routes/newsRoutes.js';
 
 // Import GraphQL schema and resolvers
-const { typeDefs, resolvers } = require('./schemas');
+import { typeDefs, resolvers } from './server/schemas/index.mjs';
 
 // Import database connection
-const db = require('./config/connection');
+import db from './server/config/connection.js';
+
+// Fix __dirname in ES Modules
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Set up port
 const PORT = process.env.PORT || 3001;
@@ -27,7 +32,10 @@ const server = new ApolloServer({
 });
 
 // Base URL for the app
-const BASE_URL = process.env.NODE_ENV === 'production' ? 'https://us-chronicle-5f8b6391feb6.herokuapp.com/' : `http://localhost:${PORT}`;
+const BASE_URL = process.env.NODE_ENV === 'production'
+  ? 'mern-env.eba-ifp48zm3.us-east-1.elasticbeanstalk.com'
+  : `http://localhost:${PORT}`;
+
 
 // Middleware setup
 app.use(compression()); // Enable compression

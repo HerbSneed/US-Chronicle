@@ -1,8 +1,9 @@
 // Import necessary modules
-const bcrypt = require("bcryptjs");
-const crypto = require("crypto");
-const nodemailer = require("nodemailer");
-require("dotenv").config(); // Load environment variables
+import bcrypt from "bcryptjs";
+import crypto from "crypto";
+import nodemailer from "nodemailer";
+import dotenv from "dotenv"; // Load environment variables
+dotenv.config();
 
 // Number of salt rounds for password hashing
 const SALT_ROUNDS = 10;
@@ -50,8 +51,8 @@ const sendResetEmail = async (email, token, BASE_URL) => {
 const generateResetToken = () => crypto.randomBytes(20).toString("hex");
 
 // Export functions
-module.exports = {
+export {
   generateResetToken,
   sendResetEmail,
-  hashPassword,
+  hashPassword
 };
