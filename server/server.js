@@ -25,7 +25,7 @@ const allowedOrigins = [
 ];
 
 // Set up port
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 80;
 
 // Initialize Express app
 const app = express();
