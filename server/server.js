@@ -3,27 +3,44 @@ import path from 'path';
 import express from 'express';
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
-import { authMiddleware } from './server/middleware/auth.js';
+import { authMiddleware } from './middleware/auth.js';
 import cors from 'cors';
 import compression from 'compression';
-import newsRoutes from './server/routes/newsRoutes.js';
+import newsRoutes from './routes/newsRoutes.js';
 
 // Import GraphQL schema and resolvers
-import { typeDefs, resolvers } from './server/schemas/index.mjs';
+import { typeDefs, resolvers } from './schemas/index.mjs';
 
 // Import database connection
-import db from './server/config/connection.js';
+import db from './config/connection.js';
 
 // Fix __dirname in ES Modules
 import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const allowedOrigins = [
+  "http://localhost:3000", // Local development
+  "https://d2misrg99kalv1.cloudfront.net", // CloudFront production
+];
+
 // Set up port
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 8080;
 
 // Initialize Express app
 const app = express();
+
+if (process.env.NODE_ENV === "production") {
+  app.use((req, res, next) => {
+    if (req.headers["x-forwarded-proto"] !== "https") {
+      return res.redirect(`https://${req.headers.host}${req.url}`);
+    }
+    next();
+  });
+}
+
+
+
 
 // Create ApolloServer instance with schema and resolvers
 const server = new ApolloServer({
@@ -45,7 +62,12 @@ app.use('/public', express.static(path.join(__dirname, 'client', 'dist'))); // S
 const startApolloServer = async () => {
   await server.start(); // Start Apollo Server
 
-  app.use(cors()); // Enable CORS
+  app.use(cors({
+    origin: allowedOrigins, // Or specify your frontend: "http://localhost:3000"
+    methods: "GET, POST, PUT, DELETE, OPTIONS",
+    allowedHeaders: "Content-Type, Authorization",
+    credentials: true,
+  }));// Enable CORS
   app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
   app.use(express.json()); // Parse JSON bodies
 
@@ -72,7 +94,7 @@ const startApolloServer = async () => {
   db.once('open', () => {
     console.log('Connected to MongoDB!');
     // Start Express server
-    app.listen(PORT, () => {
+    app.listen(PORT, "0.0.0.0", () => {
       console.log(`API server running on port ${PORT}!`);
       console.log(`Use GraphQL at ${BASE_URL}/graphql`);
     });
