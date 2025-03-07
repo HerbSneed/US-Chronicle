@@ -85,7 +85,6 @@ const Header = ({ setIsSidebarOpen }) => {
         <Link
           to="/"
           rel="preload"
-          onClick={() => console.log("Homepage icon clicked")}
         >
           <img
             src={logo}

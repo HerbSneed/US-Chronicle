@@ -18,6 +18,14 @@ const Sidebar = memo(({ isOpen, setIsSidebarOpen }) => {
 
   const userData = data?.currentUser || null;
 
+  const handleLoginSignupClick = (type) => {
+    // If not logged in, navigate to login or signup page
+    const path = type === "login" ? "/login" : "/register"; // Decide based on type
+    navigate(path, { replace: true });
+  };
+
+
+
   // Handle click on the latest news category
   const handleLatestClick = async ({ query }) => {
     try {
@@ -154,18 +162,26 @@ const Sidebar = memo(({ isOpen, setIsSidebarOpen }) => {
               </Link>
 
               <Link
-                to="/login"
+                to="/"
                 className="text-blue-600 hover:text-blue-800"
-                onClick={() => toggleSidebar(isOpen, setIsSidebarOpen)}
+                onClick={(e) => {
+                  e.preventDefault(); // Prevent default link behavior
+                  handleLoginSignupClick("login"); // Call for login
+                  toggleSidebar(isOpen, setIsSidebarOpen);
+                }}
                 role="button"
                 tabIndex="0"
               >
                 Login
               </Link>
               <Link
-                to="/register"
+                to="/"
                 className="text-blue-600 hover:text-blue-800"
-                onClick={() => toggleSidebar(isOpen, setIsSidebarOpen)}
+                onClick={(e) => {
+                  e.preventDefault(); // Prevent default link behavior
+                  handleLoginSignupClick("signup"); // Call for signup
+                  toggleSidebar(isOpen, setIsSidebarOpen);
+                }}
                 role="button"
                 tabIndex="0"
               >

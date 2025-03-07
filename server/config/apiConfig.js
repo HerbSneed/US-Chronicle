@@ -1,4 +1,3 @@
-export const config = {
-  apiKey: process.env.NEWS_API_KEY,
-  apiUrl: "https://newsapi.org/v2"
-};
+export const apiKey = process.env.NEWS_API_KEY;
+export const apiUrl = "https://newsapi.org/v2";
+

@@ -1,5 +1,5 @@
-// Import necessary modules
-import path from 'path';
+import dotenv from 'dotenv';
+dotenv.config();
 import express from 'express';
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
@@ -14,100 +14,76 @@ import { typeDefs, resolvers } from './schemas/index.mjs';
 // Import database connection
 import db from './config/connection.js';
 
-// Fix __dirname in ES Modules
-import { fileURLToPath } from 'url';
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const allowedOrigins = [
-  "http://localhost:3000", // Local development
-  "https://d2misrg99kalv1.cloudfront.net", // CloudFront production
-];
-
-// Set up port
-const PORT = process.env.PORT || 80;
-
 // Initialize Express app
 const app = express();
 
-if (process.env.NODE_ENV === "production") {
-  app.use((req, res, next) => {
-    if (req.headers["x-forwarded-proto"] !== "https") {
-      return res.redirect(`https://${req.headers.host}${req.url}`);
-    }
-    next();
-  });
-}
+// Set up port
+const PORT = process.env.PORT || 8080;
 
-
-
-
-// Create ApolloServer instance with schema and resolvers
+// ✅ Start Apollo Server before using it in Express
 const server = new ApolloServer({
   typeDefs,
   resolvers,
 });
 
-// Base URL for the app
-const BASE_URL = process.env.NODE_ENV === 'production'
-  ? 'mern-env.eba-ifp48zm3.us-east-1.elasticbeanstalk.com'
-  : `http://localhost:${PORT}`;
+async function startServer() {
+  await server.start(); // Important for Apollo v4+
 
+  // ✅ Fix: Health check route for Elastic Beanstalk
+  app.get("/", (req, res) => {
+    res.status(200).json({
+      status: "ok",
+      message: "Elastic Beanstalk health check passed!",
+      uptime: process.uptime(),
+      timestamp: new Date().toISOString(),
+    });
+  });
 
-// Middleware setup
-app.use(compression()); // Enable compression
-app.use('/public', express.static(path.join(__dirname, 'client', 'dist'))); // Serve static files
+  // Allowed origins for CORS
+  const allowedOrigins = [
+    "http://localhost:3000", // Local development
+    "http://n-wars-app.s3-website-us-east-1.amazonaws.com",
+    "http://nwarz-env-1.eba-tb4a7pwf.us-east-1.elasticbeanstalk.com", // S3 URL for frontend
+  ];
 
-// Start Apollo Server
-const startApolloServer = async () => {
-  await server.start(); // Start Apollo Server
-
+  // Middleware setup
+  app.use(compression());
   app.use(cors({
-    origin: allowedOrigins, // Or specify your frontend: "http://localhost:3000"
-    methods: "GET, POST, PUT, DELETE, OPTIONS",
-    allowedHeaders: "Content-Type, Authorization",
-    credentials: true,
-  }));// Enable CORS
-  app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
-  app.use(express.json()); // Parse JSON bodies
+    origin: (origin, callback) => {
+      if (allowedOrigins.includes(origin) || !origin) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  }));
+  app.use(express.urlencoded({ extended: true }));
+  app.use(express.json());
 
   // Routes for news API
   app.use('/api', newsRoutes);
 
-  // Set up Apollo Server middleware for GraphQL endpoint with authentication
-  app.use('/graphql', expressMiddleware(server, { context: authMiddleware }));
+  // Apollo Middleware
+  app.use("/graphql", expressMiddleware(server, { context: authMiddleware }));
 
-  // Serve static assets and handle client-side routing
-  if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, '../client/dist'))); // Serve static assets
-    // Handle all other requests by serving the index.html of the client app
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(__dirname, '../client/dist/index.html'));
-    });
-  }
-
-  // Database event handlers
-  db.on('error', (error) => {
-    console.error('MongoDB connection error:', error);
+  // Start Express server
+  app.listen(PORT, () => {
+    console.log(`✅ API server running on port ${PORT}`);
+    console.log(`✅ Use GraphQL at http://localhost:${PORT}/graphql`);
   });
+}
 
-  db.once('open', () => {
-    console.log('Connected to MongoDB!');
-    // Start Express server
-    app.listen(PORT, "0.0.0.0", () => {
-      console.log(`API server running on port ${PORT}!`);
-      console.log(`Use GraphQL at ${BASE_URL}/graphql`);
-    });
+// Start the whole app
+startServer().catch((err) => {
+  console.error("❌ Server failed to start:", err);
+});
+
+// Close MongoDB connection on process exit
+process.on('SIGINT', () => {
+  db.close(() => {
+    console.log('🔌 MongoDB connection closed.');
+    process.exit(0);
   });
-
-  // Close MongoDB connection on process exit
-  process.on('SIGINT', () => {
-    db.close(() => {
-      console.log('MongoDB connection closed.');
-      process.exit(0);
-    });
-  });
-};
-
-// Call function to start Apollo Server
-startApolloServer();
+});

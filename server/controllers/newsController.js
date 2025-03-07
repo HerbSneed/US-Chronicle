@@ -2,6 +2,7 @@
 import fetch from 'node-fetch'; // Module to make HTTP requests
 import { apiKey, apiUrl } from '../config/apiConfig.js'; // API configuration
 
+
 // Function to fetch headlines based on a search query
 export const getSearchedHeadlines = async (searchQuery) => {
   try {
