@@ -25,6 +25,7 @@ export const typeDefs = `#graphql
     language: String
     latest_publish_date: String
     category: String
+    relatedArticles: [News]
   }
 
   input NewsInput {

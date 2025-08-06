@@ -4,12 +4,21 @@ import { toggleSidebar } from "../utils/sidebarUtils";
 import logo from "../assets/images/US-Chronical.webp";
 import sidebarIcon from "../assets/images/sidebar-icon.webp";
 import search from "../assets/images/search-icon.webp";
+import { useCurrentUserContext } from "../context/CurrentUser";
+import { QUERY_CURRENT_USER } from "../utils/queries";
+import { useQuery, useMutation } from "@apollo/client";
 
 const Header = ({ setIsSidebarOpen }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
   const [isRed, setIsRed] = useState(false);
+  const { currentUser, isLoggedIn } = useCurrentUserContext();
+
+  const { data } = useQuery(QUERY_CURRENT_USER, {
+    variables: { email: currentUser.email },
+  });
+  const userData = data?.currentUser || null;
 
   // Function to handle toggling the sidebar
   const handleSidebarToggle = (event) => {
@@ -83,8 +92,13 @@ const Header = ({ setIsSidebarOpen }) => {
         </button>
 
         <Link
-          to="/"
+          to="#"
           rel="preload"
+          onClick={(e) => {
+            e.preventDefault();
+            navigate(`/`)
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
         >
           <img
             src={logo}

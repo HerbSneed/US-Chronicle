@@ -35,6 +35,7 @@ const RegistrationForm = () => {
     } else if (currentUser && token) {
       loginUser(currentUser, token);
       navigate("/");
+      window.location.reload();
     }
     if (error) {
       console.log(error.message);

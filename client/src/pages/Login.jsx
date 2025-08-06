@@ -14,13 +14,9 @@ export default function Login() {
     password: "",
   });
 
-  const [showForgotPassword, setShowForgotPassword] = useState(false);
-  const [resetEmail, setResetEmail] = useState("");
-  const [resetFeedback, setResetFeedback] = useState(null);
 
   // Mutation hooks
   const [login, { error }] = useMutation(LOGIN_USER);
-  const [forgotPassword] = useMutation(FORGOT_PASSWORD);
 
   // Function to handle login form submission
   const handleFormSubmit = async (event) => {
@@ -50,25 +46,6 @@ export default function Login() {
     setFormState({ ...formState, [name]: value });
   };
 
-  // Function to handle forgot password
-  const handleForgotPassword = async () => {
-    try {
-      const { data } = await forgotPassword({
-        variables: { email: resetEmail },
-      });
-      if (data.forgotPassword.success) {
-        // Set feedback for successful password reset
-        setResetFeedback(data.forgotPassword.message);
-      } else {
-        // Set feedback for failed password reset
-        setResetFeedback("Failed to send reset email. Please try again!");
-      }
-    } catch (error) {
-      console.error("Forgot password error:", error);
-      // Set feedback for error during password reset
-      setResetFeedback("An error occurred. Please try again!");
-    }
-  };
 
   return (
     <>
@@ -135,7 +112,7 @@ export default function Login() {
               Sign up
             </Link>
           </p>
-          <p>{resetFeedback}</p>
+
         </form>
       </div>
     </>

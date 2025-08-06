@@ -20,17 +20,11 @@ function ResetPassword() {
   // Function to handle password reset
   const handleReset = async () => {
     try {
-      // Logging new password and token
-      console.log("New Password", newPassword);
-      console.log("Token", token);
 
       // Reset password mutation
       const { data } = await resetPassword({
         variables: { token, newPassword },
       });
-
-      // Logging mutation data
-      console.log("data", data);
 
       // Checking if password reset was successful
       if (data && data.resetPassword && data.resetPassword.success) {
@@ -55,24 +49,28 @@ function ResetPassword() {
 
   return (
     <div
-      className="flex w-11/12 sm:w-10/12 md:w-8/12 lg:w-6/12 xl:w-4/12
-     gap-x-3 mx-auto mt-6"
+      className="flex flex-col items-center w-11/12 sm:w-10/12 md:w-[400px] 
+     gap-y-2 mx-auto mt-6"
     >
-      <input
-        placeholder="Enter new password"
-        type="password"
-        value={newPassword}
-        onChange={(e) => setNewPassword(e.target.value)}
-        className="w-10/12 rounded"
-      />
-      <button
-        onClick={handleReset}
-        disabled={!newPassword.trim()}
-        className="w-4/12 bg-blue-600 text-white rounded"
-      >
-        Reset
-      </button>
-      {message && <p>{message}</p>}
+      <h2 className="text-center text-2xl">Enter your new password</h2>
+
+      <div className="flex mt-1 gap-x-2">
+        <input
+          placeholder="Enter new password"
+          type="password"
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+          className="w-[275px] rounded"
+        />
+        <button
+          onClick={handleReset}
+          disabled={!newPassword.trim()}
+          className="w-4/12 md:w-[100px] bg-blue-600 text-white rounded"
+        >
+          Reset
+        </button>
+      </div>
+      {message && <p className="mt-1">{message}</p>}
     </div>
   );
 }

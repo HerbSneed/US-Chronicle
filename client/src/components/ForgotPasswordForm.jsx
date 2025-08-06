@@ -11,10 +11,8 @@ export default function ForgotPassword() {
 
   // Function to handle password reset
   const handleForgotPassword = async () => {
-    console.log("Email to reset:", resetEmail); // Log the email for reset
 
     try {
-      console.log("Sending password reset request for:", resetEmail); // Log sending reset request
       const { data } = await forgotPassword({
         variables: { email: resetEmail }, // Pass email to the mutation
       });
@@ -39,7 +37,7 @@ export default function ForgotPassword() {
 
   return (
     <>
-      <div className="rounded min-h-screen mx-auto mt-5 w-11/12 sm:w-9/12 md:w-8/12 lg:w-7/12 xl:w-6/12 2xl:w-5/12">
+      <div className="rounded min-h-screen flex flex-col mx-auto mt-5 w-11/12 sm:w-9/12 md:w-[500px]">
         <h2 className="text-center text-2xl mb-1">Forgot Your Password?</h2>
         <p className="text-center mb-4">
           Enter your email address and we will send you instructions to reset
@@ -51,10 +49,10 @@ export default function ForgotPassword() {
             type="email"
             value={resetEmail}
             onChange={(e) => setResetEmail(e.target.value)}
-            className="w-4/6 border border-gray-300 rounded-md text-black"
+            className="w-4/6 md:w-[370px] border border-gray-300 rounded-md text-black"
           />
           <button
-            className="bg-blue-600 text-white rounded hover:bg-blue-200 h-10 w-1/4"
+            className="bg-blue-600 text-white rounded hover:bg-blue-200 h-10 w-[100px]"
             onClick={handleForgotPassword}
           >
             Reset

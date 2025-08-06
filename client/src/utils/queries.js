@@ -36,6 +36,15 @@ export const QUERY_NEWS = gql`
       image
       language
       latest_publish_date
+      relatedArticles {
+        newsId
+        title
+        url
+        summary
+        source_country
+        image
+        latest_publish_date
       }
     }
+  }
 `;

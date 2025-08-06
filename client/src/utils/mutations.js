@@ -86,7 +86,7 @@ export const DELETE_NEWS = gql`
 
 // Mutation to initiate the password reset process
 export const FORGOT_PASSWORD = gql`
-  mutation ForgotPassword($email: String!) {
+  mutation forgotPassword($email: String!) {
     forgotPassword(email: $email) {
       success
       message
@@ -96,7 +96,7 @@ export const FORGOT_PASSWORD = gql`
 
 // Mutation to reset the user's password
 export const RESET_PASSWORD = gql`
-  mutation ResetPassword($token: String!, $newPassword: String!) {
+  mutation resetPassword($token: String!, $newPassword: String!) {
     resetPassword(token: $token, newPassword: $newPassword) {
       success
       message

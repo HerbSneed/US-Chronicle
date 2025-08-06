@@ -10,6 +10,7 @@ import Footer from "../components/Footer";
 import HeadlineCard from "../components/headline-card";
 import MoreHeadlinesCard from "../components/more-headlines-card";
 import CategoryHeader from "../components/Category-Header";
+import RelatedArticles from "../components/related-articles";
 
 const Homepage = () => {
   const { get } = axios;
@@ -22,10 +23,16 @@ const Homepage = () => {
   const [selectedCategory, setSelectedCategory] = useState("Top News");
   const [saveNewsMutation] = useMutation(SAVE_NEWS);
   const isLocalhost = window.location.hostname === "localhost";
-  const API_URL = isLocalhost
-    ? "http://localhost:3000" // Local development
-    : "http://nwarz-env-1.eba-tb4a7pwf.us-east-1.elasticbeanstalk.com"; // Production (Elastic Beanstalk)
+  // const API_URL = isLocalhost
+  //   ? "http://localhost:3000" // Local development
+  //   : "http://nwarz-env-1.eba-tb4a7pwf.us-east-1.elasticbeanstalk.com"; 
+    // Production (Elastic Beanstalk)
 
+    const API_URL = isLocalhost
+      ? "http://localhost:8080"
+      : "http://nwarz-env-1.eba-tb4a7pwf.us-east-1.elasticbeanstalk.com";
+
+  
   const sliceEnd =
     width >= 1536 ? 4 : width >= 1280 ? 4 : width >= 1024 ? 2 : 1;
   const moreNewsSliceEnd =
@@ -34,6 +41,7 @@ const Homepage = () => {
   const { data } = useQuery(QUERY_CURRENT_USER, {
     variables: { email: currentUser.email },
   });
+
 
   const userData = data?.currentUser || null;
   const categories = [
@@ -62,6 +70,7 @@ const Homepage = () => {
   };
 
   const fetchUsHeadlines = async () => {
+    console.log("fetch triggered")
     try {
       const response = await get(`${API_URL}/api/usheadlines`);
       return response;
@@ -74,6 +83,10 @@ const Homepage = () => {
   const fetchUserHeadlines = async (category) => {
     try {
       const response = await get(`${API_URL}/api/userheadlines?category=${category}`);
+      const fetchUrl = 
+        `${API_URL}/api/userheadlines?category=${encodeURIComponent(category)}`;
+      console.log("Fetching from:", fetchUrl); 
+
       return response;
     } catch (error) {
       console.error("Error fetching user headlines:", error);
@@ -93,53 +106,62 @@ const Homepage = () => {
     }
   };
 
-  const handleResponse = (response) => {
-    if (response && response.status === 200) {
-      const headlines = response.data;
+const handleResponse = (response) => {
+  if (response && response.status === 200) {
+    let headlines = response.data;
 
-      if (!headlines || !headlines.articles) {
-        console.error("Invalid response format:", headlines);
-        return;
-      }
-
-      if (!isLoggedIn()) {
-        navigate("/");
-      }
-
-      const filteredNewsData = headlines.articles
-        .filter(
-          (news) =>
-            news.urlToImage !== null &&
-            news.url !== null &&
-            news.title !== "[Removed]" &&
-            news.status !== "410" &&
-            news.status !== "404"
-        )
-        .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
-        .reduce((accumulator, currentNews) => {
-          const newsId =
-            currentNews.publishedAt +
-            currentNews.title +
-            currentNews.source_country;
-          if (!accumulator.some((news) => news.newsId === newsId)) {
-            accumulator.push({
-              newsId: newsId,
-              title: currentNews.title,
-              image: currentNews.urlToImage,
-              url: currentNews.url,
-              summary: currentNews.description || "Summary not available.",
-              source_country: currentNews.source.name,
-              latest_publish_date: formatDateTime(currentNews.publishedAt),
-            });
-          }
-          return accumulator;
-        }, []);
-
-      setNewsItems(filteredNewsData);
-    } else {
-      console.error("Invalid response:", response);
+    // Normalize: if it's wrapped, unwrap; if it's an array, wrap it so downstream is consistent
+    if (Array.isArray(headlines)) {
+      headlines = { articles: headlines };
     }
-  };
+
+    if (!headlines || !headlines.articles) {
+      console.error("Invalid response format:", headlines);
+      return;
+    }
+
+    if (!isLoggedIn()) {
+      navigate("/");
+    }
+
+    const filteredNewsData = headlines.articles
+      .filter(
+        (news) =>
+          news.urlToImage !== null &&
+          news.url !== null &&
+          news.title !== "[Removed]" &&
+          news.status !== "410" &&
+          news.status !== "404"
+      )
+      .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
+      .reduce((accumulator, currentNews) => {
+        const newsId =
+          currentNews.publishedAt +
+          currentNews.title +
+          currentNews.source_country;
+        if (!accumulator.some((news) => news.newsId === newsId)) {
+          accumulator.push({
+            newsId: newsId,
+            title: currentNews.title,
+            image: currentNews.urlToImage,
+            url: currentNews.url,
+            summary: currentNews.description || "Summary not available.",
+            source_country: currentNews.source.name,
+            latest_publish_date: formatDateTime(currentNews.publishedAt),
+            relatedArticles: currentNews.relatedArticles || [],
+          });
+        }
+        return accumulator;
+      }, []);
+
+    setNewsItems(filteredNewsData);
+  } else {
+    console.error("Invalid response:", response);
+  }
+};
+
+
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -151,21 +173,27 @@ const Homepage = () => {
           setSelectedCategory(link);
           response = await fetchNewsByLink(link);
         } else if (!isLoggedIn()) {
-          response = await fetchUsHeadlines();
-        } else if (userData?.userDefaultNews && !queryParams.has("category")) {
-          const userCategory = userData.userDefaultNews;
-          setSelectedCategory(userCategory);
-          response = await fetchUserHeadlines(userData.userDefaultNews);
-        } else if (userData?.userDefaultNews && queryParams.has("category")) {
-          const category = queryParams.get("category");
-          if (category === "Top News") {
             response = await fetchUsHeadlines();
-          } else {
+        } else if (isLoggedIn() && userData?.userDefaultNews && !queryParams.has("category")) {
+            const userCategory = userData.userDefaultNews;
+            if (userCategory === "Top News") {
+              setSelectedCategory(userCategory);
+              response = await fetchUsHeadlines();
+            } else {
+            setSelectedCategory(userCategory);
+            response = await fetchUserHeadlines(userData.userDefaultNews);
+            }
+        } else if (isLoggedIn() && userData?.userDefaultNews && queryParams.has("category")) {
+            const category = queryParams.get("category");
+            if (category === "Top News") {
+              setSelectedCategory(category);
+              response = await fetchUsHeadlines();
+            } else if (category !== "Top News") {
             setSelectedCategory(category);
-            response = await fetchCategoryHeadlines(selectedCategory);
-          }
+            response = await fetchCategoryHeadlines(category);
+            }
         } else {
-          return;
+            return;
         }
 
         if (response) {
@@ -179,7 +207,7 @@ const Homepage = () => {
     };
 
     fetchData();
-  }, [userData, isLoggedIn, selectedCategory, get, navigate]);
+  }, [userData, isLoggedIn,  get, currentUser, navigate]);
 
   const handleSaveArticle = (news) => {
     const alreadySaved = userData.savedNews.some((savedNews) => {
@@ -240,11 +268,11 @@ const Homepage = () => {
       />
       <div
         id="homepage-container"
-        className="bg-white min-h-screen pt-1 mt-2 sm:pt-2 border-t-[1px] w-full border-gray-500"
+        className="bg-white min-h-screen pt-1 mt-2 sm:pt-2 border-t-[1px] px-5 w-full border-gray-500"
       >
         <section
           id="top-news"
-          className="grid grid-cols-1 2xl:w-7/12 xl:w-8/12 lg:w-8/12 lg:float-right 2xl:float-right gap-x-2 xl:gap-y-4  gap-y-0 pb-3 mx-3 2xl:mx-3 bg-white"
+          className="grid grid-cols-1 2xl:w-7/12 xl:w-8/12 lg:w-8/12 lg:float-right 2xl:float-right gap-x-2 xl:gap-y-4  gap-y-0 pb-3 2xl:mx-3 bg-white"
         >
           <h1
             id="mainHeadlineHeader"
@@ -264,7 +292,17 @@ const Homepage = () => {
           ))}
         </section>
 
-        <section id="more-news-hl" className="grid grid-cols-1 mx-3 mb-2">
+        <section
+          id="related-stories"
+          className=" grid grid-cols-1 2xl:w-5/12 xl:w-4/12 lg:w-4/12 lg:float-right 2xl:float-right gap-x-2 xl:gap-y-4 gap-y-0 pb-3 2xl:mx-3 bg-white"
+        >
+
+          {newsItems.slice(0, 1).map((news) => (
+            <RelatedArticles key={news.newsId} news={news.relatedArticles} />
+          ))}
+        </section>
+
+        <section id="more-news-hl" className="grid grid-cols-1 mb-2 mt-2">
           <h2
             className="
           text-2xl 

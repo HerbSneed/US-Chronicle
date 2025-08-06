@@ -40,7 +40,7 @@ const router = createBrowserRouter(
       <Route path="/search" element={<Search />} />
       {/* Protected routes */}
       <Route
-        path=":userCategory"
+        path="/:userCategory"
         element={
           <ProtectedRoute>
             <Homepage />

@@ -1,60 +1,131 @@
-// Import necessary modules
-import fetch from 'node-fetch'; // Module to make HTTP requests
-import { apiKey, apiUrl } from '../config/apiConfig.js'; // API configuration
+import fetch from 'node-fetch';
+import { apiKey, apiUrl } from '../config/apiConfig.js';
 
+// Simple keyword extractor from title
+function extractKeywordsFromTitle(title) {
+  const stopWords = [
+    'the', 'and', 'with', 'from', 'after', 'over', 'in', 'on',
+    'of', 'for', 'to', 'a', 'an', 'at', 'as', 'by'
+  ];
+  const words = title
+    .split(/\s+/)
+    .filter(word => !stopWords.includes(word.toLowerCase()) && word.length > 3)
+    .sort((a, b) => b.length - a.length);
+  return words[0] || title;
+}
 
-// Function to fetch headlines based on a search query
-export const getSearchedHeadlines = async (searchQuery) => {
+export const getRelatedStories = async (title) => {
   try {
-    // Make a GET request to News API with search query
-    const response = await fetch(`${apiUrl}/everything?q=${searchQuery}&searchIn=content&sortBy=popularity&language=en&pageSize=100&apiKey=${apiKey}`);
-
-    // Parse response JSON and return
-    return await response.json();
+    const keyword = extractKeywordsFromTitle(title);
+    const response = await fetch(
+      `${apiUrl}/everything?q=${encodeURIComponent(keyword)}&searchIn=title&language=en&pageSize=10&apiKey=${apiKey}`
+    );
+    const data = await response.json();
+    return data.articles || [];
   } catch (error) {
-    console.error("Error in getSearchedHeadlines", error);
-    throw error;
+    console.error("Error in getRelatedStories", error);
+    return [];
   }
 };
 
-// Function to fetch headlines based on user's selected category
 export const getUserHeadlines = async (userCategory) => {
   try {
-    // Make a GET request to News API with user's selected category
-    const response = await fetch(`${apiUrl}/top-headlines?country=US&category=${userCategory}&language=en&pageSize=100&apiKey=${apiKey}`);
+    const url = `${apiUrl}/top-headlines?country=US${userCategory && userCategory !== 'Top News' ? `&category=${encodeURIComponent(userCategory.toLowerCase())}` : ''
+      }&language=en&pageSize=5&apiKey=${apiKey}`;
 
-    // Parse response JSON and return
-    return await response.json();
+    console.log("Fetching user headlines from URL:", url);
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    console.log("User headlines fetched:", data.articles.length);
+
+    const headlinesWithRelated = await Promise.all(
+      (data.articles || []).map(async (article) => {
+        const related = await getRelatedStories(article.title);
+        const filteredRelated = related
+          .filter(r => r.title !== article.title)
+          .slice(0, 5); // limit for performance
+
+        console.log(`Article: "${article.title}" has ${filteredRelated.length} related articles.`);
+
+        return {
+          ...article,
+          relatedArticles: filteredRelated,
+        };
+      })
+    );
+
+    return { articles: headlinesWithRelated };
   } catch (error) {
     console.error("Error in getUserHeadlines", error);
     throw error;
   }
 };
 
-// Function to fetch US general headlines
 export const getUsHeadlines = async () => {
+  console.log("getUsHeadlines called");
   try {
-    // Make a GET request to News API for US general headlines
-    const response = await fetch(`${apiUrl}/top-headlines?country=US&category=general&language=en&pageSize=100&apiKey=${apiKey}`);
+    // Top headlines without a category (general / Top News)
 
-    // Parse response JSON and return
-    return await response.json();
+    const url = `${apiUrl}/top-headlines?country=US&language=en&pageSize=10&apiKey=${apiKey}`;
+    console.log("Fetching US headlines from URL:", url);
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    console.log("DATA")
+
+    console.log("US headlines fetched:", data.articles.length);
+
+    const topArticles = (data.articles || []).slice(0, 5);
+    const remainingArticles = (data.articles || []).slice(3);
+
+    const articlesWithRelated = await Promise.all(
+      topArticles.map(async (article) => {
+        const related = await getRelatedStories(article.title);
+        const filteredRelated = related
+          .filter(r => r.title !== article.title)
+          .slice(0, 5);
+
+        console.log(`Top article: "${article.title}" has ${filteredRelated.length} related articles.`);
+
+        return {
+          ...article,
+          relatedArticles: filteredRelated,
+        };
+      })
+    );
+
+    const allArticles = [...articlesWithRelated, ...remainingArticles];
+    return { articles: allArticles };
   } catch (error) {
-    console.error("Error in getUsHeadlines", error);
+    console.error("Error in getUSHeadlines", error);
     throw error;
   }
 };
 
-// Function to fetch headlines based on a specific category
 export const getCategoryHeadlines = async (category) => {
   try {
-    // Make a GET request to News API with the specified category
-    const response = await fetch(`${apiUrl}/top-headlines?country=US&category=${category}&language=en&pageSize=100&apiKey=${apiKey}`);
-
-    // Parse response JSON and return
-    return await response.json();
+    const response = await fetch(
+      `${apiUrl}/top-headlines?country=US&category=${encodeURIComponent(category.toLowerCase())}&language=en&pageSize=100&apiKey=${apiKey}`
+    );
+    const data = await response.json();
+    return data; // upstream consumer expects { articles: [...] } shape already from NewsAPI
   } catch (error) {
     console.error("Error in getCategoryHeadlines", error);
+    throw error;
+  }
+};
+
+export const getSearchedHeadlines = async (searchQuery) => {
+  try {
+    const response = await fetch(
+      `${apiUrl}/everything?q=${encodeURIComponent(searchQuery)}&searchIn=content&sortBy=popularity&language=en&pageSize=100&apiKey=${apiKey}`
+    );
+    return await response.json();
+  } catch (error) {
+    console.error("Error in getSearchedHeadlines", error);
     throw error;
   }
 };

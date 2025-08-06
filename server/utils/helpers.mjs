@@ -5,14 +5,17 @@ import nodemailer from "nodemailer";
 import dotenv from "dotenv"; // Load environment variables
 dotenv.config();
 
+
 // Number of salt rounds for password hashing
 const SALT_ROUNDS = 10;
+
+const BASE_URL = process.env.S3_URL || "http://localhost:3000";
 
 // Function to hash a password
 const hashPassword = async (password) => bcrypt.hash(password, SALT_ROUNDS);
 
 // Function to send a password reset email
-const sendResetEmail = async (email, token, BASE_URL) => {
+const sendResetEmail = async (email, token) => {
   // Create a nodemailer transporter
   const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -23,6 +26,8 @@ const sendResetEmail = async (email, token, BASE_URL) => {
       user: process.env.SMTP_USER, // SMTP user
       pass: process.env.SMTP_PASS, // SMTP password
     },
+    logger: true,  // Enable logging to debug transport
+    debug: true    // Enable detailed debug output
   });
 
   // Generate reset link

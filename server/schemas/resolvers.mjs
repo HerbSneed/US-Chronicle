@@ -134,7 +134,7 @@ const resolvers = {
         // Send reset email
         const BASE_URL =
           process.env.NODE_ENV === "production"
-            ? process.env.BASE_URL
+            ? process.env.S3_URL
             : "http://localhost:3000";
         const emailSent = await sendResetEmail(email, resetToken, BASE_URL);
 

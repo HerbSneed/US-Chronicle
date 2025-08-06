@@ -16,6 +16,10 @@ const Search = () => {
   const [searchQuery, setSearchQuery] = useState("latest");
   const [newsItems, setNewsItems] = useState([]);
   const [saveNewsMutation] = useMutation(SAVE_NEWS);
+  const isLocalhost = window.location.hostname === "localhost";
+  const API_URL = isLocalhost
+    ? "http://localhost:3000" // Local development
+    : "http://nwarz-env-1.eba-tb4a7pwf.us-east-1.elasticbeanstalk.com"; // Production (Elastic Beanstalk)
 
   // Current user data from context
   const { currentUser } = useCurrentUserContext();
@@ -28,14 +32,14 @@ const Search = () => {
     width >= 1536
       ? 75
       : width >= 1280
-        ? 75
-        : width >= 1024
-          ? 52
-          : width >= 768
-            ? 52
-            : width >= 640
-            ? 52
-            : 40;
+      ? 75
+      : width >= 1024
+      ? 52
+      : width >= 768
+      ? 52
+      : width >= 640
+      ? 52
+      : 40;
 
   // Query current user data
   const { data } = useQuery(QUERY_CURRENT_USER, {
@@ -57,7 +61,11 @@ const Search = () => {
     const fetchSearchedNews = async () => {
       try {
         let response;
-        response = await axios.get(`api/search?searchQuery=${searchQuery}`);
+        response = await axios.get(`${API_URL}/api/search?searchQuery=${searchQuery}`);
+        console.log(
+          "Fetching from:",
+          `${API_URL}/api/search?searchQuery=${searchQuery}`
+        );
 
         if (response.status !== 200) {
           console.error("Error in response:", response);

@@ -1,42 +1,31 @@
-// Import necessary modules
-import jwt from 'jsonwebtoken'; // Module for working with JSON Web Tokens
-
-// Import constants for JWT expiration and secret
+// middleware/auth.js
+import jwt from 'jsonwebtoken';
 import { expiration, secret } from '../utils/constants.mjs';
 
-// Middleware function for authentication
 export const authMiddleware = ({ req }) => {
-  // Extract token from request body, query parameters, or headers
   let token = req.body.token || req.query.token || req.headers.authorization;
 
-  // If token is present in headers, remove 'Bearer ' prefix
   if (req.headers.authorization) {
-    token = token.split(' ').pop().trim();
+    token = token.split(" ").pop().trim();
   }
 
-  // If no token is present, continue with the request
+  let user = null;
+
   if (!token) {
-    return req;
+    return { user: null };
   }
 
   try {
-    // Verify the token with the secret and set a maximum age
     const { data } = jwt.verify(token, secret, { maxAge: expiration });
-    // Set user data from the token to the request object
-    req.user = data;
+    user = data;
   } catch (error) {
-    // Handle token errors
-    if (error.name === 'TokenExpiredError') {
-      console.log('Token expired');
-      // Set user to null in case of expired token
-      req.user = null;
+    if (error.name === "TokenExpiredError") {
+      console.log("Token expired");
     } else {
-      console.log('Invalid token');
-      // Set user to null in case of invalid token
-      req.user = null;
+      console.log("Invalid token");
     }
+    user = null;
   }
 
-  // Return the request object with modified or unmodified user data
-  return req;
+  return { user };
 };

@@ -8,6 +8,7 @@ import cors from 'cors';
 import compression from 'compression';
 import newsRoutes from './routes/newsRoutes.js';
 
+
 // Import GraphQL schema and resolvers
 import { typeDefs, resolvers } from './schemas/index.mjs';
 
@@ -66,7 +67,15 @@ async function startServer() {
   app.use('/api', newsRoutes);
 
   // Apollo Middleware
-  app.use("/graphql", expressMiddleware(server, { context: authMiddleware }));
+  app.use(
+    "/graphql",
+    expressMiddleware(server, {
+      context: async ({ req }) => {
+        const { user } = await authMiddleware({ req });
+        return { user }; // now resolvers can safely use context.user
+      },
+    })
+  );
 
   // Start Express server
   app.listen(PORT, () => {

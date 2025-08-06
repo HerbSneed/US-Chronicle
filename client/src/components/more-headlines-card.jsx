@@ -10,7 +10,7 @@ const MoreHeadlinesCard = memo(({ news, handleSaveArticle, isLastItem }) => {
     <>
       <div
         key={news.newsId}
-        className={`bg-gray-200 mt-1 px-2 py-1 ${isLastItem ? "border-none" : "bg-gray-200"}`}
+        className={`bg-gray-200 mt-1 py-1 ${isLastItem ? "border-none" : "bg-gray-200"}`}
       >
         <div className={`${news.index === 5 ? "" : ""}`}>
           <div className="mt-0">
