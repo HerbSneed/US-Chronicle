@@ -97,11 +97,11 @@ const CategoryHeader = ({ onCategoryChange, categories = [] }) => {
 
   return (
     <>
-      <div className="w-full px-5">
+      <div className="w-full mx-auto px-5 border-y-[1px] border-black">
         <Slider {...sliderSettings}>
           {categories.map((category, index) => (
             <button
-              className="cursor-pointer text-center text-blue-600 bg-white focus:text-newsRed focus:italic hover:text-newsRed  font-bold rounded-lg text-md sm:text-lg lg:text-xl"
+              className="cursor-pointer text-center pb-2 text-blue-600 bg-white focus:text-newsRed focus:italic hover:text-newsRed  font-bold rounded-lg text-md sm:text-lg lg:text-xl "
               key={index}
               onClick={() => {
                 handleCategoryClick(category);

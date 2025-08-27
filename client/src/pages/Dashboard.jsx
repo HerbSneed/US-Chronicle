@@ -61,7 +61,7 @@ const Dashboard = () => {
       {/* Dashboard layout */}
       <div
         key={userData?.firstName}
-        className="relative bg-white border-t-[1px] border-gray-400 min-h-screen px-5 mx-auto w-[100%]"
+        className="relative bg-white border-t-[1px] border-gray-400 min-h-screen px-5 mx-auto max-w-7xl"
       >
         {/* Dashboard header */}
         <h1 className="text-center text-3xl xl:text-4xl font-[newsReader] font-bold p-3 mt-1 drop-shadow-lg text-blue-600">
@@ -70,7 +70,9 @@ const Dashboard = () => {
 
         {/* Message for empty saved articles */}
         <h1
-          className={`font-bold font-[newsReader] -mt-3 drop-shadow-lg text-center text-2xl xl:text-3xl text-red-700 ${userData?.savedNews.length > 0 ? "hidden" : ""}`}
+          className={`font-bold font-[newsReader] -mt-3 drop-shadow-lg text-center text-2xl xl:text-3xl text-red-700 ${
+            userData?.savedNews.length > 0 ? "hidden" : ""
+          }`}
         >
           You have no saved articles
         </h1>

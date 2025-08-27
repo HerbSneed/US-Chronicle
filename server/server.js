@@ -42,18 +42,19 @@ async function startServer() {
   // Allowed origins for CORS
   const allowedOrigins = [
     "http://localhost:3000", // Local development
-    "http://n-wars-app.s3-website-us-east-1.amazonaws.com",
-    "http://nwarz-env-1.eba-tb4a7pwf.us-east-1.elasticbeanstalk.com", // S3 URL for frontend
+    "https://americanchronicle.herbsneed.com",
+    "https://nwarz-env-1.eba-tb4a7pwf.us-east-1.elasticbeanstalk.com", // S3 URL for frontend
   ];
 
   // Middleware setup
   app.use(compression());
   app.use(cors({
     origin: (origin, callback) => {
+      console.log("🔎 Incoming request from:", origin);
       if (allowedOrigins.includes(origin) || !origin) {
         callback(null, true);
       } else {
-        callback(new Error('Not allowed by CORS'));
+        callback(new Error(`Not allowed by CORS: ${origin}`));
       }
     },
     methods: ['GET', 'POST', 'PUT', 'DELETE'],

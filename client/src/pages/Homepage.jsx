@@ -23,8 +23,8 @@ const Homepage = () => {
   const [saveNewsMutation] = useMutation(SAVE_NEWS);
   const isLocalhost = window.location.hostname === "localhost";
   const API_URL = isLocalhost
-    ? "http://localhost:3000" // Local development
-    : "http://nwarz-env-1.eba-tb4a7pwf.us-east-1.elasticbeanstalk.com"; // Production (Elastic Beanstalk)
+    ? "http://localhost:3000" // local dev
+    : import.meta.env.VITE_API_URL; // production uses HTTPS
 
   const sliceEnd =
     width >= 1536 ? 4 : width >= 1280 ? 4 : width >= 1024 ? 2 : 1;
@@ -73,7 +73,9 @@ const Homepage = () => {
 
   const fetchUserHeadlines = async (category) => {
     try {
-      const response = await get(`${API_URL}/api/userheadlines?category=${category}`);
+      const response = await get(
+        `${API_URL}/api/userheadlines?category=${category}`
+      );
       return response;
     } catch (error) {
       console.error("Error fetching user headlines:", error);
@@ -240,7 +242,7 @@ const Homepage = () => {
       />
       <div
         id="homepage-container"
-        className="bg-white min-h-screen pt-1 mt-2 sm:pt-2 border-t-[1px] w-full border-gray-500"
+        className="bg-white min-h-screen max-w-7xl mx-auto pt-1 mt-2 sm:pt-2 w-full border-gray-500"
       >
         <section
           id="top-news"

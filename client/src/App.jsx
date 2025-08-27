@@ -26,10 +26,10 @@ function App({ children }) {
   const navigate = useNavigate();
   const [apiData, setApiData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const isLocalhost = window.location.hostname === "localhost:3000";
+  const isLocalhost = window.location.hostname === "localhost";
   const API_URL = isLocalhost
-    ? "http://localhost:3000" // Local development
-    : "http://nwarz-env-1.eba-tb4a7pwf.us-east-1.elasticbeanstalk.com"; // Production (Elastic Beanstalk)
+    ? "http://localhost:3000" // local dev can stay HTTP
+    : import.meta.env.VITE_API_URL; // production uses HTTPS from env
 
   // Dynamically get category and search query from the URL
   const queryParams = new URLSearchParams(location.search);
@@ -60,7 +60,6 @@ function App({ children }) {
     uri: `${API_URL}/graphql`, // ✅ Use env variable
   });
 
-
   // Set authorization header for Apollo Client based on auth token
   const authLink = setContext((_, { headers }) => ({
     headers: {
@@ -90,7 +89,6 @@ function App({ children }) {
         console.error("❌ Error fetching data:", error);
       });
   }, [apiRoute, location.pathname]);
-
 
   return (
     <ApolloProvider client={client}>

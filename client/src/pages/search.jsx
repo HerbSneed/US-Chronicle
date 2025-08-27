@@ -165,7 +165,10 @@ const Search = () => {
 
   return (
     <>
-      <div id="searchPage-container" className="flex flex-col pb-5">
+      <div
+        id="searchPage-container"
+        className="flex flex-col pb-5 mx-auto max-w-7xl"
+      >
         <div className="mt-3">
           <SearchBar />
         </div>
