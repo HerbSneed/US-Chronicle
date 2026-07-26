@@ -21,6 +21,7 @@ const Homepage = () => {
   const { width } = useWindowSize();
   const [selectedCategory, setSelectedCategory] = useState("Top News");
   const [saveNewsMutation] = useMutation(SAVE_NEWS);
+  
   const isLocalhost = window.location.hostname === "localhost";
   const API_URL = isLocalhost
     ? "http://localhost:3000" // local dev
@@ -36,6 +37,7 @@ const Homepage = () => {
   });
 
   const userData = data?.currentUser || null;
+  
   const categories = [
     "Top News",
     "Business",
@@ -48,7 +50,7 @@ const Homepage = () => {
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
-    navigate(`${API_URL}/category=${encodeURIComponent(category)}`);
+    navigate(`?category=${encodeURIComponent(category)}`);
   };
 
   const fetchNewsByLink = async (link) => {
@@ -181,7 +183,7 @@ const Homepage = () => {
     };
 
     fetchData();
-  }, [userData, isLoggedIn, selectedCategory, get, navigate]);
+  }, [userData, isLoggedIn, location.search]);
 
   const handleSaveArticle = (news) => {
     const alreadySaved = userData.savedNews.some((savedNews) => {

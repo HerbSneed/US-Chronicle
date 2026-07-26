@@ -14,16 +14,15 @@ export default defineConfig({
     open: true,
     proxy: {
       "/api": {
-        target: "http://nwarz-env-1.eba-tb4a7pwf.us-east-1.elasticbeanstalk.com",
+        target: "http://localhost:8080",
         changeOrigin: true,
-        secure: true,
       },
       "/graphql": {
-        target: "http://nwarz-env-1.eba-tb4a7pwf.us-east-1.elasticbeanstalk.com",
+        target: "http://localhost:8080",
         changeOrigin: true,
-        secure: true,
       },
     },
   },
+
 });
 

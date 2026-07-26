@@ -20,6 +20,10 @@ export const getSearchedHeadlines = async (searchQuery) => {
 // Function to fetch headlines based on user's selected category
 export const getUserHeadlines = async (userCategory) => {
   try {
+    if (userCategory === "Top News") {
+      userCategory = "general"
+    }
+
     // Make a GET request to News API with user's selected category
     const response = await fetch(`${apiUrl}/top-headlines?country=US&category=${userCategory}&language=en&pageSize=100&apiKey=${apiKey}`);
 
@@ -50,6 +54,7 @@ export const getCategoryHeadlines = async (category) => {
   try {
     // Make a GET request to News API with the specified category
     const response = await fetch(`${apiUrl}/top-headlines?country=US&category=${category}&language=en&pageSize=100&apiKey=${apiKey}`);
+    
 
     // Parse response JSON and return
     return await response.json();
