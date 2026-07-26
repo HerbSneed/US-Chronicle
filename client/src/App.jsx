@@ -28,7 +28,7 @@ function App({ children }) {
   const [loading, setLoading] = useState(false);
   const isLocalhost = window.location.hostname === "localhost";
   const API_URL = isLocalhost
-    ? "http://localhost:3000" // local dev can stay HTTP
+    ? "http://localhost:8080" // local dev can stay HTTP
     : import.meta.env.VITE_API_URL; // production uses HTTPS from env
 
   // Dynamically get category and search query from the URL

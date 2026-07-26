@@ -41,9 +41,8 @@ async function startServer() {
 
   // Allowed origins for CORS
   const allowedOrigins = [
-    "http://localhost:3000", // Local development
-    "https://americanchronicle.herbsneed.com",
-    "https://nwarz-env-1.eba-tb4a7pwf.us-east-1.elasticbeanstalk.com", // S3 URL for frontend
+    "http://localhost:5173",
+    process.env.CLIENT_URL,
   ];
 
   // Middleware setup
