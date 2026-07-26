@@ -45,6 +45,9 @@ async function startServer() {
     process.env.CLIENT_URL,
   ];
 
+  console.log("CLIENT_URL =", process.env.CLIENT_URL);
+  console.log("allowedOrigins =", allowedOrigins);
+
   // Middleware setup
   app.use(compression());
   app.use(cors({
