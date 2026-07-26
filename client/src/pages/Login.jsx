@@ -72,7 +72,7 @@ export default function Login() {
 
   return (
     <>
-      <div className="w-full">
+      <div className="w-full mx-auto py-32 max-w-7xl">
         {error ? (
           <div>
             <p className="error-text">The provided credentials are incorrect</p>
@@ -82,7 +82,7 @@ export default function Login() {
         <form
           id="login-form"
           onSubmit={handleFormSubmit}
-          className="px-6 rounded m-4  mx-auto sm:w-3/5 md:w-2/4 lg:w-2/5 xl:w-2/6 2xl:w-2/6"
+          className="px-6 w-full mx-auto sm:w-3/5 md:w-3/6 lg:w-2/6 xl:w-2/6 2xl:w-2/6"
         >
           <div className="text-left">
             <h1 className="text-4xl -mb-2 font-bold font-[Newsreader]">

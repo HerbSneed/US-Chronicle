@@ -33,8 +33,11 @@ export const REGISTER_USER = gql`
       userDefaultNews: $userDefaultNews
     ) {
       currentUser {
+        _id
+        email
         firstName
         lastName
+        userDefaultNews
       }
       token
     }

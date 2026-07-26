@@ -70,7 +70,7 @@ const Header = ({ setIsSidebarOpen }) => {
   return (
     <>
       <nav
-        className={`sticky z-50 relative top-0 h-12 sm:h-14 flex justify-between px-3 border-b border-gray-400 items-center text-neutral-500 hover:text-neutral-700 focus:text-neutral-700 ${
+        className={`sticky z-50 relative top-0 h-12 sm:h-14 flex justify-between px-3 items-center text-neutral-500 hover:text-neutral-700 focus:text-neutral-700 ${
           isRed ? "bg-newsRed" : "bg-white"
         } dark:bg-neutral-600`}
       >
@@ -85,7 +85,6 @@ const Header = ({ setIsSidebarOpen }) => {
         <Link
           to="/"
           rel="preload"
-          onClick={() => console.log("Homepage icon clicked")}
         >
           <img
             src={logo}

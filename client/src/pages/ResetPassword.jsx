@@ -56,7 +56,7 @@ function ResetPassword() {
   return (
     <div
       className="flex w-11/12 sm:w-10/12 md:w-8/12 lg:w-6/12 xl:w-4/12
-     gap-x-3 mx-auto mt-6"
+     gap-x-3 mx-auto max-w-7xl mt-6"
     >
       <input
         placeholder="Enter new password"

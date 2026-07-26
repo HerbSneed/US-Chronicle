@@ -86,13 +86,8 @@ const router = createBrowserRouter(
 // Render the app
 ReactDOM.createRoot(document.getElementById("root")).render(
   <CookiesProvider>
-    {/* Provide current user context */}
     <CurrentUserProvider>
-      {/* Provide router */}
-      <RouterProvider router={router}>
-        {/* Main App component */}
-        <App />
-      </RouterProvider>
+      <RouterProvider router={router} />
     </CurrentUserProvider>
   </CookiesProvider>
 );

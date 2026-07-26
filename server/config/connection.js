@@ -1,8 +1,29 @@
-// Import mongoose module for MongoDB connection
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
+import dotenv from "dotenv";
 
-// Connect to MongoDB Atlas cluster
-mongoose.connect('mongodb+srv://hmsneed79:Sneed2628191931@us-chronicle-cluster.lkumjq8.mongodb.net/?retryWrites=true&w=majority');
+// Load environment variables from .env
+dotenv.config();
 
-// Export the database connection
-module.exports = mongoose.connection;
+const MONGO_URI = process.env.MONGO_URI;
+
+if (!MONGO_URI) {
+  console.error("❌ MongoDB URI is missing! Set MONGO_URI in your .env file.");
+  process.exit(1);
+}
+
+// Function to connect to MongoDB
+async function connectDB() {
+  try {
+    await mongoose.connect(MONGO_URI);  // ✅ Removed deprecated options
+    console.log("✅ Connected to MongoDB successfully!");
+  } catch (error) {
+    console.error("❌ MongoDB connection error:", error);
+    process.exit(1); // Exit process with failure
+  }
+}
+
+// Call the function to establish the connection
+connectDB();
+
+// Export the connection
+export default mongoose.connection;

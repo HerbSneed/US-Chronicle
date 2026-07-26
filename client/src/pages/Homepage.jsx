@@ -21,6 +21,11 @@ const Homepage = () => {
   const { width } = useWindowSize();
   const [selectedCategory, setSelectedCategory] = useState("Top News");
   const [saveNewsMutation] = useMutation(SAVE_NEWS);
+  
+  const isLocalhost = window.location.hostname === "localhost";
+  const API_URL = isLocalhost
+    ? "http://localhost:3000" // local dev
+    : import.meta.env.VITE_API_URL; // production uses HTTPS
 
   const sliceEnd =
     width >= 1536 ? 4 : width >= 1280 ? 4 : width >= 1024 ? 2 : 1;
@@ -31,7 +36,9 @@ const Homepage = () => {
     variables: { email: currentUser.email },
   });
 
-  const userData = data?.currentUser || null;  const categories = [
+  const userData = data?.currentUser || null;
+  
+  const categories = [
     "Top News",
     "Business",
     "Entertainment",
@@ -43,12 +50,12 @@ const Homepage = () => {
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
-    navigate(`/category=${encodeURIComponent(category)}`);
+    navigate(`?category=${encodeURIComponent(category)}`);
   };
 
   const fetchNewsByLink = async (link) => {
     try {
-      const response = await get(`/api/search?searchQuery=${link}`);
+      const response = await get(`${API_URL}/api/search?searchQuery=${link}`);
       return response;
     } catch (error) {
       console.error("Error fetching news by link:", error);
@@ -58,7 +65,7 @@ const Homepage = () => {
 
   const fetchUsHeadlines = async () => {
     try {
-      const response = await get("/api/usheadlines");
+      const response = await get(`${API_URL}/api/usheadlines`);
       return response;
     } catch (error) {
       console.error("Error fetching US headlines:", error);
@@ -68,7 +75,9 @@ const Homepage = () => {
 
   const fetchUserHeadlines = async (category) => {
     try {
-      const response = await get(`/api/userheadlines?category=${category}`);
+      const response = await get(
+        `${API_URL}/api/userheadlines?category=${category}`
+      );
       return response;
     } catch (error) {
       console.error("Error fetching user headlines:", error);
@@ -78,7 +87,9 @@ const Homepage = () => {
 
   const fetchCategoryHeadlines = async (category) => {
     try {
-      const response = await get(`/api/categoryheadlines?category=${category}`);
+      const response = await get(
+        `${API_URL}/api/categoryheadlines?category=${category}`
+      );
       return response;
     } catch (error) {
       console.error("Error fetching category headlines:", error);
@@ -141,11 +152,10 @@ const Homepage = () => {
 
         if (queryParams.has("link")) {
           const link = queryParams.get("link");
-          setSelectedCategory(link)
+          setSelectedCategory(link);
           response = await fetchNewsByLink(link);
         } else if (!isLoggedIn()) {
           response = await fetchUsHeadlines();
-          console.log(response)
         } else if (userData?.userDefaultNews && !queryParams.has("category")) {
           const userCategory = userData.userDefaultNews;
           setSelectedCategory(userCategory);
@@ -155,8 +165,8 @@ const Homepage = () => {
           if (category === "Top News") {
             response = await fetchUsHeadlines();
           } else {
-          setSelectedCategory(category);
-          response = await fetchCategoryHeadlines(selectedCategory);
+            setSelectedCategory(category);
+            response = await fetchCategoryHeadlines(selectedCategory);
           }
         } else {
           return;
@@ -173,7 +183,7 @@ const Homepage = () => {
     };
 
     fetchData();
-  }, [userData, isLoggedIn, selectedCategory, get, navigate ]);
+  }, [userData, isLoggedIn, location.search]);
 
   const handleSaveArticle = (news) => {
     const alreadySaved = userData.savedNews.some((savedNews) => {
@@ -234,7 +244,7 @@ const Homepage = () => {
       />
       <div
         id="homepage-container"
-        className="bg-white min-h-screen pt-1 mt-2 sm:pt-2 border-t-[1px] w-full border-gray-500"
+        className="bg-white min-h-screen max-w-7xl mx-auto pt-1 mt-2 sm:pt-2 w-full border-gray-500"
       >
         <section
           id="top-news"
