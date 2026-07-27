@@ -33,7 +33,7 @@ async function startServer() {
   app.get("/", (req, res) => {
     res.status(200).json({
       status: "ok",
-      message: "Elastic Beanstalk health check passed!",
+      message: "US Chronicle API is running!",
       uptime: process.uptime(),
       timestamp: new Date().toISOString(),
     });
@@ -42,7 +42,8 @@ async function startServer() {
   // Allowed origins for CORS
   const allowedOrigins = [
     "http://localhost:5173",
-    process.env.CLIENT_URL,
+    "https://americanchronicle.herbsneed.com",
+    "https://us-chronicle-git-main-herbsneeds-projects.vercel.app",
   ];
 
   // Middleware setup
