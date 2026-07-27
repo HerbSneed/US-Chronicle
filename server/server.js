@@ -42,8 +42,7 @@ async function startServer() {
   // Allowed origins for CORS
   const allowedOrigins = [
     "http://localhost:5173",
-    "https://americanchronicle.herbsneed.com",
-    "https://us-chronicle-git-main-herbsneeds-projects.vercel.app",
+    process.env.CLIENT_URL,
   ];
 
   // Middleware setup
